@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using SapCo2.Wrapper.Interop;
+using SapCo2.Wrapper.Abstract;
 
 namespace SapCo2.Wrapper.Fields.Abstract
 {
@@ -17,7 +17,7 @@ namespace SapCo2.Wrapper.Fields.Abstract
         }
        
 
-        public abstract void Apply(RfcInterop interop, IntPtr dataHandle);
+        public abstract void Apply(IRfcInterop interop,IInputMapper inputMapper, IntPtr dataHandle);
 
         public override bool Equals(object obj)
         {

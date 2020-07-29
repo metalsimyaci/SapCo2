@@ -1,4 +1,5 @@
 using System;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -13,7 +14,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(RfcInterop interop, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IntPtr dataHandle)
         {
             RfcResultCodes resultCode = interop.SetInt8(
                 dataHandle: dataHandle,
@@ -24,7 +25,7 @@ namespace SapCo2.Wrapper.Fields
             resultCode.ThrowOnError(errorInfo);
         }
 
-        public static LongField Extract(RfcInterop interop, IntPtr dataHandle, string name)
+        public static LongField Extract(IRfcInterop interop, IntPtr dataHandle, string name)
         {
             RfcResultCodes resultCode = interop.GetInt8(
                 dataHandle: dataHandle,

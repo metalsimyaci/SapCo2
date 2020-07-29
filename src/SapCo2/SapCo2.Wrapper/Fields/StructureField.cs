@@ -1,4 +1,5 @@
 using System;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -9,12 +10,11 @@ namespace SapCo2.Wrapper.Fields
 {
     internal sealed class StructureField<TStructure> : Field<TStructure>
     {
-        public StructureField(string name, TStructure value)
-            : base(name, value)
+        public StructureField(string name, TStructure value) : base(name, value)
         {
         }
 
-        public override void Apply(RfcInterop interop, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
         {
             RfcResultCodes resultCode = interop.GetStructure(
                 dataHandle: dataHandle,
@@ -24,10 +24,10 @@ namespace SapCo2.Wrapper.Fields
 
             resultCode.ThrowOnError(errorInfo);
 
-            InputMapper.Apply(interop, structHandle, Value);
+            inputMapper.Apply(interop, structHandle, Value);
         }
 
-        public static StructureField<T> Extract<T>(RfcInterop interop, IntPtr dataHandle, string name)
+        public static StructureField<T> Extract<T>(IRfcInterop interop, IntPtr dataHandle, string name)
         {
             RfcResultCodes resultCode = interop.GetStructure(
                 dataHandle: dataHandle,

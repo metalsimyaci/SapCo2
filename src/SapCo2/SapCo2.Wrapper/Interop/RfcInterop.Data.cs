@@ -1,10 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 
 namespace SapCo2.Wrapper.Interop
 {
-    public sealed partial class RfcInterop
+    internal sealed partial class RfcInterop : IRfcInterop
     {
            [DllImport(NetWeaverRfcLib, CharSet = CharSet.Unicode)]
         private static extern RfcResultCodes RfcGetString(IntPtr dataHandle, string name, char[] stringBuffer, uint bufferLength, out uint stringLength, out RfcErrorInfo errorInfo);

@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -17,7 +18,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(RfcInterop interop, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
         {
             string stringValue = Value?.ToString("hhmmss") ?? ZeroRfcTimeString;
 
@@ -30,7 +31,7 @@ namespace SapCo2.Wrapper.Fields
             resultCode.ThrowOnError(errorInfo);
         }
 
-        public static TimeField Extract(RfcInterop interop, IntPtr dataHandle, string name)
+        public static TimeField Extract(IRfcInterop interop, IntPtr dataHandle, string name)
         {
             char[] buffer = EmptyRfcTimeString.ToCharArray();
 

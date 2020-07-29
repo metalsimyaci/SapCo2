@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -15,7 +16,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(RfcInterop interop, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
         {
             RfcResultCodes resultCode = interop.GetTable(
                 dataHandle: dataHandle,
@@ -29,11 +30,11 @@ namespace SapCo2.Wrapper.Fields
             {
                 IntPtr lineHandle = interop.AppendNewRow(tableHandle, out errorInfo);
                 errorInfo.ThrowOnError();
-                InputMapper.Apply(interop, lineHandle, row);
+                inputMapper.Apply(interop, lineHandle, row);
             }
         }
 
-        public static TableField<T> Extract<T>(RfcInterop interop, IntPtr dataHandle, string name)
+        public static TableField<T> Extract<T>(IRfcInterop interop, IntPtr dataHandle, string name)
         {
             RfcResultCodes resultCode = interop.GetTable(
                 dataHandle: dataHandle,

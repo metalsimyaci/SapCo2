@@ -4,28 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Fields;
 using SapCo2.Wrapper.Fields.Abstract;
-using SapCo2.Wrapper.Interop;
 
 namespace SapCo2.Wrapper.Mappers
 {
-    internal static class OutputMapper
+    public static class OutputMapper
     {
-        private static readonly ConcurrentDictionary<Type, Func<RfcInterop, IntPtr, object>> ExtractFuncsCache =
-            new ConcurrentDictionary<Type, Func<RfcInterop, IntPtr, object>>();
+        private static readonly ConcurrentDictionary<Type, Func<IRfcInterop, IntPtr, object>> ExtractFuncsCache =
+            new ConcurrentDictionary<Type, Func<IRfcInterop, IntPtr, object>>();
 
-        public static TOutput Extract<TOutput>(RfcInterop interop, IntPtr dataHandle)
+        public static TOutput Extract<TOutput>(IRfcInterop interop, IntPtr dataHandle)
         {
             Type outputType = typeof(TOutput);
-            Func<RfcInterop, IntPtr, object> extractFunc = ExtractFuncsCache.GetOrAdd(outputType, BuildExtractFunc);
+            Func<IRfcInterop, IntPtr, object> extractFunc = ExtractFuncsCache.GetOrAdd(outputType, BuildExtractFunc);
             return (TOutput)extractFunc(interop, dataHandle);
         }
 
-        private static Func<RfcInterop, IntPtr, object> BuildExtractFunc(Type type)
+        private static Func<IRfcInterop, IntPtr, object> BuildExtractFunc(Type type)
         {
-            ParameterExpression interop = Expression.Parameter(typeof(RfcInterop));
+            ParameterExpression interop = Expression.Parameter(typeof(IRfcInterop));
             ParameterExpression dataHandle = Expression.Parameter(typeof(IntPtr));
             ParameterExpression result = Expression.Variable(type);
 
@@ -44,7 +44,7 @@ namespace SapCo2.Wrapper.Mappers
                 .Concat(new[] { result })
                 .ToArray();
 
-            var expression = Expression.Lambda<Func<RfcInterop, IntPtr, object>>(
+            var expression = Expression.Lambda<Func<IRfcInterop, IntPtr, object>>(
                 body: Expression.Block(
                     variables: new[] { result },
                     expressions: body),
@@ -53,11 +53,7 @@ namespace SapCo2.Wrapper.Mappers
             return expression.Compile();
         }
 
-        private static Expression BuildExtractExpressionForProperty(
-            PropertyInfo propertyInfo,
-            Expression interop,
-            Expression dataHandle,
-            Expression result)
+        private static Expression BuildExtractExpressionForProperty(PropertyInfo propertyInfo, Expression interop, Expression dataHandle, Expression result)
         {
             RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
             ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Fields;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -10,32 +11,32 @@ using SapCo2.Wrapper.Interop;
 
 namespace SapCo2.Wrapper.Mappers
 {
-    internal static class InputMapper
+    public class InputMapper:IInputMapper
     {
-        private static readonly Lazy<MethodInfo> FieldApplyMethod = new Lazy<MethodInfo>(GetFieldApplyMethod);
+        private readonly Lazy<MethodInfo> _fieldApplyMethod = new Lazy<MethodInfo>(GetFieldApplyMethod);
 
-        private static readonly ConcurrentDictionary<Type, Action<RfcInterop, IntPtr, object>> ApplyActionsCache =
-            new ConcurrentDictionary<Type, Action<RfcInterop, IntPtr, object>>();
+        private readonly ConcurrentDictionary<Type, Action<IRfcInterop, IntPtr, object>> _applyActionsCache =
+            new ConcurrentDictionary<Type, Action<IRfcInterop, IntPtr, object>>();
 
-        public static void Apply(RfcInterop interop, IntPtr dataHandle, object input)
+        public void Apply(IRfcInterop interop, IntPtr dataHandle, object input)
         {
             if (input == null)
                 return;
 
             Type inputType = input.GetType();
-            Action<RfcInterop, IntPtr, object> applyAction = ApplyActionsCache.GetOrAdd(inputType, BuildApplyAction);
+            Action<IRfcInterop, IntPtr, object> applyAction = _applyActionsCache.GetOrAdd(inputType, BuildApplyAction);
             applyAction(interop, dataHandle, input);
         }
 
         private static MethodInfo GetFieldApplyMethod()
         {
-            Expression<Action<IField>> expression = field => field.Apply(default(RfcInterop), default(IntPtr));
+            Expression<Action<IField>> expression = field => field.Apply(default(IRfcInterop), default(IntPtr));
             return ((MethodCallExpression)expression.Body).Method;
         }
 
-        private static Action<RfcInterop, IntPtr, object> BuildApplyAction(Type type)
+        private Action<IRfcInterop, IntPtr, object> BuildApplyAction(Type type)
         {
-            ParameterExpression interopParameter = Expression.Parameter(typeof(RfcInterop));
+            ParameterExpression interopParameter = Expression.Parameter(typeof(IRfcInterop));
             ParameterExpression dataHandleParameter = Expression.Parameter(typeof(IntPtr));
             ParameterExpression inputParameter = Expression.Parameter(typeof(object));
             UnaryExpression castedInputParameter = Expression.Convert(inputParameter, type);
@@ -50,7 +51,7 @@ namespace SapCo2.Wrapper.Mappers
                 .Where(x => x != null)
                 .ToArray();
 
-            var expression = Expression.Lambda<Action<RfcInterop, IntPtr, object>>(
+            var expression = Expression.Lambda<Action<IRfcInterop, IntPtr, object>>(
                 Expression.Block(applyExpressionsForProperties),
                 interopParameter,
                 dataHandleParameter,
@@ -59,11 +60,8 @@ namespace SapCo2.Wrapper.Mappers
             return expression.Compile();
         }
 
-        private static Expression BuildApplyExpressionForProperty(
-            PropertyInfo propertyInfo,
-            Expression interopParameter,
-            Expression dataHandleParameter,
-            Expression inputParameter)
+        private Expression BuildApplyExpressionForProperty( PropertyInfo propertyInfo, Expression interopParameter,
+            Expression dataHandleParameter, Expression inputParameter)
         {
             RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
             ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());
@@ -130,11 +128,11 @@ namespace SapCo2.Wrapper.Mappers
             // instance.Apply(interopParameter, dataHandleParameter);
             return Expression.Call(
                 instance: fieldNewExpression,
-                method: FieldApplyMethod.Value,
+                method: _fieldApplyMethod.Value,
                 arguments: new[] { interopParameter, dataHandleParameter });
         }
 
-        private static ConstructorInfo GetFieldConstructor(Expression<Func<IField>> constructor)
+        private ConstructorInfo GetFieldConstructor(Expression<Func<IField>> constructor)
             => ((NewExpression)constructor.Body).Constructor;
     }
 }

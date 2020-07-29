@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Fields.Abstract;
@@ -14,7 +15,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(RfcInterop interop, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IntPtr dataHandle)
         {
             var stringValue = Value.ToString(CultureInfo.InvariantCulture);
 
@@ -28,7 +29,7 @@ namespace SapCo2.Wrapper.Fields
             resultCode.ThrowOnError(errorInfo);
         }
 
-        public static DecimalField Extract(RfcInterop interop, IntPtr dataHandle, string name)
+        public static DecimalField Extract(IRfcInterop interop, IntPtr dataHandle, string name)
         {
             RfcResultCodes resultCode = interop.GetString(
                 dataHandle: dataHandle,
