@@ -1,11 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <Title>SapCo2.Wrapper</Title>
+    <Version>1.0.0.0</Version>
+    <Authors>Hasan Ural @metalsimyaci</Authors>
+    <Company>KAON Game Studio</Company>
+    <Description>Sap Connector for .Net Core Wapper Library</Description>
+    <AssemblyName>SapCo2.Wrapper</AssemblyName>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Exception" />
-    </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj" />
+  </ItemGroup>
 
 </Project>
