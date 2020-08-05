@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Query\QueryBuilder.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj" />
   </ItemGroup>
 </Project>

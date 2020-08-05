@@ -9,20 +9,18 @@ using SapCo2.Core.Test.Model;
 namespace SapCo2.Core.Test
 {
     [TestClass]
-    [TestCategory("UnitTest")]
-    public class UnitTest1
+    [TestCategory("IntegrationTest")]
+    public class RfcFunctionIntegrationTest
     {
-        // ReSharper disable once ArrangeTypeMemberModifiers
-        private const string EnviromentVariableName = "ASPNETCORE_ENVIRONMENT";
-        // ReSharper disable once ArrangeTypeMemberModifiers
+        private const string EnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
         private const string SapSectionName = "Sap";
-        private IServiceProvider _serviceProvider;
+        private static IServiceProvider ServiceProvider;
 
 
-        [TestInitialize]
-        public void Initialize()
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
         {
-            var env = Environment.GetEnvironmentVariable(EnviromentVariableName,EnvironmentVariableTarget.Machine)??"Development";
+            var env = Environment.GetEnvironmentVariable(EnvironmentVariableName, EnvironmentVariableTarget.Machine)??"Development";
 
             IConfiguration configuration = new ConfigurationBuilder()
              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -35,24 +33,27 @@ namespace SapCo2.Core.Test
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSapCo2Core(connectionString);
-            _serviceProvider=serviceCollection.BuildServiceProvider();
+            ServiceProvider=serviceCollection.BuildServiceProvider();
 
         }
 
 
 
         [TestMethod]
-        public void TestMethod1()
+        public void Invoke_WithOutputAndInput_ShouldMapOutput()
         {
-            using var connection = _serviceProvider.GetService<IRfcConnection>();
+            var rowCount = 5;
+            using var connection = ServiceProvider.GetService<IRfcConnection>();
             connection.Connect();
-            using var function =_serviceProvider.GetService<IRfcFunction>().CreateFunction(connection,"ZRFC_READ_TABLE");
+            using var function =ServiceProvider.GetService<IRfcFunction>().CreateFunction(connection,"ZRFC_READ_TABLE");
+            
+            
             var result= function.Invoke<RfcReadTableOutputParameter>(new RfcReadTableInputParameter
             {
                 Query = "LFA1",
                 Delimiter = "|",
                 NoData = "",
-                RowCount = 5,
+                RowCount = rowCount,
                 RowSkips = 0,
                 Fields = new[]
                         {
@@ -62,7 +63,7 @@ namespace SapCo2.Core.Test
                 Options = new[] { new RfcReadTableOption { Text = "BRSCH EQ 'SD00'" }, }
             });
 
-            Assert.AreEqual(result.Data.Length, 5);
+            Assert.AreEqual(result.Data.Length, rowCount);
             
 
         }
