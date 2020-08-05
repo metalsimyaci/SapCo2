@@ -1,6 +1,6 @@
 # SapCo2 (SAP Conector Core)
 
-Geliştirme aşamasında daha önceden geliştirlmiş olan [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) ve [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projelerinden ilham alınmıştır. Projeyi incelemeden önce bu iki projeye göz atmanızı tavsiye ederim.
+Geliştirme aşamasında daha önceden geliştirilmiş olan [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) ve [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projelerinden referans alınmıştır. Projeyi incelemeden önce bu iki projeye göz atmanızı tavsiye ederim. Özellikle Wrapper kısımları iki projenin ortak yanlarının birleştirilmesi ile ortaya çıkmıştır.
 
 
 Kütüphanemiz SAPNco kütüphanesinin .NET Core Ortamında çalıştırılamaması üzerine **SAP NetWeaver RFC SDK 7.50** paketi üzerine geliştirilmiştir.
