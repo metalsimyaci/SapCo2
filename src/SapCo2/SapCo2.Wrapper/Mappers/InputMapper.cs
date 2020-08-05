@@ -11,30 +11,30 @@ using SapCo2.Wrapper.Interop;
 
 namespace SapCo2.Wrapper.Mappers
 {
-    public class InputMapper:IInputMapper
+    public static class InputMapper
     {
-        private readonly Lazy<MethodInfo> _fieldApplyMethod = new Lazy<MethodInfo>(GetFieldApplyMethod);
+        private static readonly Lazy<MethodInfo> FieldApplyMethod = new Lazy<MethodInfo>(GetFieldApplyMethod);
 
-        private readonly ConcurrentDictionary<Type, Action<IRfcInterop, IntPtr, object>> _applyActionsCache =
+        private static readonly ConcurrentDictionary<Type, Action<IRfcInterop, IntPtr, object>> ApplyActionsCache =
             new ConcurrentDictionary<Type, Action<IRfcInterop, IntPtr, object>>();
 
-        public void Apply(IRfcInterop interop, IntPtr dataHandle, object input)
+        public static void Apply(IRfcInterop interop, IntPtr dataHandle, object input)
         {
             if (input == null)
                 return;
 
             Type inputType = input.GetType();
-            Action<IRfcInterop, IntPtr, object> applyAction = _applyActionsCache.GetOrAdd(inputType, BuildApplyAction);
+            Action<IRfcInterop, IntPtr, object> applyAction = ApplyActionsCache.GetOrAdd(inputType, BuildApplyAction);
             applyAction(interop, dataHandle, input);
         }
 
         private static MethodInfo GetFieldApplyMethod()
         {
-            Expression<Action<IField>> expression = field => field.Apply(default(IRfcInterop), default(IntPtr));
+            Expression<Action<IField>> expression = field => field.Apply(default, default);
             return ((MethodCallExpression)expression.Body).Method;
         }
 
-        private Action<IRfcInterop, IntPtr, object> BuildApplyAction(Type type)
+        private static Action<IRfcInterop, IntPtr, object> BuildApplyAction(Type type)
         {
             ParameterExpression interopParameter = Expression.Parameter(typeof(IRfcInterop));
             ParameterExpression dataHandleParameter = Expression.Parameter(typeof(IntPtr));
@@ -60,8 +60,11 @@ namespace SapCo2.Wrapper.Mappers
             return expression.Compile();
         }
 
-        private Expression BuildApplyExpressionForProperty( PropertyInfo propertyInfo, Expression interopParameter,
-            Expression dataHandleParameter, Expression inputParameter)
+        private static Expression BuildApplyExpressionForProperty(
+            PropertyInfo propertyInfo,
+            Expression interopParameter,
+            Expression dataHandleParameter,
+            Expression inputParameter)
         {
             RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
             ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());
@@ -128,11 +131,11 @@ namespace SapCo2.Wrapper.Mappers
             // instance.Apply(interopParameter, dataHandleParameter);
             return Expression.Call(
                 instance: fieldNewExpression,
-                method: _fieldApplyMethod.Value,
+                method: FieldApplyMethod.Value,
                 arguments: new[] { interopParameter, dataHandleParameter });
         }
 
-        private ConstructorInfo GetFieldConstructor(Expression<Func<IField>> constructor)
+        private static ConstructorInfo GetFieldConstructor(Expression<Func<IField>> constructor)
             => ((NewExpression)constructor.Body).Constructor;
     }
 }

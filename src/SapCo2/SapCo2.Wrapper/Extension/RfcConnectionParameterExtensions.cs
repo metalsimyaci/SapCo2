@@ -25,7 +25,7 @@ namespace SapCo2.Wrapper.Extension
             => type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Select(propertyInfo =>
                 {
-                    RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
+                    RfcConnectionAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcConnectionAttribute>();
 
                     ParameterExpression instanceParameter = Expression.Parameter(typeof(object));
                     var propertyValueResolver = Expression.Lambda<Func<object, string>>(

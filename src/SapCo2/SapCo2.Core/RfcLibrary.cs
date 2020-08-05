@@ -1,4 +1,5 @@
 using System;
+using SapCo2.Core.Abstract;
 using SapCo2.Core.Models;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
@@ -6,29 +7,28 @@ using SapCo2.Wrapper.Exception;
 
 namespace SapCo2.Core
 {
-    public static class RfcLibrary
+    public class RfcLibrary:IRfcLibrary
     {
+        private readonly IRfcInterop _interop;
 
-        /// <summary>
-        /// Ensures the SAP RFC binaries are present. Throws an <see cref="SapLibraryNotFoundException"/> exception when the SAP RFC binaries could not be found.
-        /// </summary>
-        public static void EnsureLibraryPresent(IRfcInterop interop)
+        public RfcLibrary(IRfcInterop interop)
         {
-            GetVersion(interop);
+            _interop = interop;
         }
 
-        /// <summary>
-        /// Gets the SAP RFC library version.
-        /// </summary>
-        /// <returns>The SAP RFC library version.</returns>
-        public static RfcLibraryVersion GetVersion(IRfcInterop interop)
+        public void EnsureLibraryPresent()
+        {
+            GetVersion();
+        }
+
+        public LibraryVersionModel GetVersion()
         {
             try
             {
-                RfcResultCodes resultCode = interop
+                RfcResultCodes resultCode = _interop
                     .GetVersion(out uint majorVersion, out uint minorVersion, out uint patchLevel);
 
-                return new RfcLibraryVersion
+                return new LibraryVersionModel
                 {
                     Major = majorVersion,
                     Minor = minorVersion,

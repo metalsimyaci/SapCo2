@@ -1,6 +1,6 @@
 namespace SapCo2.Core.Models
 {
-    public sealed class RfcLibraryVersion
+    public sealed class LibraryVersionModel
     {
         /// <summary>
         /// Gets the major version value.

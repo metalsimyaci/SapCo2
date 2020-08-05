@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SapCo2.Core.Test": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

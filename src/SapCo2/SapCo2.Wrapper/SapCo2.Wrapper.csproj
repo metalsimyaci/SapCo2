@@ -8,6 +8,7 @@
     <Company>KAON Game Studio</Company>
     <Description>Sap Connector for .Net Core Wapper Library</Description>
     <AssemblyName>SapCo2.Wrapper</AssemblyName>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

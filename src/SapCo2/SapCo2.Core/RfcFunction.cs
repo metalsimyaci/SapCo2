@@ -8,43 +8,50 @@ using SapCo2.Wrapper.Mappers;
 
 namespace SapCo2.Core
 {
-    public sealed class RfcFunction:IRfcFunction
+    public class RfcFunction : IRfcFunction
     {
         private readonly IRfcInterop _interop;
-        private readonly IntPtr _rfcConnectionHandle;
-        private readonly IntPtr _functionHandle;
+        private IntPtr _rfcConnectionHandle;
+        private IntPtr _functionDescriptionHandle;
+        private IntPtr _functionHandle;
 
-        private RfcFunction(IRfcInterop interop, IntPtr rfcConnectionHandle, IntPtr functionHandle)
+        public RfcFunction(IRfcInterop interop)
         {
             _interop = interop;
-            _rfcConnectionHandle = rfcConnectionHandle;
-            _functionHandle = functionHandle;
         }
 
-        internal static IRfcFunction CreateFromDescriptionHandle(IRfcInterop interop, IntPtr rfcConnectionHandle, IntPtr functionDescriptionHandle)
+        public IRfcFunction CreateFunction(IRfcConnection connection, string name)
         {
-            IntPtr functionHandle = interop.CreateFunction(
-                funcDescHandle: functionDescriptionHandle,
-                errorInfo: out RfcErrorInfo errorInfo);
+            _rfcConnectionHandle = connection.GetConnectionHandle();
+            _functionDescriptionHandle = GetFunctionDescriptionHandle(name);
+            _functionHandle = CreateFromDescriptionHandle(_functionDescriptionHandle);
+            return this;
+        }
+        private IntPtr GetFunctionDescriptionHandle(string name)
+        {
+            IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(rfcHandle: _rfcConnectionHandle,funcName: name,errorInfo: out RfcErrorInfo errorInfo);
+
+            errorInfo.ThrowOnError();
+            return functionDescriptionHandle;
+        }
+        internal IntPtr CreateFromDescriptionHandle(IntPtr functionDescriptionHandle)
+        {
+            IntPtr functionHandle = _interop.CreateFunction(funcDescHandle: functionDescriptionHandle, errorInfo: out RfcErrorInfo errorInfo);
 
             errorInfo.ThrowOnError();
 
-            return new RfcFunction(
-                interop: interop,
-                rfcConnectionHandle: rfcConnectionHandle,
-                functionHandle: functionHandle);
+            return functionHandle;
         }
 
         public void Dispose()
         {
-           
+            RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
+            resultCode.ThrowOnError(errorInfo);
         }
 
         public void Invoke()
         {
-            RfcResultCodes resultCode = _interop.DestroyFunction(
-                funcHandle: _functionHandle,
-                out RfcErrorInfo errorInfo);
+            RfcResultCodes resultCode = _interop.Invoke(_rfcConnectionHandle,funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
 
             resultCode.ThrowOnError(errorInfo);
         }
@@ -65,10 +72,10 @@ namespace SapCo2.Core
 
         public TOutput Invoke<TOutput>(object input)
         {
-            InputMapper.Apply(_interop, _functionHandle, input);
-            Invoke();
+            Invoke(input);
 
             return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
         }
+
     }
 }

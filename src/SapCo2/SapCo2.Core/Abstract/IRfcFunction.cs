@@ -10,9 +10,9 @@ namespace SapCo2.Core.Abstract
         void Invoke();
 
         /// <summary>
-        /// Invokes the remote function with the given input parameters.
+        /// Invokes the remote function with the given input options.
         /// </summary>
-        /// <param name="input">The input parameters.</param>
+        /// <param name="input">The input options.</param>
         void Invoke(object input);
 
         /// <summary>
@@ -23,11 +23,13 @@ namespace SapCo2.Core.Abstract
         TOutput Invoke<TOutput>();
 
         /// <summary>
-        /// Invokes the remote function with the given input parameters and returns the output.
+        /// Invokes the remote function with the given input options and returns the output.
         /// </summary>
         /// <typeparam name="TOutput">The type of the output model.</typeparam>
-        /// <param name="input">The input parameters.</param>
+        /// <param name="input">The input options.</param>
         /// <returns>The output.</returns>
         TOutput Invoke<TOutput>(object input);
+
+        IRfcFunction CreateFunction(IRfcConnection connection, string name);
     }
 }

@@ -18,7 +18,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IntPtr dataHandle)
         {
             string stringValue = Value?.ToString("hhmmss") ?? ZeroRfcTimeString;
 

@@ -14,7 +14,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IntPtr dataHandle)
         {
             RfcResultCodes resultCode = interop.GetStructure(
                 dataHandle: dataHandle,
@@ -24,7 +24,7 @@ namespace SapCo2.Wrapper.Fields
 
             resultCode.ThrowOnError(errorInfo);
 
-            inputMapper.Apply(interop, structHandle, Value);
+            InputMapper.Apply(interop, structHandle, Value);
         }
 
         public static StructureField<T> Extract<T>(IRfcInterop interop, IntPtr dataHandle, string name)

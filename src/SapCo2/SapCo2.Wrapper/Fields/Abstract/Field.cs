@@ -17,7 +17,7 @@ namespace SapCo2.Wrapper.Fields.Abstract
         }
        
 
-        public abstract void Apply(IRfcInterop interop,IInputMapper inputMapper, IntPtr dataHandle);
+        public abstract void Apply(IRfcInterop interop, IntPtr dataHandle);
 
         public override bool Equals(object obj)
         {

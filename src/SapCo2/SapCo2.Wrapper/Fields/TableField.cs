@@ -16,7 +16,7 @@ namespace SapCo2.Wrapper.Fields
         {
         }
 
-        public override void Apply(IRfcInterop interop, IInputMapper inputMapper, IntPtr dataHandle)
+        public override void Apply(IRfcInterop interop, IntPtr dataHandle)
         {
             RfcResultCodes resultCode = interop.GetTable(
                 dataHandle: dataHandle,
@@ -30,7 +30,7 @@ namespace SapCo2.Wrapper.Fields
             {
                 IntPtr lineHandle = interop.AppendNewRow(tableHandle, out errorInfo);
                 errorInfo.ThrowOnError();
-                inputMapper.Apply(interop, lineHandle, row);
+                InputMapper.Apply(interop, lineHandle, row);
             }
         }
 
