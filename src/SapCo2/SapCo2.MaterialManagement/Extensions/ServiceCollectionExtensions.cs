@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SapCo2.Core;
 using SapCo2.Extensions;
+using SapCo2.MaterialManagement.Abstract;
 
 namespace SapCo2.MaterialManagement.Extensions
 {
