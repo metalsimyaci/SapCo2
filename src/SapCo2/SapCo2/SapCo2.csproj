@@ -3,6 +3,16 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
+    <PackageVersion>1.0.0-beta.1</PackageVersion>
+    <Title>SapCo2</Title>
+    <Authors>metalsimyaci</Authors>
+    <Description>SAP NetWeaver RFC Library imlementation for .Net Core</Description>
+    <Copyright>CopyRight 2020</Copyright>
+    <PackageProjectUrl>https://github.com/huysentruitw/SapNwRfc</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/huysentruitw/SapNwRfc</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
