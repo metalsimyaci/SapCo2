@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2", "SapCo2\SapCo2.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Test", "Tests\SapCo2.Test\SapCo2.Test.csproj", "{15812CD7-D826-4627-A017-E2158DCB4C82}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.MaterialManagement", "SapCo2.MaterialManagement\SapCo2.MaterialManagement.csproj", "{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,10 @@ Global
 		{15812CD7-D826-4627-A017-E2158DCB4C82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15812CD7-D826-4627-A017-E2158DCB4C82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15812CD7-D826-4627-A017-E2158DCB4C82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

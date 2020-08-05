@@ -48,6 +48,28 @@ namespace SapCo2.Core
             return ConvertToList(result, delimiter, tableFields);
 
         }
+        public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, string delimiter = "|" )
+        {
+            using var function = _function.CreateFunction(connection, ReadTableFunctionName);
+
+            var tableFields = GetTableFields(typeof(T), getUnsafeFields);
+            var tableName = GetSapTableName<T>();
+
+            var inputParameters = new RfcReadTableInputParameter
+            {
+                Query = tableName,
+                Delimiter = delimiter,
+                NoData = "",
+                RowCount = 1,
+                RowSkips = 0,
+                Fields = tableFields?.Select(x => new RfcReadTableField { FieldName = x })?.ToArray(),
+                Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray()
+            };
+
+            var result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
+            return ConvertToStruct(result, delimiter, tableFields);
+
+        }
         public void Dispose()
         {
         }
@@ -95,6 +117,16 @@ namespace SapCo2.Core
         {
             return outputParameter.Data?.Select(x => ConvertTo(x, delimiter, fieldList))?.ToList() ?? Activator.CreateInstance<List<T>>();
         }
+
+        private T ConvertToStruct(RfcReadTableOutputParameter outputParameter, string delimiter, List<string> fieldList)
+        {
+            if (outputParameter?.Data == null)
+                return null;
+            if (outputParameter.Data.Length < 1)
+                return null;
+
+            return ConvertTo(outputParameter.Data.First(), delimiter, fieldList);
+        }
         private T ConvertTo(RfcReadTableData line, string delimiter, List<string> fieldList)
         {
             T instance = Activator.CreateInstance<T>();
@@ -102,12 +134,18 @@ namespace SapCo2.Core
             if (line == null)
                 return instance;
 
-            if (string.IsNullOrEmpty(line.Wa))
+            return ConvertTo(line.Wa, delimiter, fieldList, instance);
+        }
+
+        private T ConvertTo(string line, string delimiter, List<string> fieldList,T instance)
+        {
+            if (string.IsNullOrEmpty(line))
                 return instance;
 
-            if (line.Wa.IndexOf(delimiter, StringComparison.Ordinal) <= -1)
+            if (line.IndexOf(delimiter, StringComparison.Ordinal) <= -1)
                 return instance;
-            var values = line.Wa.Split(delimiter.ToCharArray());
+
+            var values = line.Split(delimiter.ToCharArray());
             for (int i = 0; i < fieldList.Count; i++)
                 SetValue(fieldList[i], values[i], instance);
 

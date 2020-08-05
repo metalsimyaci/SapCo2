@@ -41,4 +41,8 @@
     <ProjectReference Include="..\..\SapCo2\SapCo2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

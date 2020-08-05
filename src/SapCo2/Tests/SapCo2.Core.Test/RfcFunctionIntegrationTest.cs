@@ -45,7 +45,7 @@ namespace SapCo2.Core.Test
             var rowCount = 5;
             using var connection = ServiceProvider.GetService<IRfcConnection>();
             connection.Connect();
-            using var function =ServiceProvider.GetService<IRfcFunction>().CreateFunction(connection,"ZRFC_READ_TABLE");
+            using var function =ServiceProvider.GetService<IRfcFunction>().CreateFunction(connection,"RFC_READ_TABLE");
             
             
             var result= function.Invoke<RfcReadTableOutputParameter>(new RfcReadTableInputParameter

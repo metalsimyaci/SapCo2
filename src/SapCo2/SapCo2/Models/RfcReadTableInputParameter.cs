@@ -2,7 +2,7 @@ using SapCo2.Wrapper.Attributes;
 
 namespace SapCo2.Models
 {
-    public class RfcReadTableInputParameter
+    public sealed class RfcReadTableInputParameter
     {
         [RfcProperty("QUERY_TABLE")] public string Query { get; set; }
 
@@ -18,13 +18,13 @@ namespace SapCo2.Models
         [RfcProperty("OPTIONS")] public RfcReadTableOption[] Options { get; set; }
     }
 
-    public class RfcReadTableField
+    public sealed class RfcReadTableField
     {
         [RfcProperty("FIELDNAME")]
         public string FieldName { get; set; }
     }
 
-    public class RfcReadTableOption
+    public sealed class RfcReadTableOption
     {
         [RfcProperty("TEXT")]
         public string Text { get; set; }
