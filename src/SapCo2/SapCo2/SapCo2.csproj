@@ -8,11 +8,17 @@
     <Authors>metalsimyaci</Authors>
     <Description>SAP NetWeaver RFC Library imlementation for .Net Core</Description>
     <Copyright>CopyRight 2020</Copyright>
-    <PackageProjectUrl>https://github.com/huysentruitw/SapNwRfc</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/huysentruitw/SapNwRfc</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
+    <Company>Kaon Game Studio</Company>
+    <Version>1.0.0-Beta.1</Version>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Beta versiyon published</PackageReleaseNotes>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
