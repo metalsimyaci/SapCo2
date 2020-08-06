@@ -78,7 +78,7 @@ namespace SapCo2.Core
 
         
 
-        #endregion
+        
         private string GetSapTableName<TEntity>()
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
@@ -210,6 +210,7 @@ namespace SapCo2.Core
             }
         }
 
-        
+        #endregion
+
     }
 }

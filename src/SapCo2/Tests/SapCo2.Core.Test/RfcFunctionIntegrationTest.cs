@@ -12,32 +12,27 @@ namespace SapCo2.Core.Test
     [TestCategory("IntegrationTest")]
     public class RfcFunctionIntegrationTest
     {
-        private const string EnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
-        private const string SapSectionName = "Sap";
+        private const string SapSectionName = "SapServerConnections:Sap";
         private static IServiceProvider ServiceProvider;
 
 
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            var env = Environment.GetEnvironmentVariable(EnvironmentVariableName, EnvironmentVariableTarget.Machine)??"Development";
-
             IConfiguration configuration = new ConfigurationBuilder()
              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-             .AddJsonFile($"appsettings.{env}.json", optional: true)
+             .AddUserSecrets("7f641e70-01a0-4950-bb48-6dc471d9c399")
+             .AddJsonFile("appsettings.json", optional: true)
              .AddEnvironmentVariables()
              .Build();
 
-            var connectionString = configuration.GetConnectionString(SapSectionName);
+            var connectionString = configuration.GetSection(SapSectionName).Value;
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSapCo2Core(connectionString);
             ServiceProvider=serviceCollection.BuildServiceProvider();
 
         }
-
-
 
         [TestMethod]
         public void Invoke_WithOutputAndInput_ShouldMapOutput()

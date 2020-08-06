@@ -15,24 +15,21 @@ namespace SapCo2.Test
     [TestCategory("IntegrationTest")]
     public class ReadTableIntegrationTest
     {
-        private const string EnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
-        private const string SapSectionName = "Sap";
+        private const string SapSectionName = "SapServerConnections:Sap";
         private static IServiceProvider ServiceProvider;
 
 
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            var env = Environment.GetEnvironmentVariable(EnvironmentVariableName, EnvironmentVariableTarget.Machine) ?? "Development";
-
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env}.json", optional: true)
+                .AddUserSecrets("d43bb0e9-3a7e-4cb4-9ebb-3cf7f9d826bd")
+                .AddJsonFile("appsettings.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();
 
-            var connectionString = configuration.GetConnectionString(SapSectionName);
+            var connectionString = configuration.GetSection(SapSectionName).Value;
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSapCo2(connectionString);

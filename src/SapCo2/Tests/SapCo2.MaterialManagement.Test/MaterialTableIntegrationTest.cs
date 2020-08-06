@@ -13,8 +13,7 @@ namespace SapCo2.MaterialManagement.Test
     {
         #region Variables
 
-        private const string EnvironmentVariableName = "ASPNETCORE_ENVIRONMENT";
-        private const string SapSectionName = "Sap";
+        private const string SapSectionName = "SapServerConnections:Sap";
         private static IServiceProvider ServiceProvider;
         
         #endregion
@@ -24,17 +23,13 @@ namespace SapCo2.MaterialManagement.Test
         [ClassInitialize]
         public static void Initialize(TestContext context)
         {
-            var env = Environment.GetEnvironmentVariable(EnvironmentVariableName, EnvironmentVariableTarget.Machine) ??
-                      "Development";
-
             IConfiguration configuration = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env}.json", optional: true)
+                .AddUserSecrets("4C01C11E-B306-4D85-8947-C06AA454C358")
+                .AddJsonFile("appsettings.json", true)
                 .AddEnvironmentVariables()
                 .Build();
-
-            var connectionString = configuration.GetConnectionString(SapSectionName);
+            var connectionString = configuration.GetSection(SapSectionName).Value;
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddSapCo2(connectionString);
@@ -52,7 +47,7 @@ namespace SapCo2.MaterialManagement.Test
         #region Test Methods
         
         [TestMethod]
-        public async Task GetMaterialAsync_materialCode_shouldMaterial()
+        public async Task GetMaterialAsync_materialCodeAndIncludeAllQueryOptions_shouldMaterial()
         {
             var materialCode = "1DACTV51A201000001";
 
