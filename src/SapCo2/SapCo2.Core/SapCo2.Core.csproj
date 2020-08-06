@@ -1,13 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
-    <Version>1.0.0</Version>
-    <Authors>Metalsimyaci</Authors>
-    <Company>Kaon Game Studio</Company>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
+    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj"/>
   </ItemGroup>
-
 </Project>

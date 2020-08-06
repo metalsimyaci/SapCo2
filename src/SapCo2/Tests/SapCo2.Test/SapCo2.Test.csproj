@@ -21,6 +21,8 @@
     <PackageReference Include="coverlet.collector" Version="1.3.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SapCo2.Core\SapCo2.Core.csproj" />
+    <ProjectReference Include="..\..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
     <ProjectReference Include="..\..\SapCo2\SapCo2.csproj" />
   </ItemGroup>
 </Project>

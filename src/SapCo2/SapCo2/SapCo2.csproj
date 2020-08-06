@@ -3,31 +3,44 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
-    <PackageVersion>1.0.0-beta.1</PackageVersion>
     <Title>SapCo2</Title>
     <Authors>metalsimyaci</Authors>
     <Description>SAP NetWeaver RFC Library imlementation for .Net Core</Description>
-    <Copyright>CopyRight 2020</Copyright>
+    <Copyright>© 2020</Copyright>
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
     <Company>Kaon Game Studio</Company>
-    <Version>1.0.0-Beta.1</Version>
+    <Version>1.0.0-Beta.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Beta versiyon published</PackageReleaseNotes>
+    <PackageReleaseNotes>Project Referance Bug resolved</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>logo.png</PackageIcon>
-  </PropertyGroup>
 
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Query\QueryBuilder.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj">
+      <IsPackable>false</IsPackable>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>SapCo2.Core.dll</IncludeAssets>
+    </ProjectReference>
+    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj">
+      <IsPackable>false</IsPackable>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>SapCo2.Wrapper.dll</IncludeAssets>
+    </ProjectReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -36,4 +49,10 @@
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
+
+  <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
 </Project>
