@@ -2,13 +2,11 @@
 
 Geliştirme aşamasında daha önceden geliştirilmiş olan [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) ve [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projelerinden referans alınmıştır. Projeyi incelemeden önce bu iki projeye göz atmanızı tavsiye ederim. Özellikle Wrapper kısımları iki projenin ortak yanlarının birleştirilmesi ile ortaya çıkmıştır.
 
-
 Kütüphanemiz SAPNco kütüphanesinin .NET Core Ortamında çalıştırılamaması üzerine **SAP NetWeaver RFC SDK 7.50** paketi üzerine geliştirilmiştir.
 
 Kütüphanemizi .Net Core 3.1, Net Core 2.1 and .Net Frameworklerinde kullanılabilirsiniz.
 
 .Net Stadand 2.0 ve .Net Standard 2.1 ile hazırlanması sebebi ile Windows, Linux ve MacOs işletim sistemlerinde çalıştırılabilir.
-
 
 ## Gereksinimler
 
@@ -16,20 +14,25 @@ Kütüphanemiz SAP NetWeaver RFC Library 7.50 SDK içerisindeki C++ ile gelişti
 İlgili SDK paketinin kurulumu ve daha fazlası için :sparkles: [SAP'nin](https://support.sap.com/en/product/connectors/nwrfcsdk.html) offical sayfasına bakabilirsiniz.
 
 İlgili SKD yı temin ettikten sonra (Sizden bir SAP lisanlı hesabı istiyor);
+
 - zip doyasınızı kendinize göre bir dizine çıkarıp işletim sisteminize göre `PATH` (Windows), `LD_LIBRARY_PATH` (Linux), `DYLD_LIBRARY_PATH` (MacOS)  ortam değişkenine çıkardığınız dosyalar içerisindeki **lib** dizinini gösterin.
-- ve ya direkt **lib** klasörünün içeriğini output dizininize kopyalayın. 
+- ve ya direkt **lib** klasörünün içeriğini output dizininize kopyalayın.
 
  Windows işletm sisteminde  SDK paketini kullanabilmeniz için [Visual C++ 2013 yeniden dağıtılabilir paket](https://www.microsoft.com/en-us/download/details.aspx?id=40784)inin 64 bit sürümünü yüklemeniz gerekir.
 
 ## Kurulum
+
 Şuan için BETA sürümünde olan paketleri deneyebilmek için
 
 PackageManager
+
 ```shell
 Install-Package SapCo2
 ```
+
 or
 DotNet
+
 ```shell
 dotnet add package SapCo2
 ```
@@ -37,13 +40,17 @@ dotnet add package SapCo2
 **Note:** Paket [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) ve [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options) bağlılığına sahiptir.
 
 ## Kullanım
+
 kullanımını ağırlıklı olarak dependencyInjection üzerine kullandım. Size de bu şekilde kullanımını tavsiye ediyorum. Zaten bu kullanımı pratik hale getirmek için tüm paketlerin içerisinde extensions hazırladım.
 
 Bağlantı cümlesini direkt string olarak
+
 ```csharp
 var connectionString = "AppServerHost=HOST_NAME; SystemNumber=00; User=USER; Password=PASSWORD; Client=CLIENT_CODE; Language=EN; PoolSize=100; Trace=0;";
 ```
+
 veya appsettings.json dosyası
+
 ```json
 {
   "SapServerConnections": {
@@ -51,7 +58,9 @@ veya appsettings.json dosyası
   }
 }
 ```
+
 içerisinden
+
 ```csharp
 IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
@@ -64,18 +73,21 @@ var connectionString = configuration.GetSection("SapServerConnections:Sap").Valu
 
 şeklinde alabilirsiniz.
 
-
 Dependencyinjection ile IServceProvider içerisinde .AddSapCo2 fonksiyonuna bir adet connection set ederek kullanabilriz.
+
 ```csharp
 var serviceCollection = new ServiceCollection()
     .AddSapCo2(connectionString);
 var serviceProvider = serviceCollection.BuildServiceProvider();
 ```
+
 paketimizi yükledikten sonra bir adet connection açıyoruz. Bu işlem şimdilik pool ile yönetilemediği için her SAP isteğinde bu connection'ı açmamız gerekiyor.
+
 ```csharp
 using var connection = serviceProvider.GetService<IRfcConnection>();
 connection.Connect();
 ```
+
 ***Note:*** burada `connection.Connect();` demezseniz çalışma zamanında `RFC CONNECTION ERROR` alırsınız.
 
 ilk aşamada `RFC_READ_TABLE` kullanarak tablodan çekim işleminin nasıl yapıldığıa bakalım.
@@ -83,8 +95,8 @@ ilk aşamada `RFC_READ_TABLE` kullanarak tablodan çekim işleminin nasıl yapı
 Öncelikle çekeceğimiz veriye ait Entitymizi oluşturuyoruz. Entity'yi oluşturuken tekrar  tablo isimleriyle uğraşmamak için ilgili entity'ye bir `[RfcClass("LFA1", Description = "Vendor Table", Unsafe = false)]` attribute bağladım. `Name alanı LFA1` ile veri almak istediğimiz tabloyu belirliyor. `unsafe` property'si ise çekilecek tablo içerisindeki alanların sonradan oluşturulmuş olan "Z" li geliştirmelerin dahil olup olmadığını anlatıyor.
 `RfcProperty` atribütü ise ise Entity içerisindeki property'lerin tablodaki Field'lar ile eşleştirmemize yarıyor.Bu eşleştirme işleminde `Name` alanı field alanını işaret etmektedir. `DataType` alanı ise çekilecek property'nin ne geleceğini hakkında bir fikir belirtip bu tipe göre tekrar tür Entity türüne dönüşüm işlemi yapılıyor.
 
-
 Satıcı Tanımlarını almak için aşağıdaki gibi bir entity tanımlıyorum.
+
 ```csharp
 [RfcClass("LFA1", Description = "Vendor Table", Unsafe = false)]
 public class Vendor
@@ -104,8 +116,13 @@ public class Vendor
 }
 ```
 
+Bunun için bir tane `IReadTable` Generic nesnesini output olarak almak istediğimiz entity nesnesi ile türeterek DI' dan alıyoruz.
+Sonrasında nesne içerisindeki `GetTable` fonksiyonunu çağırıyoruz.
 
-Bunun için bir tane `IReadTable` nesnesi alıyoruz ve çekmek istediğimiz entity oluşturuyoruz.
+`GetTable`fonksiyonu `IRfcConnection` türünde bir connection parametresi ve tablo üzerinde kullanmak istediğimiz where cümleciğimizi liste şeklinde istiyor. Burada `query`tarafının liste olmasının sebebi `RFC_READ_TABLE` içerisindeki `Options` tablosnun belli uzunlukta `TEXT`almasından kaynaklanıyor.
+
+***Not:*** Query oluşturma işlemlerinde hatanın önüne geçmek ve daha pratiklik açısından `var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();` ile querylerimi oluşturuyorum. Bunun çıktısı `BRSCH EQ 'SD00'` ile aynıdır. Karmaşık ve çoklu querylerin oluşturulması için kullanışlı olduğunu düşünüyorum. Bunun için önce bir `AbapQuery` nesnesi oluiturup sonra ilk kısımda `set`ile başlayarak hangi operatörü kullanmak istiyorsak `QueryOperator` içerisinden seçerek (Equal, NotEqual, Between, StartWith, EndWith, GreatherThanEqual, Greather, LessThanEqual, Less vs.) kullanabilmekteyiz.
+
 ```csharp
 var rowCount = 5;
 var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();
