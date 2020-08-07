@@ -10,15 +10,17 @@ on:
 jobs:
   build:
     name: build to staging
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: '/home/runner/work/SapCo2/src/SapCo2/'
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.301
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore sapco2
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build sapco2 --configuration Release --no-restore
