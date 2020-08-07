@@ -1,0 +1,31 @@
+name: Build Core 2.2 And 3.1
+
+on:
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: "0 2 * * 5"
+  workflow_dispatch:
+  
+jobs:
+  build:
+    name: build to staging
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
+    strategy:
+      matrix:
+        dotnet: [ '2.2.x', '3.1.x' ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1      
+      with:
+        dotnet-version: ${{ matrix.dotnet }}    
+    - name: Install ${{ matrix.dotnet }} dependencies
+      working-directory: './src/SapCo2'
+      run: dotnet restore sapco2
+    - name: Build ${{ matrix.dotnet }} project
+      working-directory: './src/SapCo2'
+      run: dotnet build sapco2 --configuration Release --no-restore
