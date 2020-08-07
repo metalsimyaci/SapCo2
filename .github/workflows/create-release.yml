@@ -1,7 +1,7 @@
 on:
   push:
     tags:
-      - 'v1.0.0-Beta.5'
+      - 'v*'
 name: Create Release
 
 jobs:
