@@ -11,7 +11,7 @@ Kütüphanemizi .Net Core 3.1, Net Core 2.1 and .Net Frameworklerinde kullanıla
 [![license](https://img.shields.io/badge/license-MIT-blue?)](https://opensource.org/licenses/MIT)
 [![Nuget](https://img.shields.io/nuget/v/sapco2?label=Nuget&logo=Nuget&logoColor=blue)](https://www.nuget.org/packages/SapCo2/)
 [![Nuget-download](https://img.shields.io/nuget/dt/sapco2?logo=nuget)](https://www.nuget.org/packages/SapCo2/)
-![Build Core 2.2 And 3.1](https://github.com/metalsimyaci/SapCo2/workflows/Build%20Core%202.2%20And%203.1/badge.svg?branch=master)
+[![Build Core 2.2 And 3.1](https://github.com/metalsimyaci/SapCo2/workflows/Build%20Core%202.2%20And%203.1/badge.svg?branch=master)](https://github.com/metalsimyaci/sapco2/actions?query=workflow%3A%22Build+Core+2.2+And+3.1%22)
 
 ## Gereksinimler
 
