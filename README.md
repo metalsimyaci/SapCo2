@@ -8,6 +8,11 @@ Kütüphanemizi .Net Core 3.1, Net Core 2.1 and .Net Frameworklerinde kullanıla
 
 .Net Stadand 2.0 ve .Net Standard 2.1 ile hazırlanması sebebi ile Windows, Linux ve MacOs işletim sistemlerinde çalıştırılabilir.
 
+[![license](https://img.shields.io/badge/license-MIT-blue?)](https://opensource.org/licenses/MIT)
+[![Nuget](https://img.shields.io/nuget/v/sapco2?label=Nuget&logo=Nuget&logoColor=blue)](https://www.nuget.org/packages/SapCo2/)
+[![Nuget-download](https://img.shields.io/nuget/dt/sapco2?logo=nuget)](https://www.nuget.org/packages/SapCo2/)
+![Build Core 2.2 And 3.1](https://github.com/metalsimyaci/SapCo2/workflows/Build%20Core%202.2%20And%203.1/badge.svg?branch=master)
+
 ## Gereksinimler
 
 Kütüphanemiz SAP NetWeaver RFC Library 7.50 SDK içerisindeki C++ ile geliştirilmiş .dll dosyalarına ihtiyaç duyar.
@@ -121,12 +126,15 @@ Sonrasında nesne içerisindeki `GetTable` fonksiyonunu çağırıyoruz.
 
 `GetTable`fonksiyonu `IRfcConnection` türünde bir connection parametresi ve tablo üzerinde kullanmak istediğimiz where cümleciğimizi liste şeklinde istiyor. Burada `query`tarafının liste olmasının sebebi `RFC_READ_TABLE` içerisindeki `Options` tablosnun belli uzunlukta `TEXT`almasından kaynaklanıyor.
 
-***Not:*** Query oluşturma işlemlerinde hatanın önüne geçmek ve daha pratiklik açısından `var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();` ile querylerimi oluşturuyorum. Bunun çıktısı `BRSCH EQ 'SD00'` ile aynıdır. Karmaşık ve çoklu querylerin oluşturulması için kullanışlı olduğunu düşünüyorum. Bunun için önce bir `AbapQuery` nesnesi oluiturup sonra ilk kısımda `set`ile başlayarak hangi operatörü kullanmak istiyorsak `QueryOperator` içerisinden seçerek (Equal, NotEqual, Between, StartWith, EndWith, GreatherThanEqual, Greather, LessThanEqual, Less vs.) kullanabilmekteyiz.
+```csharp
+var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();
+```
+
+Query oluşturma işlemlerinde hatanın önüne geçmek ve daha pratiklik açısından `var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();` ile querylerimi oluşturuyorum. Bunun çıktısı `BRSCH EQ 'SD00'` ile aynıdır. Karmaşık ve çoklu querylerin oluşturulması için kullanışlı olduğunu düşünüyorum. Bunun için önce bir `AbapQuery` nesnesi oluiturup sonra ilk kısımda `set`ile başlayarak hangi operatörü kullanmak istiyorsak `QueryOperator` içerisinden seçerek (Equal, NotEqual, Between, StartWith, EndWith, GreatherThanEqual, Greather, LessThanEqual, Less vs.) kullanabilmekteyiz.
+
 
 ```csharp
 var rowCount = 5;
-var query = new AbapQuery().Set(QueryOperator.Equal("BRSCH", "SD00")).GetQuery();
-
 using var tableFunction = _serviceProvider.GetService<IReadTable<Vendor>>();
 var result = tableFunction.GetTable(connection, query, rowCount: rowCount);
 ```
