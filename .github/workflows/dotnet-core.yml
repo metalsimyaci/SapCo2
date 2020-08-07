@@ -10,10 +10,10 @@ on:
 jobs:
   build:
     name: build to staging
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       DOTNET_NOLOGO: true
-      DOTNET_CLI_TELEMETRY_OPTOUT: false
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
     strategy:
       matrix:
         dotnet: [ '2.2.x', '3.1.x' ]
@@ -23,9 +23,9 @@ jobs:
       uses: actions/setup-dotnet@v1      
       with:
         dotnet-version: ${{ matrix.dotnet }}    
-    - name: Install dependencies
-      working-directory: 'src/SapCo2/'
+    - name: Install ${{ matrix.dotnet }} dependencies
+      working-directory: './src/SapCo2'
       run: dotnet restore sapco2
-    - name: Build project
-      working-directory: 'src/SapCo2/'
+    - name: Build ${{ matrix.dotnet }} project
+      working-directory: './src/SapCo2'
       run: dotnet build sapco2 --configuration Release --no-restore
