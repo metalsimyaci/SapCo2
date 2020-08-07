@@ -1,4 +1,4 @@
-name: Build Core 3.1
+name: Build Core 2.2 And 3.1
 
 on:
   pull_request:
@@ -11,13 +11,15 @@ jobs:
   build:
     name: build to staging
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        dotnet: [ '2.2.x', '3.1.x' ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1.0      
+      uses: actions/setup-dotnet@v1      
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: ${{ matrix.dotnet }}    
     - name: Install dependencies
       working-directory: 'src/SapCo2/'
       run: dotnet restore sapco2
