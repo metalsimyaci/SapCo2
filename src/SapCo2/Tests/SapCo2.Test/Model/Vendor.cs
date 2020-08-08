@@ -3,20 +3,20 @@ using SapCo2.Wrapper.Enumeration;
 
 namespace SapCo2.Test.Model
 {
-    [RfcClass("LFA1",Description = "Vendor Table",Unsafe = false)]
+    [RfcEntityClass("LFA1",Description = "Vendor Table",Unsafe = false)]
     public class Vendor
     {
 
-        [RfcProperty("LIFNR",DataType = RfcDataTypes.Char)]
+        [RfcEntityProperty("LIFNR",EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
         public string VendorCode { get; set; }
 
-        [RfcProperty("KUNNR", DataType = RfcDataTypes.Char)]
+        [RfcEntityProperty("KUNNR", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
         public string CustomerCode { get; set; }
 
-        [RfcProperty("NAME1", DataType = RfcDataTypes.Char)]
+        [RfcEntityProperty("NAME1", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
         public string Name1 { get; set; }
 
-        [RfcProperty("NAME2", DataType = RfcDataTypes.Char)]
+        [RfcEntityProperty("NAME2", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
         public string Name2 { get; set; }
     }
 }

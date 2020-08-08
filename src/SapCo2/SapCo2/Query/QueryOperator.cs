@@ -54,39 +54,39 @@ namespace SapCo2.Query
 
         #region Operator Methods
 
-        public static QueryOperator Equal(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator Equal(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} EQ '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} EQ '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator NotEqual(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator NotEqual(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} NE '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} NE '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator GreaterThan(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator GreaterThan(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} GT '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} GT '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator GreaterThanOrEqual(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator GreaterThanOrEqual(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} GE '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} GE '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator LessThan(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator LessThan(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} LT '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} LT '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator LessThanOrEqual(string field, object value, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator LessThanOrEqual(string field, object value, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
-            Query = $"{field} LE '{TypeConversionHelper.ConvertToRfcType(value, dataType)}'";
+            Query = $"{field} LE '{TypeConversionHelper.ConvertToRfcType(value, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
@@ -114,14 +114,14 @@ namespace SapCo2.Query
             return new QueryOperator();
         }
 
-        public static QueryOperator Between(string field, object firstValue, object lastValue, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator Between(string field, object firstValue, object lastValue, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
             Query =
-                $"{field} BETWEEN '{TypeConversionHelper.ConvertToRfcType(firstValue, dataType)}' AND '{TypeConversionHelper.ConvertToRfcType(lastValue, dataType)}'";
+                $"{field} BETWEEN '{TypeConversionHelper.ConvertToRfcType(firstValue, entityPropertySapType)}' AND '{TypeConversionHelper.ConvertToRfcType(lastValue, entityPropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator In(string field, List<object> valueList, RfcDataTypes dataType = RfcDataTypes.String)
+        public static QueryOperator In(string field, List<object> valueList, RfcEntityPropertySapTypes entityPropertySapType = RfcEntityPropertySapTypes.STRING)
         {
             List<string> queryList = new List<string>();
             if (valueList.Any())
@@ -131,13 +131,13 @@ namespace SapCo2.Query
                     if (no == 0)
                     {
                         queryList.Add(valueList.Count == 1
-                            ? string.Format("{1} IN ('{0}')", TypeConversionHelper.ConvertToRfcType(valueList[no], dataType), field.ToUpper(UsCultureInfo))
-                            : string.Format("{1} IN ('{0}'", TypeConversionHelper.ConvertToRfcType(valueList[no], dataType), field.ToUpper(UsCultureInfo)));
+                            ? string.Format("{1} IN ('{0}')", TypeConversionHelper.ConvertToRfcType(valueList[no], entityPropertySapType), field.ToUpper(UsCultureInfo))
+                            : string.Format("{1} IN ('{0}'", TypeConversionHelper.ConvertToRfcType(valueList[no], entityPropertySapType), field.ToUpper(UsCultureInfo)));
                     }
                     else if (no == valueList.Count - 1)
-                        queryList.Add($",'{TypeConversionHelper.ConvertToRfcType(valueList[no], dataType)}') ");
+                        queryList.Add($",'{TypeConversionHelper.ConvertToRfcType(valueList[no], entityPropertySapType)}') ");
                     else
-                        queryList.Add($",'{TypeConversionHelper.ConvertToRfcType(valueList[no], dataType)}'");
+                        queryList.Add($",'{TypeConversionHelper.ConvertToRfcType(valueList[no], entityPropertySapType)}'");
                 }
 
                 QueryList = queryList;

@@ -1,6 +1,10 @@
-// ReSharper disable InconsistentNaming
+
+using System.Diagnostics.CodeAnalysis;
+
 namespace SapCo2.Wrapper.Enumeration
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [SuppressMessage("ReSharper", "IdentifierTypo")]
     public enum RfcResultCodes
     {
         RFC_OK,

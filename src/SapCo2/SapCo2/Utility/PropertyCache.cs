@@ -26,10 +26,10 @@ namespace SapCo2.Utility
 
             foreach (PropertyInfo info in properties)
             {
-                if (!Attribute.IsDefined(info, typeof(RfcPropertyAttribute)))
+                if (!Attribute.IsDefined(info, typeof(RfcEntityPropertyAttribute)))
                     continue;
 
-                var attribute = (RfcPropertyAttribute)info.GetCustomAttributes(typeof(RfcPropertyAttribute), false).FirstOrDefault();
+                var attribute = (RfcEntityPropertyAttribute)info.GetCustomAttributes(typeof(RfcEntityPropertyAttribute), false).FirstOrDefault();
                 string field = attribute?.Name;
 
                 if (field != null)

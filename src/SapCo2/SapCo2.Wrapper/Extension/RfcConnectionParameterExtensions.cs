@@ -10,22 +10,26 @@ namespace SapCo2.Wrapper.Extension
 {
     public static class RfcConnectionParameterExtensions
     {
-        public static readonly ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]> TypePropertiesCache =
-            new ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>();
+        private static readonly ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>
+            TypePropertiesCache =
+                new ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>();
 
         public static RfcConnectionParameter[] ToInterop<TParameter>(this TParameter parameters)
         {
-            (string Name, Func<object, string> GetValue)[] properties = TypePropertiesCache.GetOrAdd(typeof(TParameter), Build);
-            return properties.Select(property => new RfcConnectionParameter {Name = property.Name, Value = property.GetValue(parameters),})
+            (string Name, Func<object, string> GetValue)[] properties =
+                TypePropertiesCache.GetOrAdd(typeof(TParameter), Build);
+            return properties.Select(property =>
+                    new RfcConnectionParameter {Name = property.Name, Value = property.GetValue(parameters),})
                 .Where(parameter => !string.IsNullOrEmpty(parameter.Value))
                 .ToArray();
-
         }
+
         private static (string Name, Func<object, string> GetValue)[] Build(Type type)
             => type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Select(propertyInfo =>
                 {
-                    RfcConnectionAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcConnectionAttribute>();
+                    RfcConnectionPropertyAttribute namePropertyAttribute =
+                        propertyInfo.GetCustomAttribute<RfcConnectionPropertyAttribute>();
 
                     ParameterExpression instanceParameter = Expression.Parameter(typeof(object));
                     var propertyValueResolver = Expression.Lambda<Func<object, string>>(
@@ -33,7 +37,7 @@ namespace SapCo2.Wrapper.Extension
                         instanceParameter);
 
                     return (
-                        Name: nameAttribute?.Name ?? propertyInfo.Name.ToUpper(),
+                        Name: namePropertyAttribute?.Name ?? propertyInfo.Name.ToUpper(),
                         GetValue: propertyValueResolver.Compile()
                     );
                 })

@@ -1,11 +1,10 @@
 using System;
 using System.Runtime.InteropServices;
-using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 
 namespace SapCo2.Wrapper.Interop
 {
-    internal sealed partial class RfcInterop:IRfcInterop
+    internal sealed partial class RfcInterop
     {
         [DllImport(NetWeaverRfcLib)]
         private static extern IntPtr RfcOpenConnection(RfcConnectionParameter[] connectionParams, uint paramCount,

@@ -4,12 +4,12 @@ namespace SapCo2.Core.Test.Model
 {
     public class RfcReadTableOutputParameter
     {
-        [RfcProperty("DATA")]
+        [RfcEntityProperty("DATA")]
         public RfcReadTableData[] Data { get; set; }
     }
     public class RfcReadTableData
     {
-        [RfcProperty("WA")]
+        [RfcEntityProperty("WA")]
         public string Wa { get; set; }
     }
 }

@@ -1,18 +1,14 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
 using SapCo2.Wrapper.Interop;
 
 namespace SapCo2.Wrapper.Extension
 {
+    [SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
     public static class RfcResultCodeExtensions
     {
-        /// <summary>
-        ///  Exception throw according to resultCode
-        /// </summary>
-        /// <param name="resultCode">ABAB Result Code</param>
-        /// <param name="errorInfo">Error information</param>
-        /// <param name="beforeThrow">actions to be carried out before throwing error</param>
         public static void ThrowOnError(this RfcResultCodes resultCode, RfcErrorInfo errorInfo, Action beforeThrow = null)
         {
             if(resultCode == RfcResultCodes.RFC_OK)

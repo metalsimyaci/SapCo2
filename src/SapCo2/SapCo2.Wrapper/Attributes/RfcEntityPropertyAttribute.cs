@@ -4,17 +4,17 @@ using SapCo2.Wrapper.Enumeration;
 namespace SapCo2.Wrapper.Attributes
 {
     [AttributeUsage(AttributeTargets.Property)]
-    public class RfcPropertyAttribute:Attribute
+    public class RfcEntityPropertyAttribute:Attribute
     {
         public string Name { get; set; }
         public string Description { get; set; } = string.Empty;
-        public RfcDataTypes DataType { get; set; } = RfcDataTypes.String;
+        public RfcEntityPropertySapTypes EntityPropertySapType { get; set; } = RfcEntityPropertySapTypes.STRING;
         public int Length { get; set; } = 0;
         public string SubTypePropertyName { get; set; } = string.Empty;
         public bool IsPartial { get; set; }
         public bool Unsafe { get; set; }
 
-        public RfcPropertyAttribute(string name)
+        public RfcEntityPropertyAttribute(string name)
         {
             Name = name;
         }

@@ -25,4 +25,8 @@
     <ProjectReference Include="..\..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
     <ProjectReference Include="..\..\SapCo2\SapCo2.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitTests\Core" />
+    <Folder Include="UnitTests\Wrapper" />
+  </ItemGroup>
 </Project>

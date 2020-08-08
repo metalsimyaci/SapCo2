@@ -39,23 +39,27 @@ namespace SapCo2.Wrapper.Mappers
                 .Where(x => x != null);
 
             Expression[] body = Array.Empty<Expression>()
-                .Concat(new[] { Expression.Assign(result, Expression.New(type)) })
+                .Concat(new[] {Expression.Assign(result, Expression.New(type))})
                 .Concat(extractExpressionsForProperties)
-                .Concat(new[] { result })
+                .Concat(new[] {result})
                 .ToArray();
 
             var expression = Expression.Lambda<Func<IRfcInterop, IntPtr, object>>(
                 body: Expression.Block(
-                    variables: new[] { result },
+                    variables: new[] {result},
                     expressions: body),
-                parameters: new[] { interop, dataHandle });
+                parameters: new[] {interop, dataHandle});
 
             return expression.Compile();
         }
 
-        private static Expression BuildExtractExpressionForProperty(PropertyInfo propertyInfo, Expression interop, Expression dataHandle, Expression result)
+        private static Expression BuildExtractExpressionForProperty(PropertyInfo propertyInfo, Expression interop,
+            Expression dataHandle, Expression result)
         {
-            RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
+            if (Attribute.IsDefined(propertyInfo, typeof(RfcEntityIgnorePropertyAttribute)))
+                return null;
+            
+            RfcEntityPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcEntityPropertyAttribute>();
             ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());
 
             Expression property = Expression.Property(result, propertyInfo);
@@ -107,14 +111,15 @@ namespace SapCo2.Wrapper.Mappers
             }
 
             if (extractMethod == null)
-                throw new InvalidOperationException($"No matching extract method found for type {propertyInfo.PropertyType.Name}");
+                throw new InvalidOperationException(
+                    $"No matching extract method found for type {propertyInfo.PropertyType.Name}");
 
             PropertyInfo fieldValueProperty = extractMethod.ReturnType.GetProperty(nameof(Field<object>.Value));
 
             MemberExpression fieldValue = Expression.Property(
                 Expression.Call(
                     method: extractMethod,
-                    arguments: new[] { interop, dataHandle, name }),
+                    arguments: new[] {interop, dataHandle, name}),
                 // ReSharper disable once AssignNullToNotNullAttribute
                 fieldValueProperty);
 

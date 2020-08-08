@@ -82,7 +82,7 @@ namespace SapCo2.Core
         private string GetSapTableName<TEntity>()
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
-            var attribute = (RfcClassAttribute)attributes.FirstOrDefault(p => p is RfcClassAttribute);
+            var attribute = (RfcEntityClassAttribute)attributes.FirstOrDefault(p => p is RfcEntityClassAttribute);
 
             return attribute?.Name;
         }
@@ -92,21 +92,21 @@ namespace SapCo2.Core
 
             foreach (PropertyInfo p in type.GetProperties().Where(x => !x.GetGetMethod().IsVirtual))
             {
-                object attributes = p.GetCustomAttributes(true).FirstOrDefault(x => x is RfcPropertyAttribute);
+                object attributes = p.GetCustomAttributes(true).FirstOrDefault(x => x is RfcEntityPropertyAttribute);
 
                 if (attributes == null)
                     continue;
 
-                if (((RfcPropertyAttribute)attributes).IsPartial)
+                if (((RfcEntityPropertyAttribute)attributes).IsPartial)
                     fieldList.AddRange(GetTableFields(p.PropertyType, getUnsafeFields));
                 else
                 {
                     if (getUnsafeFields)
-                        fieldList.Add(((RfcPropertyAttribute)attributes).Name);
+                        fieldList.Add(((RfcEntityPropertyAttribute)attributes).Name);
                     else
                     {
-                        if (!((RfcPropertyAttribute)attributes).Unsafe)
-                            fieldList.Add(((RfcPropertyAttribute)attributes).Name);
+                        if (!((RfcEntityPropertyAttribute)attributes).Unsafe)
+                            fieldList.Add(((RfcEntityPropertyAttribute)attributes).Name);
                     }
                 }
             }
@@ -161,8 +161,8 @@ namespace SapCo2.Core
                     return;
 
                 var propertyList = baseInstance.GetType().GetProperties().Where(x =>
-                    ((RfcPropertyAttribute)(x.GetCustomAttributes(true)
-                        .First(y => y is RfcPropertyAttribute))).IsPartial && !x.GetGetMethod().IsVirtual).ToList();
+                    ((RfcEntityPropertyAttribute)(x.GetCustomAttributes(true)
+                        .First(y => y is RfcEntityPropertyAttribute))).IsPartial && !x.GetGetMethod().IsVirtual).ToList();
 
                 foreach (PropertyInfo prop in propertyList)
                 {
@@ -181,12 +181,12 @@ namespace SapCo2.Core
             }
             else
             {
-                object attribute = property.GetCustomAttributes(true).FirstOrDefault(x => x is RfcPropertyAttribute);
+                object attribute = property.GetCustomAttributes(true).FirstOrDefault(x => x is RfcEntityPropertyAttribute);
 
                 if (attribute == null)
                     return;
 
-                var attr = ((RfcPropertyAttribute)attribute);
+                var attr = ((RfcEntityPropertyAttribute)attribute);
 
                 if (attr.Name != fieldName)
                     return;
@@ -204,8 +204,8 @@ namespace SapCo2.Core
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(((RfcPropertyAttribute)attribute).Name))
-                        TypeConversionHelper.ConvertFromRfcType(baseInstance, property, value, attr.DataType);
+                    if (!string.IsNullOrEmpty(((RfcEntityPropertyAttribute)attribute).Name))
+                        TypeConversionHelper.ConvertFromRfcType(baseInstance, property, value, attr.EntityPropertySapType);
                 }
             }
         }

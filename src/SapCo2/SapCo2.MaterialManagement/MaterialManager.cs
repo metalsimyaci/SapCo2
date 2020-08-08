@@ -35,7 +35,7 @@ namespace SapCo2.MaterialManagement
             options ??= new MaterialQueryOptions();
 
             var query = new AbapQuery().Set(QueryOperator.Equal("MATNR", materialCode))
-                .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BooleanX)).GetQuery();
+                .And(QueryOperator.NotEqual("LVORM", true, RfcEntityPropertySapTypes.BOOLEAN_X)).GetQuery();
 
             using var connection = _serviceProvider.GetService<IRfcConnection>();
             connection.Connect();
@@ -52,7 +52,7 @@ namespace SapCo2.MaterialManagement
         {
             options ??= new MaterialQueryOptions();
             var query = new AbapQuery().Set(QueryOperator.StartsWith("MATNR", materialCodePrefix))
-                .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BooleanX)).GetQuery();
+                .And(QueryOperator.NotEqual("LVORM", true, RfcEntityPropertySapTypes.BOOLEAN_X)).GetQuery();
             
             using var connection = _serviceProvider.GetService<IRfcConnection>();
             connection.Connect();

@@ -4,12 +4,12 @@ namespace SapCo2.Models
 {
     public sealed class RfcReadTableOutputParameter
     {
-        [RfcProperty("DATA")]
+        [RfcEntityProperty("DATA")]
         public RfcReadTableData[] Data { get; set; }
     }
     public sealed class RfcReadTableData
     {
-        [RfcProperty("WA")]
+        [RfcEntityProperty("WA")]
         public string Wa { get; set; }
     }
 }

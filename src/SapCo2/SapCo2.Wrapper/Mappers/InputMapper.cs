@@ -7,7 +7,6 @@ using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Fields;
 using SapCo2.Wrapper.Fields.Abstract;
-using SapCo2.Wrapper.Interop;
 
 namespace SapCo2.Wrapper.Mappers
 {
@@ -60,13 +59,13 @@ namespace SapCo2.Wrapper.Mappers
             return expression.Compile();
         }
 
-        private static Expression BuildApplyExpressionForProperty(
-            PropertyInfo propertyInfo,
-            Expression interopParameter,
-            Expression dataHandleParameter,
-            Expression inputParameter)
+        private static Expression BuildApplyExpressionForProperty(PropertyInfo propertyInfo,Expression interopParameter,
+            Expression dataHandleParameter, Expression inputParameter)
         {
-            RfcPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcPropertyAttribute>();
+            if (Attribute.IsDefined(propertyInfo,typeof(RfcEntityIgnorePropertyAttribute)))
+                return null;
+            
+            RfcEntityPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcEntityPropertyAttribute>();
             ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());
 
             // var value = propertyInfo.GetValue(input);
