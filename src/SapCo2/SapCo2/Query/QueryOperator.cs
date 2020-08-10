@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using SapCo2.Enumeration;
 using SapCo2.Helper;
 using SapCo2.Wrapper.Enumeration;
 

@@ -1,22 +1,20 @@
-using SapCo2.Attributes;
-using SapCo2.Wrapper.Enumeration;
+using SapCo2.Wrapper.Attributes;
 
 namespace SapCo2.Test.Model
 {
-    [RfcTable("LFA1",Description = "Vendor Table",Unsafe = false)]
     public class Vendor
     {
 
-        [RfcTableProperty("LIFNR",EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
+        [RfcEntityProperty("LIFNR")]
         public string VendorCode { get; set; }
 
-        [RfcTableProperty("KUNNR", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
+        [RfcEntityProperty("KUNNR")]
         public string CustomerCode { get; set; }
 
-        [RfcTableProperty("NAME1", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
+        [RfcEntityProperty("NAME1")]
         public string Name1 { get; set; }
 
-        [RfcTableProperty("NAME2", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR)]
+        [RfcEntityProperty("NAME2")]
         public string Name2 { get; set; }
     }
 }

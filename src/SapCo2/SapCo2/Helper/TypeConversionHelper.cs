@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Reflection;
+using SapCo2.Enumeration;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
 

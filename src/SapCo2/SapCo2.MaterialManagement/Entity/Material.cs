@@ -1,5 +1,5 @@
 using SapCo2.Attributes;
-using SapCo2.Wrapper.Enumeration;
+using SapCo2.Enumeration;
 
 namespace SapCo2.MaterialManagement.Entity
 {

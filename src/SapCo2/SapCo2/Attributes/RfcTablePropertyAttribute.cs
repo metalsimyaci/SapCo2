@@ -1,4 +1,5 @@
 using System;
+using SapCo2.Enumeration;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Enumeration;
 
