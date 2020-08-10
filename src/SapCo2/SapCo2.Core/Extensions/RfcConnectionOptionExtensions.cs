@@ -6,9 +6,9 @@ using System.Reflection;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Interop;
 
-namespace SapCo2.Wrapper.Extension
+namespace SapCo2.Core.Extensions
 {
-    public static class RfcConnectionParameterExtensions
+    public static class RfcConnectionOptionExtensions
     {
         private static readonly ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>
             TypePropertiesCache =

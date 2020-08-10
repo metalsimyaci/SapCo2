@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SapCo2.Abstract;
+using SapCo2.Attributes;
 using SapCo2.Core.Abstract;
 using SapCo2.Helper;
 using SapCo2.Models;
-using SapCo2.Wrapper.Attributes;
 // ReSharper disable SuggestVarOrType_Elsewhere
 
-namespace SapCo2.Core
+namespace SapCo2
 {
     public class ReadTable<T> : IReadTable<T> where T : class
     {
@@ -82,7 +82,7 @@ namespace SapCo2.Core
         private string GetSapTableName<TEntity>()
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
-            var attribute = (RfcEntityClassAttribute)attributes.FirstOrDefault(p => p is RfcEntityClassAttribute);
+            var attribute = (RfcTableAttribute)attributes.FirstOrDefault(p => p is RfcTableAttribute);
 
             return attribute?.Name;
         }
@@ -92,21 +92,21 @@ namespace SapCo2.Core
 
             foreach (PropertyInfo p in type.GetProperties().Where(x => !x.GetGetMethod().IsVirtual))
             {
-                object attributes = p.GetCustomAttributes(true).FirstOrDefault(x => x is RfcEntityPropertyAttribute);
+                object attributes = p.GetCustomAttributes(true).FirstOrDefault(x => x is RfcTablePropertyAttribute);
 
                 if (attributes == null)
                     continue;
 
-                if (((RfcEntityPropertyAttribute)attributes).IsPartial)
+                if (((RfcTablePropertyAttribute)attributes).IsPartial)
                     fieldList.AddRange(GetTableFields(p.PropertyType, getUnsafeFields));
                 else
                 {
                     if (getUnsafeFields)
-                        fieldList.Add(((RfcEntityPropertyAttribute)attributes).Name);
+                        fieldList.Add(((RfcTablePropertyAttribute)attributes).Name);
                     else
                     {
-                        if (!((RfcEntityPropertyAttribute)attributes).Unsafe)
-                            fieldList.Add(((RfcEntityPropertyAttribute)attributes).Name);
+                        if (!((RfcTablePropertyAttribute)attributes).Unsafe)
+                            fieldList.Add(((RfcTablePropertyAttribute)attributes).Name);
                     }
                 }
             }
@@ -161,8 +161,8 @@ namespace SapCo2.Core
                     return;
 
                 var propertyList = baseInstance.GetType().GetProperties().Where(x =>
-                    ((RfcEntityPropertyAttribute)(x.GetCustomAttributes(true)
-                        .First(y => y is RfcEntityPropertyAttribute))).IsPartial && !x.GetGetMethod().IsVirtual).ToList();
+                    ((RfcTablePropertyAttribute)(x.GetCustomAttributes(true)
+                        .First(y => y is RfcTablePropertyAttribute))).IsPartial && !x.GetGetMethod().IsVirtual).ToList();
 
                 foreach (PropertyInfo prop in propertyList)
                 {
@@ -181,12 +181,12 @@ namespace SapCo2.Core
             }
             else
             {
-                object attribute = property.GetCustomAttributes(true).FirstOrDefault(x => x is RfcEntityPropertyAttribute);
+                object attribute = property.GetCustomAttributes(true).FirstOrDefault(x => x is RfcTablePropertyAttribute);
 
                 if (attribute == null)
                     return;
 
-                var attr = ((RfcEntityPropertyAttribute)attribute);
+                var attr = ((RfcTablePropertyAttribute)attribute);
 
                 if (attr.Name != fieldName)
                     return;
@@ -204,7 +204,7 @@ namespace SapCo2.Core
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(((RfcEntityPropertyAttribute)attribute).Name))
+                    if (!string.IsNullOrEmpty(((RfcTablePropertyAttribute)attribute).Name))
                         TypeConversionHelper.ConvertFromRfcType(baseInstance, property, value, attr.EntityPropertySapType);
                 }
             }

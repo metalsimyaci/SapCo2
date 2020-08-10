@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Core.Test", "Tests\S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2", "SapCo2\SapCo2.csproj", "{DF741534-4565-44F9-895D-92A366FEA07B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Test", "Tests\SapCo2.Test\SapCo2.Test.csproj", "{15812CD7-D826-4627-A017-E2158DCB4C82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Test", "Tests\SapCo2.Test\SapCo2.Test.csproj", "{15812CD7-D826-4627-A017-E2158DCB4C82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.MaterialManagement", "SapCo2.MaterialManagement\SapCo2.MaterialManagement.csproj", "{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.MaterialManagement", "SapCo2.MaterialManagement\SapCo2.MaterialManagement.csproj", "{E6CB888C-EF56-49F1-A55F-03BE4670BB2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.MaterialManagement.Test", "Tests\SapCo2.MaterialManagement.Test\SapCo2.MaterialManagement.Test.csproj", "{0BB7C34F-0065-480F-8B3E-83799D2361C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.MaterialManagement.Test", "Tests\SapCo2.MaterialManagement.Test\SapCo2.MaterialManagement.Test.csproj", "{0BB7C34F-0065-480F-8B3E-83799D2361C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Wrapper.Test", "Tests\SapCo2.Wrapper.Test\SapCo2.Wrapper.Test.csproj", "{5597791A-6D93-45D2-994C-A6C4BD8B34A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{0BB7C34F-0065-480F-8B3E-83799D2361C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BB7C34F-0065-480F-8B3E-83799D2361C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BB7C34F-0065-480F-8B3E-83799D2361C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5597791A-6D93-45D2-994C-A6C4BD8B34A2}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{5597791A-6D93-45D2-994C-A6C4BD8B34A2}.Debug|Any CPU.Build.0 = Debug|x64
+		{5597791A-6D93-45D2-994C-A6C4BD8B34A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5597791A-6D93-45D2-994C-A6C4BD8B34A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{EE6A1699-2D01-4E4D-8F14-552DD9C23DFD} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
 		{15812CD7-D826-4627-A017-E2158DCB4C82} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
 		{0BB7C34F-0065-480F-8B3E-83799D2361C0} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
+		{5597791A-6D93-45D2-994C-A6C4BD8B34A2} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4AB77E7-6267-450B-8131-117F23E133C6}

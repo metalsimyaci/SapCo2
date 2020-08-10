@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SapCo2.Wrapper.Enumeration;
 
 namespace SapCo2.Wrapper.Exception

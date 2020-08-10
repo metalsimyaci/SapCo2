@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Extensions.Options;
 using SapCo2.Core.Abstract;
+using SapCo2.Core.Extensions;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Interop;

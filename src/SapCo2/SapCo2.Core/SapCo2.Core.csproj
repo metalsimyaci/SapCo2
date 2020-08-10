@@ -10,6 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj"/>
+    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
   </ItemGroup>
 </Project>

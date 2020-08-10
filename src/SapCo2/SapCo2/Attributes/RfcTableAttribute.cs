@@ -1,15 +1,15 @@
 using System;
 
-namespace SapCo2.Wrapper.Attributes
+namespace SapCo2.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class RfcEntityClassAttribute:Attribute
+    public class RfcTableAttribute:Attribute
     {
         public string Name { get; private set; }
         public string Description { get; set; } = string.Empty;
         public bool Unsafe { get; set; }
 
-        public RfcEntityClassAttribute(string name)
+        public RfcTableAttribute(string name)
         {
             Name = name;
         }

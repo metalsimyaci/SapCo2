@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -60,7 +61,7 @@ namespace SapCo2.Wrapper.Mappers
                 return null;
             
             RfcEntityPropertyAttribute nameAttribute = propertyInfo.GetCustomAttribute<RfcEntityPropertyAttribute>();
-            ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper());
+            ConstantExpression name = Expression.Constant(nameAttribute?.Name ?? propertyInfo.Name.ToUpper(CultureInfo.InvariantCulture));
 
             Expression property = Expression.Property(result, propertyInfo);
 
