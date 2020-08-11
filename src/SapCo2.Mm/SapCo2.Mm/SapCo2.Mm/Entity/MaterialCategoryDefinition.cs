@@ -1,7 +1,6 @@
 using SapCo2.Attributes;
-using SapCo2.Enumeration;
 
-namespace SapCo2.MaterialManagement.Entity
+namespace SapCo2.Mm.Entity
 {
     [RfcTable("ZMM24030", Description = "Material Category Definition Table", Unsafe = true)]
     public class MaterialCategoryDefinition

@@ -1,7 +1,6 @@
 using SapCo2.Attributes;
-using SapCo2.Enumeration;
 
-namespace SapCo2.MaterialManagement.Entity
+namespace SapCo2.Mm.Entity
 {
     [RfcTable("MAKT", Description = "Material Definition Table")]
     public class MaterialDefinition
