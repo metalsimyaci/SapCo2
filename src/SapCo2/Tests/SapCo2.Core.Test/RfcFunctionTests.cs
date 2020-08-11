@@ -14,7 +14,6 @@ namespace SapCo2.Core.Test
     [TestCategory("UnitTest")]
     public class RfcFunctionTests
     {
-
         private static readonly IntPtr RfcConnectionHandle = (IntPtr)12;
         private static readonly IntPtr FunctionDescriptionHandle = (IntPtr)34;
         private static readonly IntPtr FunctionHandle = (IntPtr)56;

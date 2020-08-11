@@ -72,6 +72,8 @@ namespace SapCo2
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
             var attribute = (RfcTableAttribute)attributes.FirstOrDefault(p => p is RfcTableAttribute);
+            if(attribute==null)
+                throw new CustomAttributeFormatException("RfcTableAttribute not Found output class");
 
             return attribute?.Name;
         }
@@ -100,6 +102,9 @@ namespace SapCo2
                     }
                 }
             }
+            
+            if(!fieldList.Any())
+                throw new MissingFieldException("No property marked with RfcTablePropertyAttribute found");
 
             return fieldList.OrderBy(x => x).ToList();
         }
