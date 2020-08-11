@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using SapCo2.Wrapper.Attributes;
 
-namespace SapCo2.Models
+namespace SapCo2.Parameters
 {
     [ExcludeFromCodeCoverage]
     public sealed class RfcReadTableOutputParameter

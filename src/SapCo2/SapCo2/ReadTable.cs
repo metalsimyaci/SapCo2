@@ -6,7 +6,7 @@ using SapCo2.Abstract;
 using SapCo2.Attributes;
 using SapCo2.Core.Abstract;
 using SapCo2.Helper;
-using SapCo2.Models;
+using SapCo2.Parameters;
 using SapCo2.Wrapper.Abstract;
 
 namespace SapCo2

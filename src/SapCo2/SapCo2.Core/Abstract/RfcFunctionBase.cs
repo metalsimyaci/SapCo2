@@ -9,10 +9,10 @@ namespace SapCo2.Core.Abstract
 {
     public abstract class RfcFunctionBase:IRfcFunction
     {
-        internal readonly IRfcInterop _interop;
-        internal IntPtr _rfcConnectionHandle;
-        internal IntPtr _functionDescriptionHandle;
-        internal IntPtr _functionHandle;
+        private readonly IRfcInterop _interop;
+        private IntPtr _rfcConnectionHandle;
+        private IntPtr _functionDescriptionHandle;
+        private IntPtr _functionHandle;
 
         protected RfcFunctionBase(IRfcInterop interop)
         {
