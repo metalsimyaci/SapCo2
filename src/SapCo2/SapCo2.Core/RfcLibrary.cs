@@ -1,13 +1,14 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using SapCo2.Core.Abstract;
 using SapCo2.Core.Models;
 using SapCo2.Wrapper.Abstract;
-using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
 
 namespace SapCo2.Core
 {
-    public class RfcLibrary:IRfcLibrary
+    [ExcludeFromCodeCoverage]
+    public class RfcLibrary : IRfcLibrary
     {
         private readonly IRfcInterop _interop;
 
@@ -25,8 +26,7 @@ namespace SapCo2.Core
         {
             try
             {
-                RfcResultCodes resultCode = _interop
-                    .GetVersion(out uint majorVersion, out uint minorVersion, out uint patchLevel);
+                _interop.GetVersion(out uint majorVersion, out uint minorVersion, out uint patchLevel);
 
                 return new LibraryVersionModel
                 {

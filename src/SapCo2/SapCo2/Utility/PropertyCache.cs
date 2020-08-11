@@ -8,7 +8,7 @@ using SapCo2.Wrapper.Attributes;
 
 namespace SapCo2.Utility
 {
-    public class PropertyCache:IPropertyCache
+    public class PropertyCache : IPropertyCache
     {
         private ConcurrentDictionary<Type, Dictionary<string, PropertyInfo>> Cache { get; set; }
 
@@ -22,7 +22,7 @@ namespace SapCo2.Utility
                 return;
 
             IEnumerable<PropertyInfo> properties = type.GetProperties().Where(x => !x.GetGetMethod().IsVirtual).Select(x => x);
-            Dictionary<string, PropertyInfo> propertyDictionary = new Dictionary<string, PropertyInfo>();
+            var propertyDictionary = new Dictionary<string, PropertyInfo>();
 
             foreach (PropertyInfo info in properties)
             {
@@ -48,9 +48,9 @@ namespace SapCo2.Utility
 
             Cache.TryGetValue(type, out Dictionary<string, PropertyInfo> result);
 
-            if(result?.ContainsKey(key)??false)
-                return result?[key];
-            
+            if (result?.ContainsKey(key) ?? false)
+                return result[key];
+
             return null;
         }
 

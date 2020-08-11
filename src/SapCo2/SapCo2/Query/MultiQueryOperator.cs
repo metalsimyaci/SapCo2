@@ -5,23 +5,12 @@ namespace SapCo2.Query
 {
     public class MultiQueryOperator
     {
-        #region Variables
-
         private readonly AbapQuery _abapQuery;
-
-        #endregion
-
-        #region Methods
-
-        #region Constructors
 
         public MultiQueryOperator(AbapQuery abapQuery)
         {
             _abapQuery = abapQuery;
         }
-
-        #endregion
-
 
         public MultiQueryOperator AndInParanthesis(MultiQueryOperator opr)
         {
@@ -83,7 +72,5 @@ namespace SapCo2.Query
         {
             return _abapQuery.Query.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         }
-
-        #endregion
     }
 }

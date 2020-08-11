@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using SapCo2.Wrapper.Attributes;
 
 namespace SapCo2.Models
 {
+    [ExcludeFromCodeCoverage]
     public sealed class RfcReadTableInputParameter
     {
         [RfcEntityProperty("QUERY_TABLE")] public string Query { get; set; }
@@ -18,12 +20,14 @@ namespace SapCo2.Models
         [RfcEntityProperty("OPTIONS")] public RfcReadTableOption[] Options { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public sealed class RfcReadTableField
     {
         [RfcEntityProperty("FIELDNAME")]
         public string FieldName { get; set; }
     }
 
+    [ExcludeFromCodeCoverage]
     public sealed class RfcReadTableOption
     {
         [RfcEntityProperty("TEXT")]

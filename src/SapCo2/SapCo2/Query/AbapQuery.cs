@@ -4,19 +4,8 @@ namespace SapCo2.Query
 {
     public class AbapQuery
     {
-        #region Variables
-
         private readonly MultiQueryOperator _set;
-
-        #endregion
-
-        #region Properties
-
         public List<string> Query { get; set; } = new List<string>();
-
-        #endregion
-
-        #region Methods
 
         public AbapQuery()
         {
@@ -42,7 +31,5 @@ namespace SapCo2.Query
 
             return _set;
         }
-
-        #endregion
     }
 }

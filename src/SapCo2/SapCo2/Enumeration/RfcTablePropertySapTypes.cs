@@ -4,7 +4,7 @@ namespace SapCo2.Enumeration
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     [SuppressMessage("ReSharper", "IdentifierTypo")]
-    public enum RfcEntityPropertySapTypes
+    public enum RfcTablePropertySapTypes
     {
         STRING = 0,
         BYTE,

@@ -7,31 +7,26 @@ using SapCo2.Attributes;
 using SapCo2.Core.Abstract;
 using SapCo2.Helper;
 using SapCo2.Models;
-// ReSharper disable SuggestVarOrType_Elsewhere
+using SapCo2.Wrapper.Abstract;
 
 namespace SapCo2
 {
-    public class ReadTable<T> : IReadTable<T> where T : class
+    public class ReadTable<T> : RfcFunctionBase,IReadTable<T> where T : class
     {
         private const string ReadTableFunctionName = "RFC_READ_TABLE";
-
         private readonly IPropertyCache _cache;
-        private readonly IRfcFunction _function;
 
-        public ReadTable(IPropertyCache cache, IRfcFunction function)
+        public ReadTable(IPropertyCache cache, IRfcInterop interop):base(interop)
         {
             _cache = cache;
-            _function = function;
         }
 
-      
         public List<T> GetTable(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, int rowCount = 0, int rowSkips = 0, string delimiter = "|", string noData = "")
         {
-
-            using var function = _function.CreateFunction(connection, ReadTableFunctionName);
+            using var function = CreateFunction(connection, ReadTableFunctionName);
 
             var tableFields = GetTableFields(typeof(T), getUnsafeFields);
-            var tableName = GetSapTableName<T>();
+            var tableName = GetTableName<T>();
 
             var inputParameters = new RfcReadTableInputParameter
             {
@@ -46,46 +41,41 @@ namespace SapCo2
 
             var result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
             return ConvertToList(result, delimiter, tableFields);
-
         }
-        public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, string delimiter = "|" )
+        public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false,string delimiter = "|", string noData = "")
         {
-            using var function = _function.CreateFunction(connection, ReadTableFunctionName);
+            using var function = CreateFunction(connection, ReadTableFunctionName);
 
-            var tableFields = GetTableFields(typeof(T), getUnsafeFields);
-            var tableName = GetSapTableName<T>();
+            List<string> tableFields = GetTableFields(typeof(T), getUnsafeFields);
+            var tableName = GetTableName<T>();
 
             var inputParameters = new RfcReadTableInputParameter
             {
                 Query = tableName,
                 Delimiter = delimiter,
-                NoData = "",
+                NoData = noData,
                 RowCount = 1,
                 RowSkips = 0,
                 Fields = tableFields?.Select(x => new RfcReadTableField { FieldName = x })?.ToArray(),
                 Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray()
             };
 
-            var result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
+            RfcReadTableOutputParameter result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
             return ConvertToStruct(result, delimiter, tableFields);
 
         }
-        public void Dispose()
-        {
-        }
 
+        
         #region Private Methods
-
         
-
-        
-        private string GetSapTableName<TEntity>()
+        private string GetTableName<TEntity>()
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
             var attribute = (RfcTableAttribute)attributes.FirstOrDefault(p => p is RfcTableAttribute);
 
             return attribute?.Name;
         }
+
         private List<string> GetTableFields(Type type, bool getUnsafeFields)
         {
             var fieldList = new List<string>();
@@ -113,6 +103,7 @@ namespace SapCo2
 
             return fieldList.OrderBy(x => x).ToList();
         }
+        
         private List<T> ConvertToList(RfcReadTableOutputParameter outputParameter, string delimiter, List<string> fieldList)
         {
             return outputParameter.Data?.Select(x => ConvertTo(x, delimiter, fieldList))?.ToList() ?? Activator.CreateInstance<List<T>>();
@@ -123,10 +114,11 @@ namespace SapCo2
             if (outputParameter?.Data == null)
                 return null;
             if (outputParameter.Data.Length < 1)
-                return null;
+                return Activator.CreateInstance<T>();
 
             return ConvertTo(outputParameter.Data.First(), delimiter, fieldList);
         }
+        
         private T ConvertTo(RfcReadTableData line, string delimiter, List<string> fieldList)
         {
             T instance = Activator.CreateInstance<T>();
@@ -151,6 +143,7 @@ namespace SapCo2
 
             return instance;
         }
+
         private void SetValue(string fieldName, object value, object baseInstance, bool lookForPartial = true)
         {
             PropertyInfo property = _cache.GetPropertyInfo(baseInstance.GetType(), fieldName);
@@ -205,7 +198,7 @@ namespace SapCo2
                 else
                 {
                     if (!string.IsNullOrEmpty(((RfcTablePropertyAttribute)attribute).Name))
-                        TypeConversionHelper.ConvertFromRfcType(baseInstance, property, value, attr.EntityPropertySapType);
+                        TypeConversionHelper.ConvertFromRfcType(baseInstance, property, value, attr.TablePropertySapType);
                 }
             }
         }

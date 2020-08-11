@@ -10,13 +10,13 @@ namespace SapCo2.MaterialManagement.Entity
 
         #region Properties
 
-        [RfcTableProperty("ZZEXTWG", Description = "Material Category Code", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR, Length = 25)]
+        [RfcTableProperty("ZZEXTWG", Description = "Material Category Code", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 25)]
         public string Code { get; set; }
 
-        [RfcTableProperty("TANIM", Description = "Material Category Definition", EntityPropertySapType = RfcEntityPropertySapTypes.CHAR, Length = 50)]
+        [RfcTableProperty("TANIM", Description = "Material Category Definition", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 50)]
         public string Definition { get; set; }
 
-        [RfcTableProperty("ZZPARCASAYI", Description = "Material Category Unit Part Count", EntityPropertySapType = RfcEntityPropertySapTypes.INTEGER, Length = 10)]
+        [RfcTableProperty("ZZPARCASAYI", Description = "Material Category Unit Part Count", TablePropertySapType = RfcTablePropertySapTypes.INTEGER, Length = 10)]
         public int PartCount { get; set; }
 
         #endregion
