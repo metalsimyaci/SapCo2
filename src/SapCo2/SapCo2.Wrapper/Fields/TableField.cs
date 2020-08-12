@@ -26,6 +26,9 @@ namespace SapCo2.Wrapper.Fields
 
             resultCode.ThrowOnError(errorInfo);
 
+            if(Value==null)
+                return;
+
             foreach (TItem row in Value)
             {
                 IntPtr lineHandle = interop.AppendNewRow(tableHandle, out errorInfo);

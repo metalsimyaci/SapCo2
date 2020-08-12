@@ -11,12 +11,12 @@ using SapCo2.Wrapper.Abstract;
 
 namespace SapCo2
 {
-    public class ReadTable<T> : RfcFunctionBase,IReadTable<T> where T : class
+    public class ReadTable<T> : RfcFunctionBase, IReadTable<T> where T : class
     {
         private const string ReadTableFunctionName = "RFC_READ_TABLE";
         private readonly IPropertyCache _cache;
 
-        public ReadTable(IPropertyCache cache, IRfcInterop interop):base(interop)
+        public ReadTable(IPropertyCache cache, IRfcInterop interop) : base(interop)
         {
             _cache = cache;
         }
@@ -42,7 +42,7 @@ namespace SapCo2
             var result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
             return ConvertToList(result, delimiter, tableFields);
         }
-        public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false,string delimiter = "|", string noData = "")
+        public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, string delimiter = "|", string noData = "")
         {
             using var function = CreateFunction(connection, ReadTableFunctionName);
 
@@ -57,7 +57,7 @@ namespace SapCo2
                 RowCount = 1,
                 RowSkips = 0,
                 Fields = tableFields?.Select(x => new RfcReadTableField { FieldName = x })?.ToArray(),
-                Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray()
+                Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray() 
             };
 
             RfcReadTableOutputParameter result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
@@ -65,14 +65,14 @@ namespace SapCo2
 
         }
 
-        
+
         #region Private Methods
-        
+
         private string GetTableName<TEntity>()
         {
             Attribute[] attributes = Attribute.GetCustomAttributes(typeof(TEntity));
             var attribute = (RfcTableAttribute)attributes.FirstOrDefault(p => p is RfcTableAttribute);
-            if(attribute==null)
+            if (attribute == null)
                 throw new CustomAttributeFormatException("RfcTableAttribute not Found output class");
 
             return attribute?.Name;
@@ -102,13 +102,13 @@ namespace SapCo2
                     }
                 }
             }
-            
-            if(!fieldList.Any())
+
+            if (!fieldList.Any())
                 throw new MissingFieldException("No property marked with RfcTablePropertyAttribute found");
 
             return fieldList.OrderBy(x => x).ToList();
         }
-        
+
         private List<T> ConvertToList(RfcReadTableOutputParameter outputParameter, string delimiter, List<string> fieldList)
         {
             return outputParameter.Data?.Select(x => ConvertTo(x, delimiter, fieldList))?.ToList() ?? Activator.CreateInstance<List<T>>();
@@ -123,7 +123,7 @@ namespace SapCo2
 
             return ConvertTo(outputParameter.Data.First(), delimiter, fieldList);
         }
-        
+
         private T ConvertTo(RfcReadTableData line, string delimiter, List<string> fieldList)
         {
             T instance = Activator.CreateInstance<T>();
@@ -134,13 +134,13 @@ namespace SapCo2
             return ConvertTo(line.Wa, delimiter, fieldList, instance);
         }
 
-        private T ConvertTo(string line, string delimiter, List<string> fieldList,T instance)
+        private T ConvertTo(string line, string delimiter, List<string> fieldList, T instance)
         {
             if (string.IsNullOrEmpty(line))
                 return instance;
 
-            if (line.IndexOf(delimiter, StringComparison.Ordinal) <= -1)
-                return instance;
+            //if (line.IndexOf(delimiter, StringComparison.Ordinal) <= -1)
+            //    return instance;
 
             var values = line.Split(delimiter.ToCharArray());
             for (int i = 0; i < fieldList.Count; i++)
