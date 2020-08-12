@@ -40,6 +40,7 @@ namespace SapCo2.Test
         [TestMethod]
         public void ReadTable_ReadTableOutputModel_Should()
         {
+            RfcErrorInfo errorInfo;
             var readTable=new ReadTable<ReadTableOutputModel>(_propertyCacheMock.Object,_interopMock.Object);
             
             List<ReadTableOutputModel> resultModel = readTable.GetTable(ConnectionMock.Object);
