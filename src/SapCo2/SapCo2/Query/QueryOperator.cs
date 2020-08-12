@@ -11,13 +11,13 @@ namespace SapCo2.Query
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
     [SuppressMessage("ReSharper", "TooManyArguments")]
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public sealed class QueryOperator : IDisposable
+    public class QueryOperator : IDisposable
     {
         #region Variables
 
         private bool _disposed;
-        private protected static bool _isEmpty;
-        private protected static bool _listFilled;
+        private static bool _isEmpty;
+        private static bool _listFilled;
         private static readonly CultureInfo UsCultureInfo = new CultureInfo("en-US");
         private static string Query { get; set; } = string.Empty;
         private static List<string> QueryList { get; set; } = new List<string>();
