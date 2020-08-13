@@ -19,12 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj" />
-    <ProjectReference Include="..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
-    <ProjectReference Include="..\SapCo2\SapCo2.csproj" />
+    <PackageReference Include="sapco2" Version="1.0.0.5" />
   </ItemGroup>
 
 </Project>
