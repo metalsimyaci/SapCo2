@@ -1,8 +1,9 @@
+using System;
 using SapCo2.Core.Abstract;
 
 namespace SapCo2.Abstract
 {
-    public interface IReadRfc
+    public interface IReadRfc:IDisposable
     {
         void ExecuteRfc(IRfcConnection connection, string name);
         void ExecuteRfc<TIn>(IRfcConnection connection, string name, TIn inputParameter) where TIn : class;
