@@ -10,10 +10,10 @@
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.9</AssemblyVersion>
-    <FileVersion>1.0.0.9</FileVersion>
+    <AssemblyVersion>1.0.0.10</AssemblyVersion>
+    <FileVersion>1.0.0.10</FileVersion>
     <Company>Kaon Game Studio</Company>
-    <Version>1.0.0.3</Version>
+    <Version>1.0.0.5</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Symbol Package Added</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -22,7 +22,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <PackageVersion>1.0.0.3</PackageVersion>
+    <PackageVersion>1.0.0.5</PackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.6" />

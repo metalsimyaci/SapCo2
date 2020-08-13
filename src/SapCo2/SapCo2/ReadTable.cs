@@ -23,7 +23,7 @@ namespace SapCo2
 
         public List<T> GetTable(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, int rowCount = 0, int rowSkips = 0, string delimiter = "|", string noData = "")
         {
-            using var function = CreateFunction(connection, ReadTableFunctionName);
+            CreateFunction(connection, ReadTableFunctionName);
 
             var tableFields = GetTableFields(typeof(T), getUnsafeFields);
             var tableName = GetTableName<T>();
@@ -39,12 +39,12 @@ namespace SapCo2
                 Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray()
             };
 
-            var result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
+            var result = Invoke<RfcReadTableOutputParameter>(inputParameters);
             return ConvertToList(result, delimiter, tableFields);
         }
         public T GetStruct(IRfcConnection connection, List<string> whereClause = null, bool getUnsafeFields = false, string delimiter = "|", string noData = "")
         {
-            using var function = CreateFunction(connection, ReadTableFunctionName);
+            CreateFunction(connection, ReadTableFunctionName);
 
             List<string> tableFields = GetTableFields(typeof(T), getUnsafeFields);
             var tableName = GetTableName<T>();
@@ -60,7 +60,7 @@ namespace SapCo2
                 Options = whereClause?.Select(x => new RfcReadTableOption { Text = x }).ToArray() 
             };
 
-            RfcReadTableOutputParameter result = function.Invoke<RfcReadTableOutputParameter>(inputParameters);
+            RfcReadTableOutputParameter result = Invoke<RfcReadTableOutputParameter>(inputParameters);
             return ConvertToStruct(result, delimiter, tableFields);
 
         }

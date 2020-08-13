@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SapCo2.Samples.NetCore": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

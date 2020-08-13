@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using SapCo2.Parameters;
 using SapCo2.Wrapper.Exception;
 
@@ -23,9 +24,12 @@ namespace SapCo2.Extensions
 
         private static string ToExceptionMessage(this RfcBapiOutputParameter s)
         {
-            IEnumerable<string> propertyInfoStrings = Enumerable.Select(s.GetType().GetProperties(),
-                propertyInfo => $"{propertyInfo.Name}:{propertyInfo.GetValue(propertyInfo, null)}");
-            var message = string.Join(", ", propertyInfoStrings);
+            string message = "";
+            var properties = s.GetType().GetProperties();
+            foreach (PropertyInfo propertyInfo in properties)
+            {
+                message += $"{propertyInfo.Name}:{propertyInfo.GetValue(s)},";
+            }
             message += $"MessageTypeDefinition: {ToMessageTypeString(s.MessageType)}";
 
             return message;

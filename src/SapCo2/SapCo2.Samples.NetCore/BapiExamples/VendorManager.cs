@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using SapCo2.Abstract;
 using SapCo2.Core.Abstract;
@@ -24,7 +25,7 @@ namespace SapCo2.Samples.NetCore.BapiExamples
                 CompanyCode = companyCode
             };
             using IReadBapi<VendorBapiOutputParameter> rfcFunction = _serviceProvider.GetService<IReadBapi<VendorBapiOutputParameter>>();
-            VendorBapiOutputParameter result = rfcFunction.GetBapi(connection,"",inputParameter);
+            VendorBapiOutputParameter result = rfcFunction.GetBapi(connection, "BBP_VENDOR_GETLIST", inputParameter);
             return result;
         }
 
@@ -34,8 +35,9 @@ namespace SapCo2.Samples.NetCore.BapiExamples
                 Console.WriteLine("Vendor Not Found!");
 
             Console.WriteLine($"======= Vendor List ================");
+            Console.WriteLine($"= TotalRecordCount={vendor.Vendors.Count()}. Printed top 10 record =");
             Console.WriteLine("".PadLeft(20, '='));
-            foreach (var vendorItem in vendor.Vendors)
+            foreach (var vendorItem in vendor.Vendors.Take(10))
                 Console.WriteLine($"{vendorItem.VendorNo} - {vendorItem.Name}");
         }
     }

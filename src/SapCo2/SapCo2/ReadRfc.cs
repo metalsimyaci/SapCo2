@@ -12,23 +12,23 @@ namespace SapCo2
 
         public void ExecuteRfc(IRfcConnection connection, string name)
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            function.Invoke();
+            CreateFunction(connection, name);
+            Invoke();
         }
         public void ExecuteRfc<TIn>(IRfcConnection connection, string name, TIn inputParameter) where TIn : class
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            function.Invoke(inputParameter);
+            CreateFunction(connection, name);
+            Invoke(inputParameter);
         }
         public T GetRfc<T>(IRfcConnection connection, string name) where T : class
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            return function.Invoke<T>();
+            CreateFunction(connection, name);
+            return Invoke<T>();
         }
         public T GetRfc<T, TIn>(IRfcConnection connection, string name, TIn inputParameter) where T : class where TIn : class
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            return function.Invoke<T>(inputParameter);
+            CreateFunction(connection, name);
+            return Invoke<T>(inputParameter);
         }
     }
 }

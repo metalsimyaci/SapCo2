@@ -15,7 +15,9 @@ namespace SapCo2.Extensions
             serviceCollection.AddSapCo2Core(connectionAction: connectionAction);
            
             serviceCollection.TryAddTransient<IPropertyCache, PropertyCache>();
+            serviceCollection.TryAddTransient<IReadRfc, ReadRfc>();
             serviceCollection.TryAddTransient(typeof(IReadTable<>),typeof(ReadTable<>));
+            serviceCollection.TryAddTransient(typeof(IReadBapi<>),typeof(ReadBapi<>));
 
             serviceCollection.BuildServiceProvider();
             return serviceCollection;
@@ -25,7 +27,9 @@ namespace SapCo2.Extensions
             serviceCollection.AddSapCo2Core(connectionString: connectionString);
 
             serviceCollection.TryAddTransient<IPropertyCache, PropertyCache>();
+            serviceCollection.TryAddTransient<IReadRfc, ReadRfc>();
             serviceCollection.TryAddTransient(typeof(IReadTable<>), typeof(ReadTable<>));
+            serviceCollection.TryAddTransient(typeof(IReadBapi<>), typeof(ReadBapi<>));
 
             serviceCollection.BuildServiceProvider();
             return serviceCollection;

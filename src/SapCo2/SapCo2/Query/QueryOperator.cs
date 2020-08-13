@@ -134,7 +134,7 @@ namespace SapCo2.Query
             for (int no = 0; no <= valueList.Count - 1; no++)
             {
                 var query = no == 0
-                    ? $"{TypeConversionHelper.ConvertToRfcType(valueList[no], tablePropertySapType)} IN ('{field.ToUpper(UsCultureInfo)}'"
+                    ? $"{field.ToUpper(UsCultureInfo)} IN ('{TypeConversionHelper.ConvertToRfcType(valueList[no], tablePropertySapType)}'"
                     : $",'{TypeConversionHelper.ConvertToRfcType(valueList[no], tablePropertySapType)}'";
                 if (valueList.Count == 1)
                     query += ")";

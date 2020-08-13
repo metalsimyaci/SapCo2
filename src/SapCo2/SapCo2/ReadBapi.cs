@@ -13,15 +13,15 @@ namespace SapCo2
 
         public T GetBapi(IRfcConnection connection, string name) 
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            T result= function.Invoke<T>();
+            CreateFunction(connection, name);
+            T result= Invoke<T>();
             result.BapiReturn.ThrowOnError();
             return result;
         }
         public T GetBapi<TIn>(IRfcConnection connection, string name, TIn inputParameter) where TIn : class
         {
-            using IRfcFunction function = CreateFunction(connection, name);
-            T result= function.Invoke<T>(inputParameter);
+            CreateFunction(connection, name);
+            T result= Invoke<T>(inputParameter);
             result.BapiReturn.ThrowOnError();
             return result;
         }

@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SapCo2.Extensions;
 using SapCo2.Mm;
 using SapCo2.Samples.NetCore.BapiExamples;
 using SapCo2.Samples.NetCore.RfcExamples;
-using SapCo2.Samples.NetCore.RfcExamples.Models;
 using SapCo2.Samples.NetCore.TableExamples;
+using SapCo2.Samples.NetCore.TableExamples.Models;
 
 namespace SapCo2.Samples.NetCore
 {
@@ -15,22 +17,32 @@ namespace SapCo2.Samples.NetCore
         private static IServiceProvider ServiceProvider;
         private static bool DisplayedWelcomeMessage;
         private const string SapSectionName = "SapServerConnections:Sap";
+
+        [HandleProcessCorruptedStateExceptions]
         private static void Main()
         {
-            IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddUserSecrets("d43bb0e9-3a7e-4cb4-9ebb-3cf7f9d826bd")
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+            try
+            {
+                IConfiguration configuration = new ConfigurationBuilder()
+                    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                    .AddUserSecrets("d43bb0e9-3a7e-4cb4-9ebb-3cf7f9d826bd")
+                    .AddJsonFile("appsettings.json", optional: true)
+                    .AddEnvironmentVariables()
+                    .Build();
 
-            var connectionString = configuration.GetSection(SapSectionName).Value;
+                var connectionString = configuration.GetSection(SapSectionName).Value;
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddSapCo2(connectionString);
-            ServiceProvider = serviceCollection.BuildServiceProvider();
+                var serviceCollection = new ServiceCollection();
+                serviceCollection.AddSapCo2(connectionString);
+                ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            Menu();
+                Menu();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
 
@@ -46,7 +58,7 @@ namespace SapCo2.Samples.NetCore
         }
         private static void Menu()
         {
-            int keyCode = -1;
+            ConsoleKeyInfo keyCode;
             do
             {
                 WelcomeMessage();
@@ -59,25 +71,26 @@ namespace SapCo2.Samples.NetCore
                 Console.WriteLine("0 - Exit");
                 Console.WriteLine("".PadLeft(20, '='));
                 Console.Write("Please select an operation:");
-                keyCode = Console.Read();
-            } while (keyCode != 0 && keyCode != 1 && keyCode != 2 && keyCode != 3);
-            ShowMenu(keyCode);
+                keyCode = Console.ReadKey();
+            } while (keyCode.KeyChar != '0' && keyCode.KeyChar != '1' && keyCode.KeyChar != '2' && keyCode.KeyChar != '3');
+            ShowMenu(keyCode.KeyChar);
+            Menu();
         }
 
-        private static void ShowMenu(int keyCode)
+        private static void ShowMenu(char keyCode)
         {
             switch (keyCode)
             {
-            case 0:
+            case '0':
                 Environment.Exit(0);
                 break;
-            case 1:
+            case '1':
                 GetRfcBillOfMaterial();
                 break;
-            case 2:
+            case '2':
                 GetMaterials();
                 break;
-            case 3:
+            case '3':
                 GetBapiVendors();
                 break;
             default:
@@ -93,12 +106,12 @@ namespace SapCo2.Samples.NetCore
             string plantcode = "201";
 
             var manager = new BillOfMaterialManager(ServiceProvider);
-            BomOutputParameter bom = manager.GetBillOfMaterial(materialCode, plantcode);
+            var bom = manager.GetBillOfMaterial(materialCode, plantcode);
             manager.Print(bom);
         }
         private static void GetBapiVendors()
         {
-            string companyCode = "201";
+            string companyCode = "200";
 
             var manager = new VendorManager(ServiceProvider);
             var ressult = manager.GetVerdorsByCompanyCode(companyCode);
@@ -112,9 +125,8 @@ namespace SapCo2.Samples.NetCore
             var manager = new MaterialManager(ServiceProvider);
             //Material Category Table spesfic development table in ABAP
             //Not used Material Category change MaterialQueryOptions
-            manager.GetMaterialsByPrefixAsync(materialPrefix, new MaterialQueryOptions {IncludeAll = true}, true, rowCount)
-                .ContinueWith(async s =>
-                    manager.Print(await s.ConfigureAwait(false)));
+            List<Material> result = manager.GetMaterialsByPrefixAsync(materialPrefix, new MaterialQueryOptions { IncludeAll = true }, true, rowCount).Result;
+            manager.Print(result);
         }
     }
 }
