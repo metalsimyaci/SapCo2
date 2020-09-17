@@ -29,5 +29,9 @@ namespace SapCo2.Wrapper.Interop
 
         public RfcResultCodes Invoke(IntPtr rfcHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo)
             => RfcInvoke(rfcHandle, funcHandle, out errorInfo);
+
+
+        [DllImport(NetWeaverRfcLib)]
+        private static extern IntPtr RfcGetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo);
     }
 }

@@ -67,12 +67,13 @@ namespace SapCo2.Samples.NetCore
                 Console.WriteLine("1 - Rfc Samples - GetBillOfMaterial");
                 Console.WriteLine("2 - Table Samples - GetMaterials");
                 Console.WriteLine("3 - Bapi Samples - GetVendors");
+                Console.WriteLine("4 - Table Samples - GetMaterial");
                 Console.WriteLine("--------------------------------------");
                 Console.WriteLine("0 - Exit");
                 Console.WriteLine("".PadLeft(20, '='));
                 Console.Write("Please select an operation:");
                 keyCode = Console.ReadKey();
-            } while (keyCode.KeyChar != '0' && keyCode.KeyChar != '1' && keyCode.KeyChar != '2' && keyCode.KeyChar != '3');
+            } while (keyCode.KeyChar != '0' && keyCode.KeyChar != '1' && keyCode.KeyChar != '2' && keyCode.KeyChar != '3' && keyCode.KeyChar != '4');
             ShowMenu(keyCode.KeyChar);
             Menu();
         }
@@ -92,6 +93,9 @@ namespace SapCo2.Samples.NetCore
                 break;
             case '3':
                 GetBapiVendors();
+                break;
+            case '4':
+                GetMaterial();
                 break;
             default:
                 Console.WriteLine("Menu Key not found!");
@@ -126,6 +130,15 @@ namespace SapCo2.Samples.NetCore
             //Material Category Table spesfic development table in ABAP
             //Not used Material Category change MaterialQueryOptions
             List<Material> result = manager.GetMaterialsByPrefixAsync(materialPrefix, new MaterialQueryOptions { IncludeAll = true }, true, rowCount).Result;
+            manager.Print(result);
+        }
+        private static void GetMaterial()
+        {
+            string material = "11AKPAKLNCA0300000";
+            int rowCount = 1;
+
+            var manager = new MaterialManager(ServiceProvider);
+            Material result = manager.GetMaterial(material,  true, rowCount);
             manager.Print(result);
         }
     }

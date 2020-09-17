@@ -23,6 +23,19 @@ namespace SapCo2.Samples.NetCore.TableExamples
         {
             _serviceProvider = serviceProvider;
         }
+        public Material GetMaterial(string materialCodePrefix, bool getUnsafeFields = true, int rowCount = 0)
+        {
+            var query = new AbapQuery().Set(QueryOperator.Equal("MATNR", materialCodePrefix))
+                .And(QueryOperator.NotEqual("LVORM", true, RfcTablePropertySapTypes.BOOLEAN_X)).GetQuery();
+
+            using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
+            connection.Connect();
+
+            using IReadTable<Material> tableFunction = _serviceProvider.GetService<IReadTable<Material>>();
+            List<Material> result = tableFunction.GetTable(connection, query, rowCount: rowCount, getUnsafeFields: getUnsafeFields);
+
+            return result.First();
+        }
         public async Task<List<Material>> GetMaterialsByPrefixAsync(string materialCodePrefix,
             MaterialQueryOptions options = null, bool getUnsafeFields = true, int rowCount = 0)
         {
@@ -64,6 +77,13 @@ namespace SapCo2.Samples.NetCore.TableExamples
             Console.WriteLine("".PadLeft(20, '='));
             foreach (var material in materials)
                 Console.WriteLine($"{material.Code}\t{material.Definition.Definition}\t{material.MaterialCategoryCode}-{material.MaterialCategory?.Definition}");
+        }
+
+        public void Print(Material material)
+        {
+            var list=new List<Material>();
+            list.Add(material);
+            Print(list);
         }
 
 
