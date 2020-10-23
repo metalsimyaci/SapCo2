@@ -76,7 +76,7 @@ namespace SapCo2.Samples.NetCore.TableExamples
             Console.WriteLine($"======= Material List ================");
             Console.WriteLine("".PadLeft(20, '='));
             foreach (var material in materials)
-                Console.WriteLine($"{material.Code}\t{material.Definition.Definition}\t{material.MaterialCategoryCode}-{material.MaterialCategory?.Definition}");
+                Console.WriteLine($"{material.Code}\t{material.Definition?.Definition}\t{material.MaterialCategoryCode}-{material.MaterialCategory?.Definition}");
         }
 
         public void Print(Material material)
