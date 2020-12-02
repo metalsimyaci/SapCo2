@@ -27,7 +27,7 @@ namespace SapCo2.Samples.NetCore.Extensions
 
             if (listCount <= partCount)
             {
-                List<T>[] parts = new List<T>[2];
+                var parts = new List<T>[2];
                 int maxSize = (int)Math.Ceiling(listCount / 2.0);
                 int k = 0;
 
@@ -49,7 +49,7 @@ namespace SapCo2.Samples.NetCore.Extensions
             }
             else
             {
-                List<T>[] partitions = new List<T>[partCount];
+                var partitions = new List<T>[partCount];
                 int maxSize = (int)Math.Ceiling(listCount / (double)partCount);
                 int k = 0;
 

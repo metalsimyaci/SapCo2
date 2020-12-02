@@ -18,21 +18,24 @@ namespace SapCo2.Samples.NetCore.BapiExamples
         public VendorBapiOutputParameter GetVerdorsByCompanyCode(string companyCode)
         {
             using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
-            connection.Connect();
+            connection?.Connect();
 
             var inputParameter = new VendorBapiInputParameter
             {
                 CompanyCode = companyCode
             };
             using IReadBapi<VendorBapiOutputParameter> rfcFunction = _serviceProvider.GetService<IReadBapi<VendorBapiOutputParameter>>();
-            VendorBapiOutputParameter result = rfcFunction.GetBapi(connection, "BBP_VENDOR_GETLIST", inputParameter);
+            VendorBapiOutputParameter result = rfcFunction?.GetBapi(connection, "BBP_VENDOR_GETLIST", inputParameter);
             return result;
         }
 
         public void Print(VendorBapiOutputParameter vendor)
         {
             if (vendor == null)
+            {
                 Console.WriteLine("Vendor Not Found!");
+                return;
+            }
 
             Console.WriteLine($"======= Vendor List ================");
             Console.WriteLine($"= TotalRecordCount={vendor.Vendors.Count()}. Printed top 10 record =");
