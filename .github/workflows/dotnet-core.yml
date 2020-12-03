@@ -16,7 +16,7 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
     strategy:
       matrix:
-        dotnet: ['3.1.x','5.0.x' ]
+        dotnet: ['3.1.404','5.0.100' ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
