@@ -5,6 +5,7 @@
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net5.0;</TargetFrameworks>
     <UserSecretsId>d43bb0e9-3a7e-4cb4-9ebb-3cf7f9d826bd</UserSecretsId>
     <LangVersion>9.0</LangVersion>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>

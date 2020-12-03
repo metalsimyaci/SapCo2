@@ -5,6 +5,7 @@
     <IsPackable>false</IsPackable>
     <Platforms>AnyCPU;x64</Platforms>
     <LangVersion>9.0</LangVersion>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
