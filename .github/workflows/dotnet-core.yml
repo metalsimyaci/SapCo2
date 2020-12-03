@@ -28,4 +28,4 @@ jobs:
       run: dotnet restore sapco2
     - name: Build ${{ matrix.dotnet }} project
       working-directory: './src/SapCo2'
-      run: dotnet build sapco2 --configuration Release --no-restore
+      run: dotnet build sapco2 --configuration Release --no-restore -f ${{ matrix.dotnet }}
