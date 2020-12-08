@@ -19,10 +19,13 @@ jobs:
         include:
           - dotnet: '5.0.100'
             name: 'net5.0'
+            libraryName: 'net5.0'
           - dotnet: '3.1.404'
             name: 'netcoreapp3.1'
+            libraryName: 'netstandard2.1'
           - dotnet: '2.1.811'
             name: 'netcoreapp2.1'
+            libraryName: 'netstandard2.0'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -30,8 +33,14 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet }}    
     - name: Install ${{ matrix.dotnet }} dependencies
-      working-directory: './src/SapCo2'
-      run: dotnet restore sapco2
+      working-directory: './src/SapCo2/SapCo2/'
+      run: dotnet restore sapco2.csproj
     - name: Build ${{ matrix.dotnet }} project
-      working-directory: './src/SapCo2'
-      run: dotnet build sapco2 --configuration Release --no-restore -f ${{ matrix.name }}
+      working-directory: './src/SapCo2/SapCo2/'
+      run: dotnet build sapco2.proj --configuration Release --no-restore -f ${{ matrix.libraryName }}
+    - name: Install ${{ matrix.dotnet }} Test dependencies
+      working-directory: './src/SapCo2/Tests/SapCo2.Test/'
+      run: dotnet restore sapco2.test.proj
+    - name: Test ${{ matrix.dotnet }} project
+      working-directory: './src/SapCo2/Tests/SapCo2.Test/'
+      run: dotnet test sapco2.test.proj --configuration Release --no-restore -f ${{ matrix.libraryName }}
