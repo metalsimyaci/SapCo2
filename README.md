@@ -1,7 +1,8 @@
 [![license](https://img.shields.io/badge/license-MIT-blue?)](https://opensource.org/licenses/MIT)
 [![Nuget](https://img.shields.io/nuget/v/sapco2?label=Nuget&logo=Nuget&logoColor=blue)](https://www.nuget.org/packages/SapCo2/)
 [![Nuget-download](https://img.shields.io/nuget/dt/sapco2?logo=nuget)](https://www.nuget.org/packages/SapCo2/)
-[![Build Core 2.2 And 3.1](https://github.com/metalsimyaci/SapCo2/workflows/Build%20Core%202.2%20And%203.1/badge.svg?branch=master)](https://github.com/metalsimyaci/sapco2/actions?query=workflow%3A%22Build+Core+2.2+And+3.1%22)
+
+[![Multi Build And Test ( Net5.0, Core3.1, Core2.1 )](https://github.com/metalsimyaci/SapCo2/workflows/Multi%20Build%20And%20Test%20(%20Net5.0,%20Core3.1,%20Core2.1%20)/badge.svg?branch=master)](https://github.com/metalsimyaci/SapCo2/actions?query=workflow%3A%22Multi+Build+And+Test+%28+Net5.0%2C+Core3.1%2C+Core2.1+%29%22)
 
 # SapCo2 (SAP Conector Core)
 
