@@ -11,10 +11,12 @@ jobs:
   build:
     name: build to staging
     runs-on: windows-latest
+    continue-on-error: true
     env:
       DOTNET_NOLOGO: true
       DOTNET_CLI_TELEMETRY_OPTOUT: true
     strategy:
+      fail-fast: false
       matrix:
         include:
           - dotnet: '5.0.100'
