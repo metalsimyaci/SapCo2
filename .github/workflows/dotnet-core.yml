@@ -21,7 +21,7 @@ jobs:
             name: 'net5.0'
           - dotnet: '3.1.404'
             name: 'netcoreapp3.1'
-          - dotnet: '2.1.818'
+          - dotnet: '2.1.811'
             name: 'netcoreapp2.1'
     steps:
     - uses: actions/checkout@v2
