@@ -16,7 +16,13 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: true
     strategy:
       matrix:
-        dotnet: ['5.0.100' ]
+        include:
+          - dotnet: '5.0.100'
+            name: 'net5.0'
+          - dotnet: '3.1.404'
+            name: 'netcoreapp3.1'
+          - dotnet: '2.1.818'
+            name: 'netcoreapp2.1'
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -28,4 +34,4 @@ jobs:
       run: dotnet restore sapco2
     - name: Build ${{ matrix.dotnet }} project
       working-directory: './src/SapCo2'
-      run: dotnet build sapco2 --configuration Release --no-restore -f ${{ matrix.dotnet }}
+      run: dotnet build sapco2 --configuration Release --no-restore -f ${{ matrix.name }}
