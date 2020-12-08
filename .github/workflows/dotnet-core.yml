@@ -34,13 +34,13 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}    
     - name: Install ${{ matrix.dotnet }} dependencies
       working-directory: './src/SapCo2/SapCo2/'
-      run: dotnet restore sapco2.csproj
+      run: dotnet restore sapco2
     - name: Build ${{ matrix.dotnet }} project
       working-directory: './src/SapCo2/SapCo2/'
-      run: dotnet build sapco2.proj --configuration Release --no-restore -f ${{ matrix.libraryName }}
+      run: dotnet build sapco2 --configuration Release --no-restore -f ${{ matrix.libraryName }}
     - name: Install ${{ matrix.dotnet }} Test dependencies
       working-directory: './src/SapCo2/Tests/SapCo2.Test/'
-      run: dotnet restore sapco2.test.proj
+      run: dotnet restore sapco2.test
     - name: Test ${{ matrix.dotnet }} project
       working-directory: './src/SapCo2/Tests/SapCo2.Test/'
-      run: dotnet test sapco2.test.proj --configuration Release --no-restore -f ${{ matrix.libraryName }}
+      run: dotnet test sapco2.test --configuration Release --no-restore -f ${{ matrix.libraryName }}
