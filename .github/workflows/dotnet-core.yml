@@ -1,4 +1,4 @@
-name: Build Core 5.0
+name: Multi Build And Test ( Net5.0, Core3.1, Core2.1 )
 
 on:
   pull_request:
