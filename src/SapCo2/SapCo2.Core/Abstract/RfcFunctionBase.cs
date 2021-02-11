@@ -46,6 +46,11 @@ namespace SapCo2.Core.Abstract
 
         public virtual void Dispose()
         {
+            if (_functionHandle == IntPtr.Zero)
+            {
+                return;
+            }
+
             RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
             resultCode.ThrowOnError(errorInfo);
         }
