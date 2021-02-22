@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using SapCo2.Wrapper.Abstract;
+using SapCo2.Wrapper.Fields.Abstract;
 
-namespace SapCo2.Wrapper.Fields.Abstract
+namespace SapCo2.Wrapper.Abstract
 {
     internal abstract class Field<TValue> : IField
     {

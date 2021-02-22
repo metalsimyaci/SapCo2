@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace SapCo2.Wrapper.Interop
+namespace SapCo2.Wrapper.Struct
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct RfcConnectionParameter

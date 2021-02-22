@@ -8,6 +8,7 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SapCo2.Core.Extensions;
 using SapCo2.Wrapper.Interop;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Test.Extensions
 {

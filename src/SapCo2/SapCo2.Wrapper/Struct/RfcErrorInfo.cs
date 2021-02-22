@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using SapCo2.Wrapper.Enumeration;
 
-namespace SapCo2.Wrapper.Interop
+namespace SapCo2.Wrapper.Struct
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
     public struct RfcErrorInfo

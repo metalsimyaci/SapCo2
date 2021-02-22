@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using SapCo2.Wrapper.Enumeration;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Wrapper.Interop
 {
