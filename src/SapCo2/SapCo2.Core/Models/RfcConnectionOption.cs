@@ -1,6 +1,6 @@
 using SapCo2.Wrapper.Attributes;
 
-namespace SapCo2.Core
+namespace SapCo2.Core.Models
 {
     public class RfcConnectionOption
     {

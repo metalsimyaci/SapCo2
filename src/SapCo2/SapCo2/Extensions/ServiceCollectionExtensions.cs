@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using SapCo2.Abstract;
 using SapCo2.Core;
 using SapCo2.Core.Extensions;
+using SapCo2.Core.Models;
 using SapCo2.Utility;
 
 namespace SapCo2.Extensions

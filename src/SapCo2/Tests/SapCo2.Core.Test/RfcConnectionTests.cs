@@ -2,6 +2,7 @@ using System;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using SapCo2.Core.Models;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;

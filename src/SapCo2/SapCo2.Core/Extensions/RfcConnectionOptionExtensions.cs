@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using SapCo2.Core.Models;
 using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Exception;
 using SapCo2.Wrapper.Interop;

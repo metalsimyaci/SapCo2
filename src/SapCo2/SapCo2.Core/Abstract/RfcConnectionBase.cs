@@ -1,5 +1,7 @@
 using System;
+using Microsoft.Extensions.Options;
 using SapCo2.Core.Extensions;
+using SapCo2.Core.Models;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Extension;
@@ -10,18 +12,18 @@ namespace SapCo2.Core.Abstract
 {
     public abstract class RfcConnectionBase:IRfcConnection
     {
+        #region Variables
+
         private readonly IRfcInterop _interop;
+        private IRfcConnectionPool _rfcConnectionPool;
         private readonly RfcConnectionOption _options;
         private IntPtr _rfcConnectionHandle = IntPtr.Zero;
 
-        protected RfcConnectionBase(IRfcInterop interop, RfcConnectionOption options)
-        {
-            _interop = interop;
-            _options = options;
-        }
+        #endregion
 
-        #region Interface Implementation
+        #region Properties
 
+        public bool IsPooled { get; private set; }
         public virtual bool IsValid
         {
             get
@@ -33,6 +35,33 @@ namespace SapCo2.Core.Abstract
                 return resultCode == RfcResultCodes.RFC_OK && isValid > 0;
             }
         }
+
+        #endregion
+
+
+
+        protected RfcConnectionBase(IRfcInterop interop,IOptions<RfcConnectionOption> options)
+        {
+            _interop = interop;
+            if (options == null)
+                throw new Exception("Connection Options not found");
+            _options = options.Value;
+        }
+        protected RfcConnectionBase(IRfcInterop interop, RfcConnectionOption options)
+        {
+            _interop = interop;
+            _options = options;
+        }
+
+        ~RfcConnectionBase()
+        {
+            if(IsPooled)
+                Dispose();
+        }
+
+        #region Interface Implementation
+
+
         public virtual bool Ping()
         {
             if (_rfcConnectionHandle == IntPtr.Zero)
@@ -63,6 +92,20 @@ namespace SapCo2.Core.Abstract
         {
             return _rfcConnectionHandle;
         }
+        public IRfcFunction CreateFunction(string name)
+        {
+            IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(_rfcConnectionHandle, name, out RfcErrorInfo errorInfo);
+
+            errorInfo.ThrowOnError();
+
+            return SapFunction.CreateFromDescriptionHandle(_interop, _rfcConnectionHandle, functionDescriptionHandle);
+        }
+        public void SetPool(IRfcConnectionPool sapConnectionPool)
+        {
+            _rfcConnectionPool = sapConnectionPool;
+            IsPooled = sapConnectionPool != null;
+        }
+
         #endregion
 
         #region Private Methods
