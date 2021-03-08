@@ -1,12 +1,13 @@
 using System;
 using SapCo2.Wrapper.Enumeration;
-using SapCo2.Wrapper.Interop;
 using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Wrapper.Abstract
 {
     public interface IRfcInterop
     {
+        #region Fields
+            
         RfcResultCodes GetString(IntPtr dataHandle, string name, char[] stringBuffer, uint bufferLength, out uint stringLength, 
             out RfcErrorInfo errorInfo);
         RfcResultCodes SetString(IntPtr dataHandle, string name, string value, uint valueLength, out RfcErrorInfo errorInfo);
@@ -20,6 +21,9 @@ namespace SapCo2.Wrapper.Abstract
         RfcResultCodes SetDate(IntPtr dataHandle, string name, char[] date, out RfcErrorInfo errorInfo);
         RfcResultCodes GetTime(IntPtr dataHandle, string name, char[] emptyTime, out RfcErrorInfo errorInfo);
         RfcResultCodes SetTime(IntPtr dataHandle, string name, char[] time, out RfcErrorInfo errorInfo);
+        
+        #endregion
+
         RfcResultCodes GetStructure(IntPtr dataHandle, string name, out IntPtr structHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes GetTable(IntPtr dataHandle, string name, out IntPtr tableHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes GetRowCount(IntPtr tableHandle, out uint rowCount, out RfcErrorInfo errorInfo);
@@ -30,10 +34,21 @@ namespace SapCo2.Wrapper.Abstract
         IntPtr CreateFunction(IntPtr funcDescHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes DestroyFunction(IntPtr funcHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes Invoke(IntPtr rfcHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
+
         IntPtr OpenConnection(RfcConnectionParameter[] connectionParams, uint paramCount, out RfcErrorInfo errorInfo);
         RfcResultCodes CloseConnection(IntPtr rfcHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes IsConnectionHandleValid(IntPtr rfcHandle, out int isValid, out RfcErrorInfo errorInfo);
         RfcResultCodes Ping(IntPtr rfcHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes GetVersion(out uint majorVersion, out uint minorVersion, out uint patchLevel);
+
+        #region Transaction
+
+        RfcResultCodes GetTransactionId(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo);
+        IntPtr CreateTransaction(IntPtr rfcHandle, string tid, string queueName, out RfcErrorInfo errorInfo);
+        RfcResultCodes InvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
+        RfcResultCodes SubmitTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
+        RfcResultCodes ConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
+
+        #endregion
     }
 }

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using SapCo2.Wrapper.Enumeration;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Wrapper.Interop
 {
@@ -11,7 +10,7 @@ namespace SapCo2.Wrapper.Interop
         [DllImport(NetWeaverRfcLib)]
         private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle, string tid, out RfcErrorInfo errorInfo);
 
-        public RfcResultCodes GetTransactionID(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo) =>
+        public RfcResultCodes GetTransactionId(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo) =>
             RfcGetTransactionID(rfcHandle, out tid, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]

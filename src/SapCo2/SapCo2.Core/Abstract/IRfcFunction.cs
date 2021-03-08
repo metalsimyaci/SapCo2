@@ -30,6 +30,12 @@ namespace SapCo2.Core.Abstract
         /// <returns>The output.</returns>
         TOutput Invoke<TOutput>(object input);
 
+        /// <summary>
+        /// IRfc function
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         IRfcFunction CreateFunction(IRfcConnection connection, string name);
     }
 }

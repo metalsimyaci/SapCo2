@@ -63,6 +63,11 @@ namespace SapCo2.Core.Abstract
             resultCode.ThrowOnError(errorInfo);
         }
 
+        public virtual void InvokeTransaction()
+        {
+            RfcResultCodes resultCode = _interop.(_rfcConnectionHandle, funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
+        }
+
         public virtual void Invoke(object input)
         {
             InputMapper.Apply(_interop, _functionHandle, input);
@@ -76,6 +81,8 @@ namespace SapCo2.Core.Abstract
 
             return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
         }
+
+        
 
         public virtual TOutput Invoke<TOutput>(object input)
         {

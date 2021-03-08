@@ -97,8 +97,8 @@ namespace SapCo2.Core.Abstract
             IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(_rfcConnectionHandle, name, out RfcErrorInfo errorInfo);
 
             errorInfo.ThrowOnError();
-
-            return SapFunction.CreateFromDescriptionHandle(_interop, _rfcConnectionHandle, functionDescriptionHandle);
+           
+            return IRfcFunction.CreateFromDescriptionHandle(_interop, _rfcConnectionHandle, functionDescriptionHandle);
         }
         public void SetPool(IRfcConnectionPool sapConnectionPool)
         {
