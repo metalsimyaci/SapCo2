@@ -1,4 +1,4 @@
-using SapCo2.Wrapper.Attributes;
+using SapCo2.Core.Attributes;
 
 namespace SapCo2.Core.Models
 {

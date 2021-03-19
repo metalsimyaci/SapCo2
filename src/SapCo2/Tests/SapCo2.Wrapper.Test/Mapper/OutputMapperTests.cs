@@ -5,10 +5,9 @@ using System.Linq;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using SapCo2.Abstraction.Attributes;
 using SapCo2.Wrapper.Abstract;
-using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Enumeration;
-using SapCo2.Wrapper.Interop;
 using SapCo2.Wrapper.Mappers;
 using SapCo2.Wrapper.Struct;
 

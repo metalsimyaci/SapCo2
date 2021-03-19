@@ -22,6 +22,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\SapCo2.Abstraction\SapCo2.Abstraction.csproj" />
     <ProjectReference Include="..\..\SapCo2.Wrapper\SapCo2.Wrapper.csproj" />
   </ItemGroup>
 </Project>

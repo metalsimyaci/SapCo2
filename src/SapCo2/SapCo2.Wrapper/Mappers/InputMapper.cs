@@ -4,8 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SapCo2.Abstraction.Attributes;
 using SapCo2.Wrapper.Abstract;
-using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Fields;
 using SapCo2.Wrapper.Fields.Abstract;
 

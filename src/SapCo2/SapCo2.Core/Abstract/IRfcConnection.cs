@@ -11,6 +11,7 @@ namespace SapCo2.Core.Abstract
         void Connect(string serverAlias);
         void Disconnect();
         IntPtr GetConnectionHandle();
+        IRfcFunction CreateFunction(string name);
         void SetPool(IRfcConnectionPool rfcConnectionPool);
     }
 }

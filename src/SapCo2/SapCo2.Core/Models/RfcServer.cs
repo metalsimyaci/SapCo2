@@ -1,8 +1,6 @@
-using SapCo2.Core.Abstract;
-
 namespace SapCo2.Core.Models
 {
-    public class RfcServer:IRfcServer
+    public class RfcServer
     {
         public string Alias { get; set; }
         public RfcConnectionPoolingOption ConnectionPooling { get; set; }

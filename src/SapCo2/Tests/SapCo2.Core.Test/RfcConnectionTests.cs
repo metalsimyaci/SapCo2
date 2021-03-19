@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SapCo2.Core.Models;
@@ -21,6 +22,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Connect_ConnectionSucceeds_ShouldOpenConnection()
         {
+            
             var parameters = new RfcConnectionOption { AppServerHost = "my-server.com" };
             var connection = new RfcConnection(_interopMock.Object, parameters);
 

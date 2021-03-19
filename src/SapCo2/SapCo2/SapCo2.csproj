@@ -10,12 +10,12 @@
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.11</AssemblyVersion>
-    <FileVersion>1.0.0.11</FileVersion>
+    <AssemblyVersion>2.2.20.25</AssemblyVersion>
+    <FileVersion>2.2.20.25</FileVersion>
     <Company>Kaon Game Studio</Company>
-    <Version>1.0.0.6</Version>
+    <Version>2.2.20.25</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Symbol Package Added</PackageReleaseNotes>
+    <PackageReleaseNotes>Change Attribute Types</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>logo.png</PackageIcon>
@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SapCo2.Abstraction\SapCo2.Abstraction.csproj" />
     <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj">
       <IsPackable>false</IsPackable>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>

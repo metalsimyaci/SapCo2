@@ -5,22 +5,21 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using SapCo2.Abstraction.Attributes;
 using SapCo2.Wrapper.Abstract;
-using SapCo2.Wrapper.Attributes;
 using SapCo2.Wrapper.Fields;
-using SapCo2.Wrapper.Fields.Abstract;
 
 namespace SapCo2.Wrapper.Mappers
 {
     public static class OutputMapper
     {
-        private static readonly ConcurrentDictionary<Type, Func<IRfcInterop, IntPtr, object>> ExtractFuncsCache =
+        private static readonly ConcurrentDictionary<Type, Func<IRfcInterop, IntPtr, object>> ExtractFunctionsCache =
             new ConcurrentDictionary<Type, Func<IRfcInterop, IntPtr, object>>();
 
         public static TOutput Extract<TOutput>(IRfcInterop interop, IntPtr dataHandle)
         {
             Type outputType = typeof(TOutput);
-            Func<IRfcInterop, IntPtr, object> extractFunc = ExtractFuncsCache.GetOrAdd(outputType, BuildExtractFunc);
+            Func<IRfcInterop, IntPtr, object> extractFunc = ExtractFunctionsCache.GetOrAdd(outputType, BuildExtractFunc);
             return (TOutput)extractFunc(interop, dataHandle);
         }
 

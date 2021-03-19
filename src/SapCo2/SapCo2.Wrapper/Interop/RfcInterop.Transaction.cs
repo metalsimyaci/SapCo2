@@ -8,7 +8,7 @@ namespace SapCo2.Wrapper.Interop
     internal sealed partial class RfcInterop
     {
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle, string tid, out RfcErrorInfo errorInfo);
+        private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle,out string tid, out RfcErrorInfo errorInfo);
 
         public RfcResultCodes GetTransactionId(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo) =>
             RfcGetTransactionID(rfcHandle, out tid, out errorInfo);
@@ -17,15 +17,13 @@ namespace SapCo2.Wrapper.Interop
         private static extern IntPtr RfcCreateTransaction(IntPtr rfcHandle, string tid, string queueName, out RfcErrorInfo errorInfo);
 
         public IntPtr CreateTransaction(IntPtr rfcHandle, string tid, string queueName, out RfcErrorInfo errorInfo) =>
-            RfcCreateTransaction(rfcHandle, tid, out queueName, errorInfo);
-
+            RfcCreateTransaction(rfcHandle, tid,  queueName, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcInvokeInTransaction(IntPtr rfcTransactionHandle,IntPtr funcHandle, out RfcErrorInfo errorInfo);
+        private static extern RfcResultCodes RfcInvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
 
-        public RfcResultCodes InvokeInTransaction(IntPtr rfcTransactionHandle,IntPtr funcHandle, out RfcErrorInfo errorInfo) =>
-            RfcInvokeInTransaction(rfcTransactionHandle,funcHandle, out errorInfo);
-
+        public RfcResultCodes InvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo) =>
+            RfcInvokeInTransaction(rfcTransactionHandle, funcHandle, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
         private static extern RfcResultCodes RfcSubmitTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);

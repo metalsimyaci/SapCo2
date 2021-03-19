@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{675C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Samples.NetCore", "SapCo2.Samples.NetCore\SapCo2.Samples.NetCore.csproj", "{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Abstraction", "SapCo2.Abstraction\SapCo2.Abstraction.csproj", "{8D4DEC8D-03F2-4B7E-A683-C51F32BE2703}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -55,6 +57,10 @@ Global
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D4DEC8D-03F2-4B7E-A683-C51F32BE2703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D4DEC8D-03F2-4B7E-A683-C51F32BE2703}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D4DEC8D-03F2-4B7E-A683-C51F32BE2703}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D4DEC8D-03F2-4B7E-A683-C51F32BE2703}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

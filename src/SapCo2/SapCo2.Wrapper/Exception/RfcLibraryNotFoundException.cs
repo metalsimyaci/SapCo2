@@ -26,8 +26,7 @@ namespace SapCo2.Wrapper.Exception
         private static string BuildWindowsMessage()
         {
             var message = new StringBuilder();
-            message.AppendLine(
-                "The SAP RFC libraries were not found in the output folder or in a folder contained in the systems PATH environment variable.");
+            message.AppendLine("The SAP RFC libraries were not found in the output folder or in a folder contained in the systems PATH environment variable.");
             message.AppendLine();
             message.AppendLine("Required files for Windows:");
             message.AppendLine("  sapnwrfc.dll");
@@ -42,8 +41,7 @@ namespace SapCo2.Wrapper.Exception
         private static string BuildMaxOsMessage()
         {
             var message = new StringBuilder();
-            message.AppendLine(
-                "The SAP RFC libraries were not found in the output folder or in a folder contained in the systems DYLD_LIBRARY_PATH environment variable.");
+            message.AppendLine("The SAP RFC libraries were not found in the output folder or in a folder contained in the systems DYLD_LIBRARY_PATH environment variable.");
             message.AppendLine();
             message.AppendLine("Required files for macOS:");
             message.AppendLine("  libsapnwrfc.dylib");
@@ -56,8 +54,7 @@ namespace SapCo2.Wrapper.Exception
         private static string BuildLinuxMessage()
         {
             var message = new StringBuilder();
-            message.AppendLine(
-                "The SAP RFC libraries were not found in the output folder or in a folder contained in the systems LD_LIBRARY_PATH environment variable.");
+            message.AppendLine("The SAP RFC libraries were not found in the output folder or in a folder contained in the systems LD_LIBRARY_PATH environment variable.");
             message.AppendLine();
             message.AppendLine("Required files for Linux:");
             message.AppendLine("  libsapnwrfc.so");

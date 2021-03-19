@@ -50,5 +50,15 @@ namespace SapCo2.Wrapper.Abstract
         RfcResultCodes ConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
 
         #endregion
+
+        RfcResultCodes GetFieldCount(IntPtr typeDescHandle, out int count, out RfcErrorInfo errorInfo);
+        RfcResultCodes GetFieldDescByIndex(IntPtr typeDescHandle, int index, out RfcFieldDescription fieldDesc,
+            out RfcErrorInfo errorInfo);
+        RfcResultCodes GetFieldDescByName(IntPtr typeDescHandle, string name, out RfcFieldDescription fieldDesc,
+            out RfcErrorInfo errorInfo);
+        RfcResultCodes GetParameterCount(IntPtr funcDescHandle, out int count, out RfcErrorInfo errorInfo);
+        RfcResultCodes GetParameterDescByIndex(IntPtr funcDescHandle, int index, out RfcParameterDescription paramDesc, out RfcErrorInfo errorInfo);
+        RfcResultCodes GetParameterDescByName(IntPtr funcDescHandle, string name, out RfcParameterDescription paramDesc, out RfcErrorInfo errorInfo);
+        IntPtr GetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo);
     }
 }
