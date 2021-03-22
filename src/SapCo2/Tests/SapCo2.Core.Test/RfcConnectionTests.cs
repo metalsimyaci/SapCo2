@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,7 +8,6 @@ using SapCo2.Core.Models;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
-using SapCo2.Wrapper.Interop;
 using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Test
@@ -18,15 +18,75 @@ namespace SapCo2.Core.Test
     {
         private static readonly IntPtr RfcConnectionHandle = (IntPtr)12;
         private readonly Mock<IRfcInterop> _interopMock = new Mock<IRfcInterop>();
+        private RfcConfiguration _rfcConfiguration;
+        private IOptions<RfcConfiguration> _rfcConfigurationOption;
+
+        [TestInitialize]
+        public void Initializer()
+        {
+            _rfcConfiguration = new RfcConfiguration()
+            {
+                DefaultServer = "TEST",
+                RfcServers = new List<RfcServer>
+                {
+                    new RfcServer()
+                    {
+                        Alias = "TEST",
+                        ConnectionString =
+                            "Name:TEST;AppServerHost=test.domain.com;User=username;Password=p4ssw00rd;SystemId:xxx;SystemNumber=00; Client=100; Language=TR; PoolSize=50;MaxPoolSize:100;IdleTimeout:600;Trace=0",
+                        ConnectionPooling =
+                        {
+                            Enabled = false, PoolSize = 0, IdleTimeout = TimeSpan.FromSeconds(30), IdleDetectionInterval = TimeSpan.FromSeconds(1)
+                        }
+                    },
+                    new RfcServer()
+                    {
+                        Alias = "TEST2",
+                        ConnectionOptions = new RfcConnectionOption()
+                        {
+                            Name = "TEST2",
+                            AppServerHost = "test.domain.com",
+                            User = "username",
+                            Password = "P4ssw00rd",
+                            SystemId = "xxx",
+                            SystemNumber = "00",
+                            Client = "100",
+                            Language = "TR",
+                            PoolSize = "50",
+                            IdleTimeout = "600",
+                            Trace = "0"
+                        },
+                        ConnectionPooling =
+                        {
+                            Enabled = false,
+                            PoolSize = 0,
+                            IdleTimeout = TimeSpan.FromSeconds(30),
+                            IdleDetectionInterval = TimeSpan.FromSeconds(1)
+                        }
+                    }
+                }
+            };
+            _rfcConfigurationOption = Options.Create(_rfcConfiguration);
+        }
+
+
+
 
         [TestMethod]
         public void Connect_ConnectionSucceeds_ShouldOpenConnection()
         {
-            
-            var parameters = new RfcConnectionOption { AppServerHost = "my-server.com" };
-            var connection = new RfcConnection(_interopMock.Object, parameters);
-
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             connection.Connect();
+
+            RfcErrorInfo errorInfo;
+            _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), 1, out errorInfo), Times.Once);
+        }
+
+        [TestMethod]
+        public void Connect_ConnectionSucceeds_ShouldOpenConnectionWithAlias()
+        {
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
+            connection.Connect("TEST2");
 
             RfcErrorInfo errorInfo;
             _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), 1, out errorInfo), Times.Once);
@@ -35,7 +95,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Connect_ConnectionFailed_ShouldThrow()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             var errorInfo = new RfcErrorInfo { Code = RfcResultCodes.RFC_TIMEOUT };
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo));
@@ -48,7 +108,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Disconnect_NotConnected_ShouldNotDisconnect()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
 
             connection.Disconnect();
 
@@ -59,7 +119,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Disconnect_Connected_ShouldDisconnect()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -76,7 +136,7 @@ namespace SapCo2.Core.Test
         public void Disconnect_DisconnectionFailed_ShouldThrowException()
         {
             // Arrange
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -98,7 +158,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Dispose_ShouldDisconnect()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -114,7 +174,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Dispose_DisconnectionFailed_ShouldNotThrow()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -133,7 +193,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsConnected_Connected_ShouldReturnTrue()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -153,7 +213,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsConnected_Disconnected_ShouldReturnFalse()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -174,7 +234,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsConnected_ConnectedButLibraryReturnsError_ShouldReturnFalse()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -194,7 +254,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsConnected_ConnectedButLibrarySaysWereDisconnected_ShouldReturnFalse()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             RfcErrorInfo errorInfo;
             _interopMock
                 .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
@@ -214,7 +274,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsValid_ConnectionHandleValid_ShouldReturnTrue()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             int isValidValue = 1;
             RfcErrorInfo errorInfo;
             _interopMock
@@ -234,7 +294,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void IsValid_ConnectionHandleInvalid_ShouldReturnFalse()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             int isValidValue = 0;
             RfcErrorInfo errorInfo;
             _interopMock
@@ -254,7 +314,7 @@ namespace SapCo2.Core.Test
         [TestMethod]
         public void Ping_NotConnected_ShouldReturnFalse()
         {
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
 
             var pingResult = connection.Ping();
 
@@ -271,7 +331,7 @@ namespace SapCo2.Core.Test
             _interopMock
                 .Setup(x => x.Ping(RfcConnectionHandle, out errorInfo))
                 .Returns(RfcResultCodes.RFC_OK);
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             connection.Connect();
 
             var pingResult = connection.Ping();
@@ -289,7 +349,7 @@ namespace SapCo2.Core.Test
             _interopMock
                 .Setup(x => x.Ping(RfcConnectionHandle, out errorInfo))
                 .Returns(RfcResultCodes.RFC_TIMEOUT);
-            var connection = new RfcConnection(_interopMock.Object, new RfcConnectionOption());
+            var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             connection.Connect();
 
             var pingResult = connection.Ping();
