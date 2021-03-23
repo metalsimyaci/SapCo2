@@ -19,7 +19,7 @@ namespace SapCo2.Core
         private readonly ConcurrentQueue<(IRfcConnection Connection, DateTime ExpiresAtUtc)> _idleConnections = new ConcurrentQueue<(IRfcConnection Connection, DateTime ExpiresAtUtc)>();
         private readonly SemaphoreSlim _idleConnectionSemaphore = new SemaphoreSlim(0);
         private readonly Timer _idleDetectionTimer;
-        private int _openConnectionCount = 0;
+        private int _openConnectionCount;
 
         #endregion
 
@@ -114,7 +114,7 @@ namespace SapCo2.Core
                     if (!_idleConnections.TryPeek(out idleConnection) || idleConnection.ExpiresAtUtc > DateTime.UtcNow)
                         break;
 
-                    bool result = _idleConnections.TryDequeue(out idleConnection);
+                    _idleConnections.TryDequeue(out idleConnection);
                     _idleConnectionSemaphore.Wait();
                     idleConnection.Connection.SetPool(null);
                     idleConnection.Connection.Dispose();

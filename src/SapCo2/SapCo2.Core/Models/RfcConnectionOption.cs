@@ -1,7 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using SapCo2.Core.Attributes;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace SapCo2.Core.Models
 {
+    [ExcludeFromCodeCoverage]
     public class RfcConnectionOption
     {
         /// <summary>

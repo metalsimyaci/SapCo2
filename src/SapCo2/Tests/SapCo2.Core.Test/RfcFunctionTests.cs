@@ -1,12 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SapCo2.Core.Abstract;
 using SapCo2.Wrapper.Abstract;
-using SapCo2.Wrapper.Enumeration;
-using SapCo2.Wrapper.Exception;
-using SapCo2.Wrapper.Interop;
 using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Test
@@ -16,59 +14,31 @@ namespace SapCo2.Core.Test
     public class RfcFunctionTests
     {
         private static readonly IntPtr RfcConnectionHandle = (IntPtr)12;
-        private static readonly IntPtr FunctionDescriptionHandle = (IntPtr)34;
+        //private static readonly IntPtr FunctionDescriptionHandle = (IntPtr)34;
         private static readonly IntPtr FunctionHandle = (IntPtr)56;
-        private static readonly Mock<IRfcConnection> ConnectionMock = new Mock<IRfcConnection>();
         private readonly Mock<IRfcInterop> _interopMock = new Mock<IRfcInterop>();
 
         [ClassInitialize]
         public static void ClassInitializer(TestContext context)
         {
-            ConnectionMock.Setup(p => p.GetConnectionHandle()).Returns(RfcConnectionHandle);
-        }
-
-        [TestMethod]
-        public void CreateFunction_ShouldReturnCreatedFunction()
-        {
-            RfcErrorInfo errorInfo;
-            _interopMock
-                .Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(),It.IsAny<string>(),  out errorInfo))
-                .Returns(FunctionDescriptionHandle);
-            _interopMock
-                .Setup(x => x.CreateFunction(It.IsAny<IntPtr>(),  out errorInfo))
-                .Returns(FunctionHandle);
-
-            var rfcFunction=new RfcFunction(_interopMock.Object);
-            
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
-
-            function.Should().NotBeNull();
-            _interopMock.Verify(x => x.CreateFunction(FunctionDescriptionHandle, out errorInfo), Times.Once);
-        }
-
-        [TestMethod]
-        public void CreateFunction_CreationFailed_ShouldThrowException()
-        {
-            var errorInfo = new RfcErrorInfo { Code = RfcResultCodes.RFC_NOT_FOUND };
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo));
-
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            Action action = () => rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
-
-            action.Should().Throw<RfcException>().WithMessage("SAP RFC Error: RFC_NOT_FOUND");
+            //ConnectionMock.Setup(p => p.GetConnectionHandle()).Returns(RfcConnectionHandle);
         }
 
         [TestMethod]
         public void Invoke_NoInput_NoOutput_ShouldInvokeFunction()
         {
             RfcErrorInfo errorInfo;
-            _interopMock.Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(), It.IsAny<string>(), out errorInfo)).Returns(FunctionDescriptionHandle);
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(FunctionHandle);
-
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
-
+            IRfcFunction function = new RfcFunction(_interopMock.Object,RfcConnectionHandle,FunctionHandle);
             function.Invoke();
+
+            _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
+        }
+        [TestMethod]
+        public async Task Invoke_NoInput_NoOutput_ShouldInvokeFunctionAsync()
+        {
+            RfcErrorInfo errorInfo;
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
+            var result= await function.InvokeAsync();
 
             _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
         }
@@ -77,12 +47,20 @@ namespace SapCo2.Core.Test
         public void Invoke_WithInput_NoOutput_ShouldMapInput()
         {
             RfcErrorInfo errorInfo;
-            _interopMock.Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(), It.IsAny<string>(), out errorInfo)).Returns(FunctionDescriptionHandle);
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(FunctionHandle);
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
 
             function.Invoke(new { Value = 123 });
+
+            _interopMock.Verify(x => x.SetInt(FunctionHandle, "VALUE", 123, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
+        }
+        [TestMethod]
+        public async Task Invoke_WithInput_NoOutput_ShouldMapInputAsync()
+        {
+            RfcErrorInfo errorInfo;
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
+
+            var result=await function.InvokeAsync(new { Value = 123 });
 
             _interopMock.Verify(x => x.SetInt(FunctionHandle, "VALUE", 123, out errorInfo), Times.Once);
             _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
@@ -93,13 +71,25 @@ namespace SapCo2.Core.Test
         {
             int value = 456;
             RfcErrorInfo errorInfo;
-            _interopMock.Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(), It.IsAny<string>(), out errorInfo)).Returns(FunctionDescriptionHandle);
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(FunctionHandle);
             _interopMock.Setup(x => x.GetInt(FunctionHandle, "VALUE", out value, out errorInfo));
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
 
             OutputModel result = function.Invoke<OutputModel>();
+
+            result.Should().NotBeNull();
+            result.Value.Should().Be(value);
+            _interopMock.Verify(x => x.GetInt(FunctionHandle, "VALUE", out value, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
+        }
+        [TestMethod]
+        public async Task Invoke_NoInput_WithOutput_ShouldMapOutputAsync()
+        {
+            int value = 456;
+            RfcErrorInfo errorInfo;
+            _interopMock.Setup(x => x.GetInt(FunctionHandle, "VALUE", out value, out errorInfo));
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
+
+            OutputModel result = await function.InvokeAsync<OutputModel>();
 
             result.Should().NotBeNull();
             result.Value.Should().Be(value);
@@ -112,13 +102,24 @@ namespace SapCo2.Core.Test
         {
             int value = 456;
             RfcErrorInfo errorInfo;
-            _interopMock.Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(), It.IsAny<string>(), out errorInfo)).Returns(FunctionDescriptionHandle);
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(FunctionHandle);
             _interopMock.Setup(x => x.GetInt(It.IsAny<IntPtr>(), It.IsAny<string>(), out value, out errorInfo));
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
 
             OutputModel result = function.Invoke<OutputModel>(new { Value = 123 });
+
+            _interopMock.Verify(x => x.SetInt(FunctionHandle, "VALUE", 123, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.GetInt(FunctionHandle, "VALUE", out value, out errorInfo), Times.Once);
+        }
+        [TestMethod]
+        public async Task Apply_WithInput_WithOutput_ShouldMapInputAndOutputAsync()
+        {
+            int value = 456;
+            RfcErrorInfo errorInfo;
+            _interopMock.Setup(x => x.GetInt(It.IsAny<IntPtr>(), It.IsAny<string>(), out value, out errorInfo));
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
+
+            OutputModel result =await function.InvokeAsync<OutputModel>(new { Value = 123 });
 
             _interopMock.Verify(x => x.SetInt(FunctionHandle, "VALUE", 123, out errorInfo), Times.Once);
             _interopMock.Verify(x => x.Invoke(RfcConnectionHandle, FunctionHandle, out errorInfo), Times.Once);
@@ -129,10 +130,7 @@ namespace SapCo2.Core.Test
         public void Dispose_ShouldDestroyFunction()
         {
             RfcErrorInfo errorInfo;
-            _interopMock.Setup(x => x.GetFunctionDesc(It.IsAny<IntPtr>(), It.IsAny<string>(), out errorInfo)).Returns(FunctionDescriptionHandle);
-            _interopMock.Setup(x => x.CreateFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(FunctionHandle);
-            var rfcFunction = new RfcFunction(_interopMock.Object);
-            IRfcFunction function = rfcFunction.CreateFunction(ConnectionMock.Object, "FunctonA");
+            IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
 
             function.Dispose();
 

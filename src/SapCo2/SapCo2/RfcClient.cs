@@ -14,6 +14,7 @@ using SapCo2.Extensions;
 using SapCo2.Models;
 using SapCo2.Query;
 using SapCo2.Wrapper.Exception;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2
 {
@@ -60,6 +61,37 @@ namespace SapCo2
                 throw new RfcException($"SAP server connection settings not found: '{serverAlias}'.");
 
             _activeServer = serverAlias;
+        }
+
+        public IReadOnlyList<ParameterMetaData> GetParameterMetaData(string name)
+        {
+            using IRfcConnection rfcConnection = GetConnection();
+            IRfcFunctionMetaData metaData = rfcConnection.CreateFunctionMetaData(name);
+            var parameters = metaData.GetParameterDescriptions();
+
+            List<ParameterMetaData> metaDataList = new List<ParameterMetaData>();
+            foreach (RfcParameterDescription parameter in parameters)
+            {
+                ParameterMetaData data = new ParameterMetaData()
+                {
+                    Name = parameter.Name,
+                    Description = parameter.ParameterText,
+                    DefaultValue = parameter.DefaultValue,
+                    Direction = parameter.Direction.ToString(),
+                    Decimals = parameter.Decimals,
+                    NumericLength = parameter.NucLength,
+                    Optional = parameter.Optional,
+                    Type = parameter.Type.ToString(),
+                    UcLength = parameter.UcLength,
+                    Fields = metaData.GetFieldDescriptions(parameter.TypeDescHandle).Select(s=>new FieldMetaData
+                    {
+                        
+                    })
+                    
+                };
+                metaDataList.Add(data);
+            }
+
         }
 
         public void ExecuteRfc(string name)

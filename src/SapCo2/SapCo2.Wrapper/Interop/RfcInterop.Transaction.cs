@@ -36,5 +36,11 @@ namespace SapCo2.Wrapper.Interop
 
         public RfcResultCodes ConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo) =>
             RfcConfirmTransaction(rfcTransactionHandle, out errorInfo);
+
+        [DllImport(NetWeaverRfcLib)]
+        private static extern RfcResultCodes RfcDestroyTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
+
+        public RfcResultCodes DestroyTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo) =>
+            RfcDestroyTransaction(rfcTransactionHandle, out errorInfo);
     }
 }

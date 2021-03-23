@@ -48,6 +48,7 @@ namespace SapCo2.Wrapper.Abstract
         RfcResultCodes InvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes SubmitTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
         RfcResultCodes ConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
+        RfcResultCodes DestroyTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
 
         #endregion
 

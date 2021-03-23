@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace SapCo2.Core.Models
 {
+    [ExcludeFromCodeCoverage]
     public class RfcServer
     {
         public string Alias { get; set; }

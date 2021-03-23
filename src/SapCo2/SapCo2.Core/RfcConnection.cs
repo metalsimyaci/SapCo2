@@ -128,11 +128,21 @@ namespace SapCo2.Core
 
         public IRfcFunction CreateFunction(string name)
         {
-            IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(_rfcConnectionHandle, name, out RfcErrorInfo errorInfo);
+            IntPtr functionDescriptionHandle = GetFunctionDescription(name);
 
-            errorInfo.ThrowOnError();
+            return CreateFromDescriptionHandle(_interop, functionDescriptionHandle);
+        }
+        public IRfcFunctionMetaData CreateFunctionMetaData(string name)
+        {
+            IntPtr functionDescriptionHandle = GetFunctionDescription(name);
+            return new RfcFunctionMetaData(_interop, functionDescriptionHandle);
+        }
 
-            return RfcFunction.CreateFromDescriptionHandle(_interop, _rfcConnectionHandle, functionDescriptionHandle);
+        public IRfcTransaction CreateTransaction()
+        {
+            IntPtr result = GetTransactionHandle(_interop);
+
+            return new RfcTransaction(_interop, result);
         }
 
         public void SetPool(IRfcConnectionPool sapConnectionPool)
@@ -154,6 +164,33 @@ namespace SapCo2.Core
         }
 
         #endregion
+
+        private IntPtr GetFunctionDescription(string methodName)
+        {
+            IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(_rfcConnectionHandle, methodName, out RfcErrorInfo errorInfo);
+
+            errorInfo.ThrowOnError();
+            
+            return functionDescriptionHandle;
+        }
+
+        private IntPtr GetTransactionHandle(IRfcInterop interop)
+        {
+            RfcResultCodes resultCode = _interop.GetTransactionId(_rfcConnectionHandle, out string tid, out RfcErrorInfo errorInfo);
+            resultCode.ThrowOnError(errorInfo);
+
+            IntPtr result = _interop.CreateTransaction(_rfcConnectionHandle, tid, null, out errorInfo);
+            resultCode.ThrowOnError(errorInfo);
+            return result;
+        }
+        private IRfcFunction CreateFromDescriptionHandle(IRfcInterop interop, IntPtr functionDescriptionHandle)
+        {
+            IntPtr functionHandle = interop.CreateFunction(functionDescriptionHandle, out RfcErrorInfo errorInfo);
+
+            errorInfo.ThrowOnError();
+
+            return new RfcFunction(interop, _rfcConnectionHandle, functionHandle);
+        }
 
         private void Disconnect(bool disposing)
         {

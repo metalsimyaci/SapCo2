@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -69,27 +71,31 @@ namespace SapCo2.Core.Test
             _rfcConfigurationOption = Options.Create(_rfcConfiguration);
         }
 
-
-
-
         [TestMethod]
         public void Connect_ConnectionSucceeds_ShouldOpenConnection()
         {
+            var alias =_rfcConfiguration.DefaultServer;
+            var configuration = _rfcConfiguration.RfcServers.First(x => x.Alias == alias);
+            uint counter = GetRfcConnectionOptionPropertyCount(configuration.ConnectionOptions);
             var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
             connection.Connect();
 
             RfcErrorInfo errorInfo;
-            _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), 1, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), counter, out errorInfo), Times.Once);
         }
 
         [TestMethod]
         public void Connect_ConnectionSucceeds_ShouldOpenConnectionWithAlias()
         {
+            var alias = "TEST2";
+            var configuration = _rfcConfiguration.RfcServers.First(x => x.Alias == alias);
+            uint counter = GetRfcConnectionOptionPropertyCount(configuration.ConnectionOptions);
+
             var connection = new RfcConnection(_interopMock.Object, _rfcConfigurationOption);
-            connection.Connect("TEST2");
+            connection.Connect(alias);
 
             RfcErrorInfo errorInfo;
-            _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), 1, out errorInfo), Times.Once);
+            _interopMock.Verify(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), counter, out errorInfo), Times.Once);
         }
 
         [TestMethod]
@@ -355,6 +361,20 @@ namespace SapCo2.Core.Test
             var pingResult = connection.Ping();
 
             pingResult.Should().BeFalse();
+        }
+
+        private uint GetRfcConnectionOptionPropertyCount(RfcConnectionOption connectionOptions)
+        {
+            PropertyInfo[] properties = connectionOptions.GetType().GetProperties();
+            uint counter = 0;
+            foreach (PropertyInfo propertyInfo in properties)
+            {
+                object value = propertyInfo.GetValue(connectionOptions, null);
+                if (value != null)
+                    counter++;
+            }
+
+            return counter;
         }
     }
 }

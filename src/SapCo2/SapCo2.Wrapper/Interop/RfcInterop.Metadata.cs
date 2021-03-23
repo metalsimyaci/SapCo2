@@ -10,6 +10,12 @@ namespace SapCo2.Wrapper.Interop
         #region Metadata For structures/line-tipes
 
         [DllImport(NetWeaverRfcLib)]
+        private static extern IntPtr RfcGetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo);
+
+        public IntPtr GetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo)
+            => RfcGetTypeDesc(rfcHandle, typeName, out errorInfo);
+
+        [DllImport(NetWeaverRfcLib)]
         private static extern RfcResultCodes RfcGetFieldCount(IntPtr typeDescHandle, out int count, out RfcErrorInfo errorInfo);
 
         public RfcResultCodes GetFieldCount(IntPtr typeDescHandle, out int count, out RfcErrorInfo errorInfo)
@@ -78,11 +84,7 @@ namespace SapCo2.Wrapper.Interop
         public RfcResultCodes Invoke(IntPtr rfcHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo)
             => RfcInvoke(rfcHandle, funcHandle, out errorInfo);
 
-        [DllImport(NetWeaverRfcLib)]
-        private static extern IntPtr RfcGetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo);
-
-        public IntPtr GetTypeDesc(IntPtr rfcHandle, string typeName, out RfcErrorInfo errorInfo)
-            => RfcGetTypeDesc(rfcHandle, typeName, out errorInfo);
+        
 
     }
 }

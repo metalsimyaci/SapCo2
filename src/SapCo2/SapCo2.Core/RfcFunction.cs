@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using SapCo2.Core.Abstract;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
+using SapCo2.Wrapper.Exception;
 using SapCo2.Wrapper.Extension;
 using SapCo2.Wrapper.Mappers;
 using SapCo2.Wrapper.Struct;
@@ -83,6 +86,8 @@ namespace SapCo2.Core
             return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
         }
 
+      
+
         #endregion
 
         #region IDisposable Implementation
@@ -95,15 +100,6 @@ namespace SapCo2.Core
         }
 
         #endregion
-
-        internal static IRfcFunction CreateFromDescriptionHandle(IRfcInterop interop, IntPtr sapConnectionHandle, IntPtr functionDescriptionHandle)
-        {
-            IntPtr functionHandle = interop.CreateFunction(functionDescriptionHandle, out RfcErrorInfo errorInfo);
-
-            errorInfo.ThrowOnError();
-
-            return new RfcFunction(interop, sapConnectionHandle, functionHandle);
-        }
 
         #endregion
     }

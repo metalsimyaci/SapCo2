@@ -1,13 +1,11 @@
 using System;
-using SapCo2.Wrapper.Enumeration;
 
 namespace SapCo2.Core.Abstract
 {
-    public interface IRfcTransaction
+    public interface IRfcTransaction: IDisposable
     {
-        public IntPtr CreateTransaction();
-        RfcResultCodes InvokeTransaction();
-        RfcResultCodes SubmitTransaction();
-        RfcResultCodes ConfirmTransaction();
+        void InvokeTransaction(IntPtr functionHandle);
+        void SaveChangeTransaction();
+        void CommitTransaction();
     }
 }

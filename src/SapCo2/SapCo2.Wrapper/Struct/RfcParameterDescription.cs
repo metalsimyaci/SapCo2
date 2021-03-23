@@ -26,7 +26,7 @@ namespace SapCo2.Wrapper.Struct
         public int Decimals;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public IntPtr TypeDescriptionHandle;
+        public IntPtr TypeDescHandle;
 
         [MarshalAs(UnmanagedType.LPStr, SizeConst = 80)]
         public string ParameterText;

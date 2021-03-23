@@ -1,5 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace SapCo2.Core.Models
 {
+    [ExcludeFromCodeCoverage]
     public sealed class RfcNetWeaverLibraryVersion
     {
         /// <summary>

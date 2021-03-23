@@ -1,8 +1,11 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+
 // ReSharper disable InconsistentNaming
 
 namespace SapCo2.Core.Models
 {
+    [ExcludeFromCodeCoverage]
     public class RfcConnectionPoolingOption
     {
         private const int DEFAULT_POOL_SIZE = 16;

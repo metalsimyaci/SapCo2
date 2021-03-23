@@ -45,7 +45,7 @@ namespace SapCo2.Core.Extensions
                 .ToArray();
         }
 
-        internal static RfcConnectionOption Parse(this RfcConnectionOption connectionOption, string connectionString)
+        public static RfcConnectionOption Parse(this RfcConnectionOption connectionOption, string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Value cannot be null or empty", nameof(connectionString));

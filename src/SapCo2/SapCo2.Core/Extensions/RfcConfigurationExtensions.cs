@@ -13,7 +13,7 @@ namespace SapCo2.Core.Extensions
 
         private const string DEFAULT_CONFIGURATION_KEY = "SapCo2";
         private const string DEFAULT_CONNECTION_KEY = "DefaultServer";
-        private const string RFC_SERVERS_KEY = "RfcConnections";
+        private const string RFC_SERVERS_KEY = "Connections";
         private const string ALIAS_KEY = "Alias";
         private const string CONNECTION_POOLING_KEY = "ConnectionPooling";
         private const string CONNECTION_STRING_KEY = "ConnectionString";
