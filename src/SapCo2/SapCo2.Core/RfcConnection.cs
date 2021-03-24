@@ -132,6 +132,7 @@ namespace SapCo2.Core
 
             return CreateFromDescriptionHandle(_interop, functionDescriptionHandle);
         }
+
         public IRfcFunctionMetaData CreateFunctionMetaData(string name)
         {
             IntPtr functionDescriptionHandle = GetFunctionDescription(name);
@@ -173,7 +174,6 @@ namespace SapCo2.Core
             
             return functionDescriptionHandle;
         }
-
         private IntPtr GetTransactionHandle(IRfcInterop interop)
         {
             RfcResultCodes resultCode = _interop.GetTransactionId(_rfcConnectionHandle, out string tid, out RfcErrorInfo errorInfo);

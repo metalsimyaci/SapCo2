@@ -16,6 +16,7 @@ namespace SapCo2.Core
         private readonly IRfcInterop _interop;
         private readonly IntPtr _rfcConnectionHandle;
         private readonly IntPtr _functionHandle;
+        private bool _disposed;
 
         #endregion
 
@@ -83,17 +84,35 @@ namespace SapCo2.Core
             return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
         }
 
-      
+
 
         #endregion
+
+        private void Destroy()
+        {
+            if (_functionHandle == IntPtr.Zero)
+                return;
+
+            RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
+            resultCode.ThrowOnError(errorInfo);
+        }
 
         #region IDisposable Implementation
 
         public void Dispose()
         {
-            RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
+            Dispose(true);
+        }
 
-            resultCode.ThrowOnError(errorInfo);
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+            
+            if (disposing)
+                Destroy();
+
+            _disposed = true;
         }
 
         #endregion

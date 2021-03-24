@@ -14,6 +14,7 @@ namespace SapCo2.Core
         private readonly IRfcInterop _interop;
         private readonly IntPtr _rfcConnectionHandle;
         private readonly IntPtr _transactionHandle;
+        private bool _disposed;
 
         #endregion
 
@@ -56,6 +57,9 @@ namespace SapCo2.Core
         
         private void DestroyTransaction()
         {
+            if (_transactionHandle == IntPtr.Zero)
+                return;
+
             RfcResultCodes resultCode = _interop.DestroyTransaction(_transactionHandle, out RfcErrorInfo errorInfo);
             resultCode.ThrowOnError(errorInfo);
         }
@@ -72,7 +76,7 @@ namespace SapCo2.Core
 
             errorInfo.ThrowOnError();
 
-            return new RfcTransactionFunction(interop, _rfcConnectionHandle,_transactionHandle, functionHandle);
+            return new RfcTransactionFunction(interop,_transactionHandle, functionHandle);
         }
 
         #endregion
@@ -81,9 +85,18 @@ namespace SapCo2.Core
 
         public void Dispose()
         {
-            if (_transactionHandle == IntPtr.Zero) return;
+            Dispose(true);
+        }
 
-            DestroyTransaction();
+        private void Dispose(bool disposing)
+        {
+            if (_disposed)
+                return;
+
+            if (disposing)
+                DestroyTransaction();
+
+            _disposed = true;
         }
 
         #endregion

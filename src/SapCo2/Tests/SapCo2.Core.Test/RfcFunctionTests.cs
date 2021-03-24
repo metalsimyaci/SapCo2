@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using SapCo2.Core.Abstract;
 using SapCo2.Wrapper.Abstract;
+using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Test
@@ -98,7 +99,7 @@ namespace SapCo2.Core.Test
         }
 
         [TestMethod]
-        public void Apply_WithInput_WithOutput_ShouldMapInputAndOutput()
+        public void Invoke_WithInput_WithOutput_ShouldMapInputAndOutput()
         {
             int value = 456;
             RfcErrorInfo errorInfo;
@@ -112,7 +113,7 @@ namespace SapCo2.Core.Test
             _interopMock.Verify(x => x.GetInt(FunctionHandle, "VALUE", out value, out errorInfo), Times.Once);
         }
         [TestMethod]
-        public async Task Apply_WithInput_WithOutput_ShouldMapInputAndOutputAsync()
+        public async Task Invoke_WithInput_WithOutput_ShouldMapInputAndOutputAsync()
         {
             int value = 456;
             RfcErrorInfo errorInfo;
@@ -131,6 +132,7 @@ namespace SapCo2.Core.Test
         {
             RfcErrorInfo errorInfo;
             IRfcFunction function = new RfcFunction(_interopMock.Object, RfcConnectionHandle, FunctionHandle);
+            _interopMock.Setup(x => x.DestroyFunction(It.IsAny<IntPtr>(), out errorInfo)).Returns(RfcResultCodes.RFC_OK);
 
             function.Dispose();
 

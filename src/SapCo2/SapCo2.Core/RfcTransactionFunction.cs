@@ -14,9 +14,9 @@ namespace SapCo2.Core
         #region Variables
 
         private readonly IRfcInterop _interop;
-        private readonly IntPtr _rfcConnectionHandle;
         private readonly IntPtr _transactionHandle;
         private readonly IntPtr _functionHandle;
+        private bool _disposed;
 
         #endregion
 
@@ -24,10 +24,9 @@ namespace SapCo2.Core
 
         #region Constructors
 
-        public RfcTransactionFunction(IRfcInterop interop, IntPtr rfcConnectionHandle,IntPtr transactionHandle, IntPtr functionHandle)
+        public RfcTransactionFunction(IRfcInterop interop,IntPtr transactionHandle, IntPtr functionHandle)
         {
             _interop = interop;
-            _rfcConnectionHandle = rfcConnectionHandle;
             _transactionHandle = transactionHandle;
             _functionHandle = functionHandle;
         }
@@ -71,13 +70,32 @@ namespace SapCo2.Core
         
         #endregion
 
+
+        private void Destroy()
+        {
+            if (_functionHandle == IntPtr.Zero)
+                return;
+
+            RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
+            resultCode.ThrowOnError(errorInfo);
+        }
+
         #region IDisposable Implementation
 
         public void Dispose()
         {
-            RfcResultCodes resultCode = _interop.DestroyFunction(_functionHandle, out RfcErrorInfo errorInfo);
+            Dispose(true);
+        }
 
-            resultCode.ThrowOnError(errorInfo);
+        private  void Dispose(bool disposing)
+        {
+            if(_disposed)
+                return;
+
+            if (disposing)
+                Destroy();
+            
+            _disposed = true;
         }
 
         #endregion
