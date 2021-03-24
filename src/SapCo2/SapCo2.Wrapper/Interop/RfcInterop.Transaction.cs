@@ -9,38 +9,38 @@ namespace SapCo2.Wrapper.Interop
     {
         [DllImport(NetWeaverRfcLib)]
         private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle,out string tid, out RfcErrorInfo errorInfo);
-
+        
         public RfcResultCodes GetTransactionId(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo) =>
             RfcGetTransactionID(rfcHandle, out tid, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
         private static extern IntPtr RfcCreateTransaction(IntPtr rfcHandle, string tid, string queueName, out RfcErrorInfo errorInfo);
-
+        
         public IntPtr CreateTransaction(IntPtr rfcHandle, string tid, string queueName, out RfcErrorInfo errorInfo) =>
             RfcCreateTransaction(rfcHandle, tid,  queueName, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcInvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
-
-        public RfcResultCodes InvokeInTransaction(IntPtr rfcTransactionHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo) =>
-            RfcInvokeInTransaction(rfcTransactionHandle, funcHandle, out errorInfo);
-
-        [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcSubmitTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
-
-        public RfcResultCodes SubmitTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo) =>
-            RfcSubmitTransaction(rfcTransactionHandle, out errorInfo);
+        private static extern RfcResultCodes RfcInvokeInTransaction(IntPtr tHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo);
+        
+        public RfcResultCodes InvokeInTransaction(IntPtr tHandle, IntPtr funcHandle, out RfcErrorInfo errorInfo) =>
+            RfcInvokeInTransaction(tHandle, funcHandle, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
-
-        public RfcResultCodes ConfirmTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo) =>
-            RfcConfirmTransaction(rfcTransactionHandle, out errorInfo);
+        private static extern RfcResultCodes RfcSubmitTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo);
+        
+        public RfcResultCodes SubmitTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo) =>
+            RfcSubmitTransaction(tHandle, out errorInfo);
 
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcDestroyTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo);
+        private static extern RfcResultCodes RfcConfirmTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo);
+        
+        public RfcResultCodes ConfirmTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo) =>
+            RfcConfirmTransaction(tHandle, out errorInfo);
 
-        public RfcResultCodes DestroyTransaction(IntPtr rfcTransactionHandle, out RfcErrorInfo errorInfo) =>
-            RfcDestroyTransaction(rfcTransactionHandle, out errorInfo);
+        [DllImport(NetWeaverRfcLib)]
+        private static extern RfcResultCodes RfcDestroyTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo);
+        
+        public RfcResultCodes DestroyTransaction(IntPtr tHandle, out RfcErrorInfo errorInfo) =>
+            RfcDestroyTransaction(tHandle, out errorInfo);
     }
 }

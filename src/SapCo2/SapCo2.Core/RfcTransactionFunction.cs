@@ -9,12 +9,13 @@ using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core
 {
-    internal sealed class RfcFunction : IRfcFunction
+    internal  sealed class RfcTransactionFunction:IRfcTransactionFunction
     {
         #region Variables
 
         private readonly IRfcInterop _interop;
         private readonly IntPtr _rfcConnectionHandle;
+        private readonly IntPtr _transactionHandle;
         private readonly IntPtr _functionHandle;
 
         #endregion
@@ -23,10 +24,11 @@ namespace SapCo2.Core
 
         #region Constructors
 
-        public RfcFunction(IRfcInterop interop, IntPtr rfcConnectionHandle, IntPtr functionHandle)
+        public RfcTransactionFunction(IRfcInterop interop, IntPtr rfcConnectionHandle,IntPtr transactionHandle, IntPtr functionHandle)
         {
             _interop = interop;
             _rfcConnectionHandle = rfcConnectionHandle;
+            _transactionHandle = transactionHandle;
             _functionHandle = functionHandle;
         }
 
@@ -36,7 +38,7 @@ namespace SapCo2.Core
 
         public void Invoke()
         {
-            RfcResultCodes resultCode = _interop.Invoke(_rfcConnectionHandle, funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
+            RfcResultCodes resultCode = _interop.InvokeInTransaction(_transactionHandle, funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
 
             resultCode.ThrowOnError(errorInfo);
         }
@@ -46,9 +48,9 @@ namespace SapCo2.Core
 
             await Task.Run(() =>
             {
-                resultCode = _interop.Invoke(_rfcConnectionHandle, funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
+                resultCode = _interop.InvokeInTransaction(_transactionHandle, funcHandle: _functionHandle, out RfcErrorInfo errorInfo);
                 resultCode.ThrowOnError(errorInfo);
-            });
+            }).ConfigureAwait(false);
 
             return true;
         }
@@ -62,29 +64,11 @@ namespace SapCo2.Core
             InputMapper.Apply(_interop, _functionHandle, input);
             return await InvokeAsync();
         }
-        public TOutput Invoke<TOutput>()
+        public TOutput ReadSubmitResult<TOutput>()
         {
-            Invoke();
             return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
         }
-        public async Task<TOutput> InvokeAsync<TOutput>()
-        {
-            await InvokeAsync();
-            return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
-        }
-        public TOutput Invoke<TOutput>(object input)
-        {
-            Invoke(input);
-            return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
-        }
-        public async Task<TOutput> InvokeAsync<TOutput>(object input)
-        {
-            await InvokeAsync(input);
-            return OutputMapper.Extract<TOutput>(_interop, _functionHandle);
-        }
-
-      
-
+        
         #endregion
 
         #region IDisposable Implementation

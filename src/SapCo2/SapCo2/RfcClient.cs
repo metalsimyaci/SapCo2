@@ -63,16 +63,29 @@ namespace SapCo2
             _activeServer = serverAlias;
         }
 
-        public IReadOnlyList<ParameterMetaData> GetParameterMetaData(string name)
+        public IReadOnlyList<ParameterMetaData> ReadFunctionMetaData(string name)
         {
             using IRfcConnection rfcConnection = GetConnection();
-            IRfcFunctionMetaData metaData = rfcConnection.CreateFunctionMetaData(name);
-            var parameters = metaData.GetParameterDescriptions();
+            IRfcFunctionMetaData functionMetaData = rfcConnection.CreateFunctionMetaData(name);
 
-            List<ParameterMetaData> metaDataList = new List<ParameterMetaData>();
-            foreach (RfcParameterDescription parameter in parameters)
+            List<RfcParameterDescription> parameters = functionMetaData.GetParameterDescriptions();
+            List<FieldMetaData> GetFields(IntPtr parameterTypeDescriptionHandler)
             {
-                ParameterMetaData data = new ParameterMetaData()
+                return functionMetaData.GetFieldDescriptions(parameterTypeDescriptionHandler)
+                    .Select(s => new FieldMetaData
+                    {
+                        Name = s.Name,
+                        Decimals = s.Decimals,
+                        NucLength = s.NucLength,
+                        NucOffset = s.NucOffset,
+                        UcLength = s.UcLength,
+                        UcOffset = s.UcOffset,
+                        Type = s.Type.ToString()
+                    })
+                    .ToList();
+            }
+
+            return parameters.Select(parameter => new ParameterMetaData()
                 {
                     Name = parameter.Name,
                     Description = parameter.ParameterText,
@@ -83,15 +96,15 @@ namespace SapCo2
                     Optional = parameter.Optional,
                     Type = parameter.Type.ToString(),
                     UcLength = parameter.UcLength,
-                    Fields = metaData.GetFieldDescriptions(parameter.TypeDescHandle).Select(s=>new FieldMetaData
-                    {
-                        
-                    })
-                    
-                };
-                metaDataList.Add(data);
-            }
+                    Fields = GetFields(parameter.TypeDescHandle)
+            })
+                .ToList().AsReadOnly();
+        }
 
+        public IRfcTransaction CreateTransaction()
+        {
+            using IRfcConnection rfcConnection = GetConnection();
+            return rfcConnection.CreateTransaction();
         }
 
         public void ExecuteRfc(string name)

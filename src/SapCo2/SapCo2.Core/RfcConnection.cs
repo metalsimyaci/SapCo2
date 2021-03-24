@@ -142,7 +142,7 @@ namespace SapCo2.Core
         {
             IntPtr result = GetTransactionHandle(_interop);
 
-            return new RfcTransaction(_interop, result);
+            return new RfcTransaction(_interop, _rfcConnectionHandle,result);
         }
 
         public void SetPool(IRfcConnectionPool sapConnectionPool)

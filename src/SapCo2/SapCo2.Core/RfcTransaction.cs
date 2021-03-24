@@ -12,18 +12,19 @@ namespace SapCo2.Core
         #region Variables
 
         private readonly IRfcInterop _interop;
+        private readonly IntPtr _rfcConnectionHandle;
         private readonly IntPtr _transactionHandle;
 
         #endregion
 
         #region Methods
 
-
         #region Constructors
 
-        public RfcTransaction(IRfcInterop interop, IntPtr transactionHandle)
+        public RfcTransaction(IRfcInterop interop, IntPtr rfcConnectionHandle, IntPtr transactionHandle)
         {
             _interop = interop;
+            _rfcConnectionHandle = rfcConnectionHandle;
             _transactionHandle = transactionHandle;
         }
 
@@ -31,26 +32,48 @@ namespace SapCo2.Core
 
         #region IRfcTransaction Implementation
 
-        public void InvokeTransaction(IntPtr functionHandle)
+        public IRfcTransactionFunction CreateFunction(string name)
         {
-            var resultCode=_interop.InvokeInTransaction(_transactionHandle, functionHandle, out RfcErrorInfo errorInfo);
-            resultCode.ThrowOnError(errorInfo);
-        }
+            IntPtr functionDescriptionHandle = GetFunctionDescription(name);
 
-        public void SaveChangeTransaction()
+            return CreateFromDescriptionHandle(_interop, functionDescriptionHandle);
+        }
+        public void SubmitTransaction()
         {
             RfcResultCodes resultCode = _interop.SubmitTransaction(_transactionHandle, out RfcErrorInfo errorInfo);
-
             resultCode.ThrowOnError(errorInfo);
         }
-
-        public void CommitTransaction()
+        public void ConfirmTransaction()
         {
             RfcResultCodes resultCode = _interop.ConfirmTransaction(_transactionHandle, out RfcErrorInfo errorInfo);
 
             resultCode.ThrowOnError(errorInfo);
         }
 
+        #endregion
+
+        #region Private Function
+        
+        private void DestroyTransaction()
+        {
+            RfcResultCodes resultCode = _interop.DestroyTransaction(_transactionHandle, out RfcErrorInfo errorInfo);
+            resultCode.ThrowOnError(errorInfo);
+        }
+        private IntPtr GetFunctionDescription(string methodName)
+        {
+            IntPtr functionDescriptionHandle = _interop.GetFunctionDesc(_rfcConnectionHandle, methodName, out RfcErrorInfo errorInfo);
+            errorInfo.ThrowOnError();
+
+            return functionDescriptionHandle;
+        }
+        private IRfcTransactionFunction CreateFromDescriptionHandle(IRfcInterop interop, IntPtr functionDescriptionHandle)
+        {
+            IntPtr functionHandle = interop.CreateFunction(functionDescriptionHandle, out RfcErrorInfo errorInfo);
+
+            errorInfo.ThrowOnError();
+
+            return new RfcTransactionFunction(interop, _rfcConnectionHandle,_transactionHandle, functionHandle);
+        }
 
         #endregion
 
@@ -60,14 +83,11 @@ namespace SapCo2.Core
         {
             if (_transactionHandle == IntPtr.Zero) return;
 
-            RfcResultCodes resultCode = _interop.DestroyTransaction(_transactionHandle, out RfcErrorInfo errorInfo);
-            resultCode.ThrowOnError(errorInfo);
+            DestroyTransaction();
         }
 
         #endregion
 
         #endregion
-
-
     }
 }

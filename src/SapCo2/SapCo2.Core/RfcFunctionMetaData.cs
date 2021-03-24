@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using SapCo2.Core.Abstract;
 using SapCo2.Wrapper.Abstract;
 using SapCo2.Wrapper.Enumeration;
@@ -19,11 +18,19 @@ namespace SapCo2.Core
 
         #endregion
 
+        #region Methods
+
+        #region Constructor
+
         public RfcFunctionMetaData(IRfcInterop interop, IntPtr functionDescriptionHandle)
         {
             _interop = interop;
             _functionDescriptionHandle = functionDescriptionHandle;
         }
+
+        #endregion
+
+        #region #IRfcFunctionMetaData implementation
 
         public List<RfcParameterDescription> GetParameterDescriptions()
         {
@@ -37,18 +44,10 @@ namespace SapCo2.Core
             }
             return parameterDescriptions;
         }
-        private int GetParameterCount()
-        {
-            RfcResultCodes result = _interop.GetParameterCount(_functionDescriptionHandle, out int count, out RfcErrorInfo errorInfo);
-            result.ThrowOnError(errorInfo);
-            if (count <= 0)
-                throw new RfcException("Function have not a any parameter");
-            return count;
-        }
         public List<RfcFieldDescription> GetFieldDescriptions(IntPtr typeDescriptionHandler)
         {
             var fieldsDescriptions = new List<RfcFieldDescription>();
-            
+
             var count = GetFieldCount(typeDescriptionHandler);
             for (int i = 0; i < count; i++)
             {
@@ -56,6 +55,19 @@ namespace SapCo2.Core
                 fieldsDescriptions.Add(fieldDescription);
             }
             return fieldsDescriptions;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private int GetParameterCount()
+        {
+            RfcResultCodes result = _interop.GetParameterCount(_functionDescriptionHandle, out int count, out RfcErrorInfo errorInfo);
+            result.ThrowOnError(errorInfo);
+            if (count <= 0)
+                throw new RfcException("Function have not a any parameter");
+            return count;
         }
         private RfcParameterDescription GetParameterDescriptionByIndex(int index)
         {
@@ -90,11 +102,15 @@ namespace SapCo2.Core
             return fieldDesc;
         }
 
+        #endregion
+
         #region IDisposable Implementation
 
         public void Dispose()
         {
         }
+
+        #endregion
 
         #endregion
     }
