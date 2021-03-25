@@ -24,6 +24,7 @@ namespace SapCo2.Samples.Core.Managers
             
             return result;
         }
+       
         public void Print(List<ParameterMetaData> model)
         {
             if (!model?.Any()??true)

@@ -36,7 +36,7 @@ namespace SapCo2.Samples.Core.Managers
 
             if (model == null || ((model?.JobStatuses?.GetLength(0) ?? 0) <= 0))
             {
-                Console.WriteLine($"\n Job Not Found");
+                Console.WriteLine($"Job Not Found");
                 return;
             }
 

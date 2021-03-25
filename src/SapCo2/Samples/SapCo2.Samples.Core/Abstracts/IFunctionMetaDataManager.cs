@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 using SapCo2.Models;
 
 namespace SapCo2.Samples.Core.Abstracts

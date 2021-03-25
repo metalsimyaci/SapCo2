@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Abstract
 {

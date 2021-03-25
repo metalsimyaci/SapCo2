@@ -22,6 +22,11 @@ namespace SapCo2.Core
 
         #region Constructor
 
+        public RfcFunctionMetaData(IRfcInterop interop)
+        {
+            _interop = interop;
+        }
+
         public RfcFunctionMetaData(IRfcInterop interop, IntPtr functionDescriptionHandle)
         {
             _interop = interop;

@@ -45,7 +45,7 @@ namespace SapCo2.Samples.Core.Managers
         {
             if (model == null)
             {
-                Console.WriteLine("BillOfMaterial Not Found!");
+                Console.WriteLine("\nBillOfMaterial Not Found!");
                 return;
             }
 
@@ -59,10 +59,10 @@ namespace SapCo2.Samples.Core.Managers
         {
             if (model == null)
             {
-                Console.WriteLine("BillOfMaterial Not Found!");
+                Console.WriteLine("\nBillOfMaterial Not Found!");
                 return;
             }
-            Console.WriteLine($"Material:\t{model.Code} - {model.Definition} successfully exploded.");
+            Console.WriteLine($"\nMaterial:\t{model.Code} - {model.Definition} successfully exploded.");
         }
     }
 }

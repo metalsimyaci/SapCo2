@@ -25,7 +25,7 @@ namespace SapCo2.Wrapper.Struct
         [MarshalAs(UnmanagedType.I4)]
         public int Decimals;
 
-        [MarshalAs(UnmanagedType.SysUInt)]
+        [MarshalAs(UnmanagedType.SysInt)]
         public IntPtr TypeDescHandle;
 
         [MarshalAs(UnmanagedType.LPStr, SizeConst = 80)]
