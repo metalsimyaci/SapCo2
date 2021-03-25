@@ -46,6 +46,9 @@ namespace SapCo2.Core
         }
         public List<RfcFieldDescription> GetFieldDescriptions(IntPtr typeDescriptionHandler)
         {
+            if (typeDescriptionHandler == IntPtr.Zero)
+                return null;
+
             var fieldsDescriptions = new List<RfcFieldDescription>();
 
             var count = GetFieldCount(typeDescriptionHandler);

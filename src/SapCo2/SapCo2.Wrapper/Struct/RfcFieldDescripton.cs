@@ -13,22 +13,22 @@ namespace SapCo2.Wrapper.Struct
         [MarshalAs(UnmanagedType.I4)]
         public RfcType Type;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int NucLength;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int NucOffset;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int UcLength;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int UcOffset;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int Decimals;
 
-        [MarshalAs(UnmanagedType.FunctionPtr)]
+        [MarshalAs(UnmanagedType.SysUInt)]
         public IntPtr TypeDescHandle;
     }
 }

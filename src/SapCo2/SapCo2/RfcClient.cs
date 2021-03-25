@@ -63,7 +63,7 @@ namespace SapCo2
             _activeServer = serverAlias;
         }
 
-        public IReadOnlyList<ParameterMetaData> ReadFunctionMetaData(string name)
+        public List<ParameterMetaData> ReadFunctionMetaData(string name)
         {
             using IRfcConnection rfcConnection = GetConnection();
             IRfcFunctionMetaData functionMetaData = rfcConnection.CreateFunctionMetaData(name);
@@ -72,7 +72,7 @@ namespace SapCo2
             List<FieldMetaData> GetFields(IntPtr parameterTypeDescriptionHandler)
             {
                 return functionMetaData.GetFieldDescriptions(parameterTypeDescriptionHandler)
-                    .Select(s => new FieldMetaData
+                    ?.Select(s => new FieldMetaData
                     {
                         Name = s.Name,
                         Decimals = s.Decimals,
@@ -82,7 +82,7 @@ namespace SapCo2
                         UcOffset = s.UcOffset,
                         Type = s.Type.ToString()
                     })
-                    .ToList();
+                    ?.ToList();
             }
 
             return parameters.Select(parameter => new ParameterMetaData()
@@ -98,7 +98,7 @@ namespace SapCo2
                     UcLength = parameter.UcLength,
                     Fields = GetFields(parameter.TypeDescHandle)
             })
-                .ToList().AsReadOnly();
+                .ToList();
         }
 
         public IRfcTransaction CreateTransaction()

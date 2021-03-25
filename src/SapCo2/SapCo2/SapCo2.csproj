@@ -31,7 +31,11 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SapCo2.Abstraction\SapCo2.Abstraction.csproj" />
+    <ProjectReference Include="..\SapCo2.Abstraction\SapCo2.Abstraction.csproj">
+      <IsPackable>false</IsPackable>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>SapCo2.Abstraction.dll</IncludeAssets>
+    </ProjectReference>
     <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj">
       <IsPackable>false</IsPackable>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>

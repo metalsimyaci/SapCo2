@@ -28,7 +28,7 @@ namespace SapCo2.Abstract
             string noData = "") where TOutput : class, ISapTable;
         TOutput GetStruct<TOutput>(List<string> options, bool includeUnsafeFields = false, string delimiter = "|", string noData = "") where TOutput : class, ISapTable;
         Task<TOutput> GetStructAsync<TOutput>(List<string> options, bool includeUnsafeFields = false, string delimiter = "|", string noData = "") where TOutput : class, ISapTable;
-        IReadOnlyList<ParameterMetaData> ReadFunctionMetaData(string name);
+        List<ParameterMetaData> ReadFunctionMetaData(string name);
         IRfcTransaction CreateTransaction();
     }
 }

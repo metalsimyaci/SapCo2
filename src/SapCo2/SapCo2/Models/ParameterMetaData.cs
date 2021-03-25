@@ -14,7 +14,7 @@ namespace SapCo2.Models
         public string DefaultValue { get; set; }
         public bool Optional { get; set; }
 
-        public IReadOnlyList<FieldMetaData> Fields { get; set; }
+        public List<FieldMetaData> Fields { get; set; }
 
     }
 
