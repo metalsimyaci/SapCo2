@@ -9,7 +9,7 @@ using SapCo2.Samples.Core.Abstracts;
 using SapCo2.Samples.Core.Extensions;
 using SapCo2.Samples.Core.Models;
 
-namespace SapCo2.Samples.Console.Net5
+namespace SapCo2.Samples.Console.NetFramework48
 {
     internal static class Program
     {
@@ -18,7 +18,7 @@ namespace SapCo2.Samples.Console.Net5
         #region Constants
 
         private const string AppSettingsFileName = "appSettings.json";
-        private const string UserSecretId = "9D0ABE4E-8415-4738-8021-14000B491020";
+        private const string UserSecretId = "583914EA-59A4-4EC0-AD07-C8CBC3C48424";
         private static bool DisplayedWelcomeMessage;
         #endregion
 
@@ -26,15 +26,15 @@ namespace SapCo2.Samples.Console.Net5
 
         private static IServiceCollection ServiceCollection;
         private static IConfigurationBuilder ConfigurationBuilder;
-        private static readonly Dictionary<char, Tuple<string, string>> Operations = new()
+        private static readonly Dictionary<char, Tuple<string, string>> Operations = new Dictionary<char, Tuple<string, string>>()
         {
-            {'1', new Tuple<string, string>("RFC Samples", "GetBillOfMaterial")},
-            {'2', new Tuple<string, string>("RFC Samples", "GetBillOfMaterials")},
-            {'3', new Tuple<string, string>("Table Samples", "GetMaterial")},
-            {'4', new Tuple<string, string>("Table Samples", "GetMaterialsByPrefixWithSubTable")},
-            {'5', new Tuple<string, string>("Bapi Samples", "GetVendors")},
-            {'6', new Tuple<string, string>("RFC Samples", "GetSAPJobs")},
-            {'7', new Tuple<string, string>("MetaData Samples", "GetFunctionMetaData")},
+            { '1', new Tuple<string, string>("RFC Samples", "GetBillOfMaterial") },
+            { '2', new Tuple<string, string>("RFC Samples", "GetBillOfMaterials") },
+            { '3', new Tuple<string, string>("Table Samples", "GetMaterial") },
+            { '4', new Tuple<string, string>("Table Samples", "GetMaterialsByPrefixWithSubTable") },
+            { '5', new Tuple<string, string>("Bapi Samples", "GetVendors") },
+            { '6', new Tuple<string, string>("RFC Samples", "GetSAPJobs") },
+            { '7', new Tuple<string, string>("MetaData Samples", "GetFunctionMetaData") },
         };
 
         #endregion
@@ -63,7 +63,7 @@ namespace SapCo2.Samples.Console.Net5
         {
             ConfigurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile(AppSettingsFileName,true, true)
+                .AddJsonFile(AppSettingsFileName, true, true)
                 .AddUserSecrets(UserSecretId, true)
                 .AddEnvironmentVariables();
             ApplicationConfiguration = ConfigurationBuilder.Build();
@@ -97,7 +97,7 @@ namespace SapCo2.Samples.Console.Net5
         private static async Task Menu()
         {
             ConsoleKeyInfo keyCode;
-            
+
             do
             {
                 WelcomeMessage();
@@ -189,27 +189,27 @@ namespace SapCo2.Samples.Console.Net5
         {
             var billOfMaterialList = new List<Tuple<string, string, string>>()
             {
-                new("200ALFS0304000018", "LIVE", "201"),
-                new("200DYNA0102000000", "LIVE", "201"),
-                new("200ELAC0303000738", "LIVE", "201"),
-                new("200RUBA0305000861", "LIVE", "201"),
-                new("201STBK1603000092", "LIVE", "201"),
-                new("203BARB2306000021", "LIVE", "201"),
-                new("203ELAC2D06000000", "LIVE", "201"),
-                new("204LMAC3K04000260", "LIVE", "201"),
-                new("204STBKS903000089", "LIVE", "201"),
-                new("207ALBZ1002000400", "LIVE", "201"),
-                new("207SLPT0000000000", "LIVE", "201"),
-                new("207SMCF1602000900", "LIVE", "201"),
-                new("200ALFS0304000018", "TEST", "201"),
-                new("200DYNA0102000000", "TEST", "201"),
-                new("200ELAC0303000738", "TEST", "201"),
-                new("200RUBA0305000861", "TEST", "201"),
-                new("201STBK1603000092", "TEST", "201"),
-                new("203BARB2306000021", "TEST", "201"),
-                new("203ELAC2D06000000", "TEST", "201"),
-                new("204LMAC3K04000260", "TEST", "201"),
-                new("204STBKS903000089", "TEST", "201"),
+                new Tuple<string, string, string>("200ALFS0304000018", "LIVE", "201"),
+                new Tuple<string, string, string>("200DYNA0102000000", "LIVE", "201"),
+                new Tuple<string, string, string>("200ELAC0303000738", "LIVE", "201"),
+                new Tuple<string, string, string>("200RUBA0305000861", "LIVE", "201"),
+                new Tuple<string, string, string>("201STBK1603000092", "LIVE", "201"),
+                new Tuple<string, string, string>("203BARB2306000021", "LIVE", "201"),
+                new Tuple<string, string, string>("203ELAC2D06000000", "LIVE", "201"),
+                new Tuple<string, string, string>("204LMAC3K04000260", "LIVE", "201"),
+                new Tuple<string, string, string>("204STBKS903000089", "LIVE", "201"),
+                new Tuple<string, string, string>("207ALBZ1002000400", "LIVE", "201"),
+                new Tuple<string, string, string>("207SLPT0000000000", "LIVE", "201"),
+                new Tuple<string, string, string>("207SMCF1602000900", "LIVE", "201"),
+                new Tuple<string, string, string>("200ALFS0304000018", "TEST", "201"),
+                new Tuple<string, string, string>("200DYNA0102000000", "TEST", "201"),
+                new Tuple<string, string, string>("200ELAC0303000738", "TEST", "201"),
+                new Tuple<string, string, string>("200RUBA0305000861", "TEST", "201"),
+                new Tuple<string, string, string>("201STBK1603000092", "TEST", "201"),
+                new Tuple<string, string, string>("203BARB2306000021", "TEST", "201"),
+                new Tuple<string, string, string>("203ELAC2D06000000", "TEST", "201"),
+                new Tuple<string, string, string>("204LMAC3K04000260", "TEST", "201"),
+                new Tuple<string, string, string>("204STBKS903000089", "TEST", "201"),
             };
 
             IBillOfMaterialManager manager = ServiceProvider.GetRequiredService<IBillOfMaterialManager>();

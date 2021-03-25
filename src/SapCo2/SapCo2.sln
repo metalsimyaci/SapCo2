@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Core", "Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Console.Net5", "Samples\SapCo2.Samples.Console.Net5\SapCo2.Samples.Console.Net5.csproj", "{0F02248E-F822-4175-B6F8-EF4CEB6661D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Console.NetFramework48", "Samples\SapCo2.Samples.Console.NetFramework48\SapCo2.Samples.Console.NetFramework48.csproj", "{71CE7451-C23F-49E0-BA1D-458E76049B13}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{0F02248E-F822-4175-B6F8-EF4CEB6661D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F02248E-F822-4175-B6F8-EF4CEB6661D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F02248E-F822-4175-B6F8-EF4CEB6661D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71CE7451-C23F-49E0-BA1D-458E76049B13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CE7451-C23F-49E0-BA1D-458E76049B13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CE7451-C23F-49E0-BA1D-458E76049B13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CE7451-C23F-49E0-BA1D-458E76049B13}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E} = {675CB084-F812-4258-B1DF-5E97331F51DA}
 		{EB1BFB06-6338-46A0-AEE8-D26F63E8E253} = {675CB084-F812-4258-B1DF-5E97331F51DA}
 		{0F02248E-F822-4175-B6F8-EF4CEB6661D5} = {675CB084-F812-4258-B1DF-5E97331F51DA}
+		{71CE7451-C23F-49E0-BA1D-458E76049B13} = {675CB084-F812-4258-B1DF-5E97331F51DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4AB77E7-6267-450B-8131-117F23E133C6}
