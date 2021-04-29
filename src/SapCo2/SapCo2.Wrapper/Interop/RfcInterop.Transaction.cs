@@ -8,7 +8,7 @@ namespace SapCo2.Wrapper.Interop
     internal sealed partial class RfcInterop
     {
         [DllImport(NetWeaverRfcLib)]
-        private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle,out string tid, out RfcErrorInfo errorInfo);
+        private static extern RfcResultCodes RfcGetTransactionID(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo);
         
         public RfcResultCodes GetTransactionId(IntPtr rfcHandle, out string tid, out RfcErrorInfo errorInfo) =>
             RfcGetTransactionID(rfcHandle, out tid, out errorInfo);

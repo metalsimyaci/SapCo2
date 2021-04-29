@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Options;
 using SapCo2.Core.Abstract;
 using SapCo2.Core.Extensions;
@@ -177,11 +178,10 @@ namespace SapCo2.Core
         }
         private IntPtr GetTransactionHandle(IRfcInterop interop)
         {
-            RfcResultCodes resultCode = _interop.GetTransactionId(_rfcConnectionHandle, out string tid, out RfcErrorInfo errorInfo);
+            RfcResultCodes resultCode = _interop.GetTransactionId(_rfcConnectionHandle, out var tid, out RfcErrorInfo errorInfo);
             resultCode.ThrowOnError(errorInfo);
-
-            IntPtr result = _interop.CreateTransaction(_rfcConnectionHandle, tid, null, out errorInfo);
-            resultCode.ThrowOnError(errorInfo);
+            IntPtr result = _interop.CreateTransaction(_rfcConnectionHandle,tid, null, out errorInfo);
+            errorInfo.ThrowOnError();
             return result;
         }
         private IRfcFunction CreateFromDescriptionHandle(IRfcInterop interop, IntPtr functionDescriptionHandle)

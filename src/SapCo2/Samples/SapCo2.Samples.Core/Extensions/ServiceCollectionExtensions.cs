@@ -22,6 +22,8 @@ namespace SapCo2.Samples.Core.Extensions
             services.TryAddSingleton<IMaterialManager, MaterialManager>();
             services.TryAddSingleton<IBillOfMaterialManager, BillOfMaterialManager>();
             services.TryAddSingleton<IFunctionMetaDataManager, FunctionMetaDataManager>();
+            services.TryAddSingleton<IMaterialSaveDataManager, MaterialSaveDataManager>();
+            services.TryAddSingleton<IGoodsMovementManager, GoodsMovementManager>();
             services.BuildServiceProvider();
 
             return services;

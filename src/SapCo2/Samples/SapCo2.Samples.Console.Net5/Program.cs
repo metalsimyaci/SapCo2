@@ -35,6 +35,7 @@ namespace SapCo2.Samples.Console.Net5
             {'5', new Tuple<string, string>("Bapi Samples", "GetVendors")},
             {'6', new Tuple<string, string>("RFC Samples", "GetSAPJobs")},
             {'7', new Tuple<string, string>("MetaData Samples", "GetFunctionMetaData")},
+            {'8', new Tuple<string, string>("Transaction Samples", "CreateMaterialWithTransactionAsync") },
         };
 
         #endregion
@@ -144,6 +145,9 @@ namespace SapCo2.Samples.Console.Net5
             case '7':
                 GetFunctionMetaData();
                 break;
+            case '8':
+                await CreateMaterialWithTransactionAsync();
+                break;
             default:
                 System.Console.WriteLine("Menu Key not found!");
                 break;
@@ -236,6 +240,12 @@ namespace SapCo2.Samples.Console.Net5
             IFunctionMetaDataManager manager = ServiceProvider.GetRequiredService<IFunctionMetaDataManager>();
             List<ParameterMetaData> metaData = manager.GetFunctionMetaData(FUNCTION_NAME);
             manager.Print(metaData);
+        }
+        private static async Task CreateMaterialWithTransactionAsync()
+        {
+            IMaterialSaveDataManager manager = ServiceProvider.GetRequiredService<IMaterialSaveDataManager>();
+            MaterialSaveDataBapiOutputParameter result = await manager.CreateMaterialAsync();
+            manager.Print(result);
         }
 
         #endregion
