@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Wrapper.Test", "Test
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{675CB084-F812-4258-B1DF-5E97331F51DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.NetCore", "SapCo2.Samples.NetCore\SapCo2.Samples.NetCore.csproj", "{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Samples.NetCore", "SapCo2.Samples.NetCore\SapCo2.Samples.NetCore.csproj", "{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Web", "SapCo2.Samples.Web\SapCo2.Samples.Web.csproj", "{905BC76C-947C-428A-AD00-428BE217FC8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{905BC76C-947C-428A-AD00-428BE217FC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{905BC76C-947C-428A-AD00-428BE217FC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{905BC76C-947C-428A-AD00-428BE217FC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{905BC76C-947C-428A-AD00-428BE217FC8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +70,7 @@ Global
 		{15812CD7-D826-4627-A017-E2158DCB4C82} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
 		{5597791A-6D93-45D2-994C-A6C4BD8B34A2} = {9032CD1E-3357-44DF-B895-253F7B9DC81F}
 		{3D8A851A-E467-4745-BE8F-5F22C1FDCF1E} = {675CB084-F812-4258-B1DF-5E97331F51DA}
+		{905BC76C-947C-428A-AD00-428BE217FC8E} = {675CB084-F812-4258-B1DF-5E97331F51DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4AB77E7-6267-450B-8131-117F23E133C6}
