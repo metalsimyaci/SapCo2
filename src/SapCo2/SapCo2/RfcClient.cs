@@ -15,6 +15,7 @@ using SapCo2.Models;
 using SapCo2.Query;
 using SapCo2.Wrapper.Exception;
 using SapCo2.Wrapper.Struct;
+// ReSharper disable InconsistentNaming
 
 namespace SapCo2
 {

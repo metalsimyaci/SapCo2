@@ -1,6 +1,7 @@
 using System.Reflection;
 using SapCo2.Abstraction.Model;
 using SapCo2.Wrapper.Exception;
+// ReSharper disable InconsistentNaming
 
 namespace SapCo2.Extensions
 {
