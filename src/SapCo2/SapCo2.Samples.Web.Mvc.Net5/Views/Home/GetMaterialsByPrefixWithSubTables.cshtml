@@ -1,0 +1,32 @@
+﻿@model IEnumerable<SapCo2.Samples.Core.Models.Material>
+
+@{
+    ViewData["Title"] = "GetMaterialsByPrefixWithSubTables";
+}
+
+<h1>GetMaterialsByPrefixWithSubTables</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Code)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaterialCategoryCode)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialCategoryCode)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

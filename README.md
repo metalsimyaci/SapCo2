@@ -4,7 +4,7 @@
 
 [![Multi Build And Test ( Net5.0, Core3.1, Core2.1 )](https://github.com/metalsimyaci/SapCo2/workflows/Multi%20Build%20And%20Test%20(%20Net5.0,%20Core3.1,%20Core2.1%20)/badge.svg?branch=master)](https://github.com/metalsimyaci/SapCo2/actions?query=workflow%3A%22Multi+Build+And+Test+%28+Net5.0%2C+Core3.1%2C+Core2.1+%29%22)
 
-[Türkçe Döküman için](https://github.com/metalsimyaci/SapCo2/README_TR.md)
+[Türkçe Döküman için](https://github.com/metalsimyaci/SapCo2/blob/master/README_TR.md)
 
 # SapCo2 (SAP Connector Core)
 

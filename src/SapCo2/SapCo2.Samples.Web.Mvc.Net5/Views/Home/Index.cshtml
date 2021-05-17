@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "SapCo2 Web MVC Sample";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>GetJobs - <a href="@Url.Action("GetJobs","Home")">SAP üzerinde çalıştırılan son Job tanımları getirilir</a>.</p>
+    <p>GetMaterial - <a href="@Url.Action("GetMaterial","Home")">Sap üzerindeki "1DACTV76A201000002" kodlu malzeme bilgileri getirilir</a>.</p>
+    <p>GetMaterialsByPrefixWithSubTables - <a href="@Url.Action("GetMaterialsByPrefixWithSubTables")">SAP üzerinde "11AKPAK" ile başlayan ilk 10 malzeme getirilir</a>.</p>
+    <p>GetVendorsUseBapi - <a href="@Url.Action("GetVendorsUseBapi","Home")">Firma kodu 200 olan satıcı tanımlarını getiri</a>.</p>
+    <p>GetBillOfMaterial - <a href="@Url.Action("GetBillOfMaterial","Home")">"200DYNA0102000000" malzemesine ait "201" üretim yeri için malzeme reçetesini getirir</a>.</p>
+    <p>GetBillOfMaterials - <a href="@Url.Action("GetBillOfMaterials","Home")">21 malzeme için ürün reçetesini getirir</a>.</p>
+    <p>GetFunctionMetaData - <a href="@Url.Action("GetFunctionMetaData","Home")">"ZBC_GET_JOBS" RFC sine ait metadata bilgileri getirilir</a>.</p>
+</div>

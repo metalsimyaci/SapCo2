@@ -1,0 +1,73 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using SapCo2.Samples.Core.Extensions;
+
+namespace SapCo2.Samples.Web.Mvc.Net5
+{
+    public class Startup
+    {
+        #region Constants
+
+        private const string AppSettingsFileName = "appSettings.json";
+        private const string UserSecretId = "583914EA-59A4-4EC0-AD07-C8CBC3C48424";
+
+        #endregion
+
+        #region Properties
+
+        public IConfiguration Configuration { get; }
+
+        #endregion
+
+        public Startup()
+        {
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile(AppSettingsFileName, true, true)
+                .AddUserSecrets(UserSecretId, true)
+                .AddEnvironmentVariables();
+            Configuration = configurationBuilder.Build();
+        }
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSapCo2SampleCore(Configuration);
+            services.AddControllersWithViews();
+        }
+
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
+    }
+}
