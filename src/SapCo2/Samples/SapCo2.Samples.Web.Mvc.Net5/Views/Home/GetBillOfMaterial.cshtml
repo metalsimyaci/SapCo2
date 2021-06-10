@@ -1,0 +1,122 @@
+﻿@model SapCo2.Samples.Core.Models.BomOutputParameter
+
+@{
+    ViewData["Title"] = "GetBillOfMaterial";
+}
+<div>
+    <a asp-action="Index"><i class="arrow"></i> Menüye Dön</a>
+</div>
+<h1>GetBillOfMaterial</h1>
+
+
+<dl class="row">
+    <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.Topmat.Code)
+    </dt>
+    <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.Topmat.Code)
+    </dd>
+    <dt class = "col-sm-2">
+        @Html.DisplayNameFor(model => model.Topmat.Definition)
+    </dt>
+    <dd class = "col-sm-10">
+        @Html.DisplayFor(model => model.Topmat.Definition)
+    </dd>
+</dl>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().SubItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().Unit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().UnitAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().SubItemCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().ComponentAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().TreeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().TreeNodeNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().InternalCounter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().UpperTreeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().SubTreeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StbData.First().MaterialGroup)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.StbData) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubItemCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ComponentAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TreeType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TreeNodeNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InternalCounter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UpperTreeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubTreeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialGroup)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

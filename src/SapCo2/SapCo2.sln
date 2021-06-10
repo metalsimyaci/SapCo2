@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SapCo2.Samples.Console.Net5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Console.NetFramework48", "Samples\SapCo2.Samples.Console.NetFramework48\SapCo2.Samples.Console.NetFramework48.csproj", "{71CE7451-C23F-49E0-BA1D-458E76049B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Web.Mvc.Net5", "SapCo2.Samples.Web.Mvc.Net5\SapCo2.Samples.Web.Mvc.Net5.csproj", "{617DDC8A-0A32-4E0D-A20B-1D4477105547}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapCo2.Samples.Web.Mvc.Net5", "Samples\SapCo2.Samples.Web.Mvc.Net5\SapCo2.Samples.Web.Mvc.Net5.csproj", "{617DDC8A-0A32-4E0D-A20B-1D4477105547}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,13 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using SapCo2.Samples.Core.Extensions;
 
 namespace SapCo2.Samples.Web.Mvc.Net5
@@ -17,7 +13,7 @@ namespace SapCo2.Samples.Web.Mvc.Net5
         #region Constants
 
         private const string AppSettingsFileName = "appSettings.json";
-        private const string UserSecretId = "583914EA-59A4-4EC0-AD07-C8CBC3C48424";
+        private const string UserSecretId = "6EE22606-D56C-4FC3-A363-5C58E3ED1371";
 
         #endregion
 
@@ -29,7 +25,7 @@ namespace SapCo2.Samples.Web.Mvc.Net5
 
         public Startup()
         {
-            var configurationBuilder = new ConfigurationBuilder()
+            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile(AppSettingsFileName, true, true)
                 .AddUserSecrets(UserSecretId, true)

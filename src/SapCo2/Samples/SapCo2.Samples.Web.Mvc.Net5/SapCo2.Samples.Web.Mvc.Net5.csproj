@@ -18,6 +18,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Samples\SapCo2.Samples.Core\SapCo2.Samples.Core.csproj" />
+    <ProjectReference Include="..\SapCo2.Samples.Core\SapCo2.Samples.Core.csproj" />
   </ItemGroup>
 </Project>

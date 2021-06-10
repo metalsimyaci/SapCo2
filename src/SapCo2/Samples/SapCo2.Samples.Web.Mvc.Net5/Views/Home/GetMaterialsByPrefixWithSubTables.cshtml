@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "GetMaterialsByPrefixWithSubTables";
 }
-
+<div>
+    <a asp-action="Index"><i class="arrow"></i> Menüye Dön</a>
+</div>
 <h1>GetMaterialsByPrefixWithSubTables</h1>
 
 <table class="table">
@@ -13,7 +15,7 @@
                 @Html.DisplayNameFor(model => model.Code)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MaterialCategoryCode)
+                @Html.DisplayNameFor(model => model.Definition.Definition)
             </th>
         </tr>
     </thead>
@@ -24,7 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MaterialCategoryCode)
+                @Html.DisplayFor(modelItem => item.Definition.Definition)
             </td>
         </tr>
 }
