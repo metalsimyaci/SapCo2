@@ -182,8 +182,9 @@ namespace SapCo2.Samples.Console.Net5
         }
         private static async Task GetMaterialsByPrefixWithSubTablesAsync()
         {
-            const string MATERIAL_PREFIX = "11AKPAK";
-            const int RECORD_COUNT = 10;
+            //const string MATERIAL_PREFIX = "11AKPAK";
+            const string MATERIAL_PREFIX = "1D";
+            const int RECORD_COUNT = 0;
 
             IMaterialManager manager = ServiceProvider.GetRequiredService<IMaterialManager>();
             List<Material> result = await manager.GetMaterialsByPrefixWithSubTablesAsync(MATERIAL_PREFIX, RECORD_COUNT);

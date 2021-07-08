@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SapCo2.Abstract;
@@ -13,12 +14,13 @@ using SapCo2.Samples.Core.Models;
 
 namespace SapCo2.Samples.Core.Managers
 {
-    public class MaterialManager:IMaterialManager
+    public class MaterialManager : IMaterialManager
     {
         #region variables
 
         private readonly IServiceProvider _serviceProvider;
-        private const int PartitionCount = 50;
+        private const int PartitionCount = 500;
+        private const int MaxConcurrentThreadCount = 5;
 
         #endregion
 
@@ -35,8 +37,10 @@ namespace SapCo2.Samples.Core.Managers
 
         #region Interface Implementation
 
+
         public async Task<Material> GetMaterialAsync(string materialCode)
         {
+
             List<string> whereClause = new AbapQuery().Set(QueryOperator.Equal("MATNR", materialCode))
                 .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BOOLEAN_X)).GetQuery();
 
@@ -54,7 +58,7 @@ namespace SapCo2.Samples.Core.Managers
                 .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BOOLEAN_X)).GetQuery();
 
             using IRfcClient sapClient = _serviceProvider.GetRequiredService<IRfcClient>();
-            return await sapClient.GetTableDataAsync<Material>(whereClause, rowCount: recordCount);
+            return await sapClient.GetTableDataAsync<Material>(whereClause, rowCount: recordCount,includeUnsafeFields:true);
         }
         public async Task<List<Material>> GetMaterialsByPrefixWithSubTablesAsync(string materialCodePrefix, int recordCount = 5)
         {
@@ -66,7 +70,7 @@ namespace SapCo2.Samples.Core.Managers
 
         public void Print(List<Material> model)
         {
-            if (!model?.Any()??true)
+            if (!model?.Any() ?? true)
             {
                 Console.WriteLine("\n Material Not Found!");
                 return;
@@ -104,20 +108,22 @@ namespace SapCo2.Samples.Core.Managers
             var taskList = new List<Task>();
             var definitionList = new ConcurrentQueue<MaterialDefinition>();
             var materialCategoryDefinitionList = new ConcurrentQueue<MaterialCategoryDefinition>();
+            using (var semaphoreSlim = new SemaphoreSlim(MaxConcurrentThreadCount))
+            {
+                List<Task> materialDefinitionTaskList = SetMaterialDefinitionOptionAsync(queryOptions, materialList, definitionList, semaphoreSlim);
+                if (materialDefinitionTaskList.Any())
+                    taskList.AddRange(materialDefinitionTaskList);
 
-            List<Task> materialDefinitionTaskList = SetMaterialDefinitionOptionAsync(queryOptions, materialList, definitionList);
-            if (materialDefinitionTaskList.Any())
-                taskList.AddRange(materialDefinitionTaskList);
+                List<Task> materialCategoryTaskList =
+                    SetMaterialCategoryOptionAsync(queryOptions, materialList, materialCategoryDefinitionList, semaphoreSlim);
+                if (materialCategoryTaskList.Any())
+                    taskList.AddRange(materialCategoryTaskList);
 
-            List<Task> materialCategoryTaskList =
-                SetMaterialCategoryOptionAsync(queryOptions, materialList, materialCategoryDefinitionList);
-            if (materialCategoryTaskList.Any())
-                taskList.AddRange(materialCategoryTaskList);
+                if (!taskList.Any())
+                    return materialList;
 
-            if (!taskList.Any())
-                return materialList;
-
-            await Task.WhenAll(taskList).ConfigureAwait(false);
+                await Task.WhenAll(taskList).ConfigureAwait(false);
+            }
 
             ILookup<string, MaterialDefinition> materialDefinitionLookup = definitionList.ToLookup(x => x.Code);
             ILookup<string, MaterialCategoryDefinition> materialCategoryLookup =
@@ -137,7 +143,7 @@ namespace SapCo2.Samples.Core.Managers
         }
 
         private List<Task> SetMaterialDefinitionOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList,
-            ConcurrentQueue<MaterialDefinition> definitionList)
+            ConcurrentQueue<MaterialDefinition> definitionList, SemaphoreSlim semaphoreSlim = null)
         {
             var taskList = new List<Task>();
             if (!queryOptions.IncludeDefinition)
@@ -154,10 +160,20 @@ namespace SapCo2.Samples.Core.Managers
 
                 taskList.Add(Task.Run(async () =>
                 {
-                    using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
-                    List<MaterialDefinition> definitions = await client.GetTableDataAsync<MaterialDefinition>(query);
-                    foreach (MaterialDefinition definition in definitions)
-                        definitionList.Enqueue(definition);
+                    try
+                    {
+                        if (semaphoreSlim != null)
+                            await semaphoreSlim.WaitAsync();
+                        using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+                        List<MaterialDefinition> definitions = await client.GetTableDataAsync<MaterialDefinition>(query, includeUnsafeFields: true);
+                        foreach (MaterialDefinition definition in definitions)
+                            definitionList.Enqueue(definition);
+                    }
+                    finally
+                    {
+                        if (semaphoreSlim != null)
+                            semaphoreSlim.Release();
+                    }
                 }));
             }
 
@@ -165,7 +181,7 @@ namespace SapCo2.Samples.Core.Managers
         }
 
         private List<Task> SetMaterialCategoryOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList,
-            ConcurrentQueue<MaterialCategoryDefinition> materialCategoryDefinitionList)
+            ConcurrentQueue<MaterialCategoryDefinition> materialCategoryDefinitionList, SemaphoreSlim semaphoreSlim = null)
         {
             var taskList = new List<Task>();
             if (!queryOptions.IncludeMaterialCategory)
@@ -187,10 +203,20 @@ namespace SapCo2.Samples.Core.Managers
 
                 taskList.Add(Task.Run(async () =>
                 {
-                    using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
-                    List<MaterialCategoryDefinition> definitions = await client.GetTableDataAsync<MaterialCategoryDefinition>(queryList);
-                    foreach (MaterialCategoryDefinition definition in definitions)
-                        materialCategoryDefinitionList.Enqueue(definition);
+                    try
+                    {
+                        if (semaphoreSlim != null)
+                            await semaphoreSlim.WaitAsync();
+                        using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+                        List<MaterialCategoryDefinition> definitions = await client.GetTableDataAsync<MaterialCategoryDefinition>(queryList, includeUnsafeFields: true);
+                        foreach (MaterialCategoryDefinition definition in definitions)
+                            materialCategoryDefinitionList.Enqueue(definition);
+                    }
+                    finally
+                    {
+                        if (semaphoreSlim != null)
+                            semaphoreSlim.Release();
+                    }
                 }));
             }
 
