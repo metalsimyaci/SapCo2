@@ -4,7 +4,7 @@
 
 [![Multi Build And Test ( Net5.0, Core3.1, Core2.1 )](https://github.com/metalsimyaci/SapCo2/workflows/Multi%20Build%20And%20Test%20(%20Net5.0,%20Core3.1,%20Core2.1%20)/badge.svg?branch=master)](https://github.com/metalsimyaci/SapCo2/actions?query=workflow%3A%22Multi+Build+And+Test+%28+Net5.0%2C+Core3.1%2C+Core2.1+%29%22)
 
-[English Document](https://github.com/metalsimyaci/SapCo2)
+[English Documentation](https://github.com/metalsimyaci/SapCo2)
 
 # SapCo2 (SAP Connector Core)
 
@@ -52,7 +52,7 @@ veya Paket Referansı
 <PackageReference Include="SapCo2" Version="1.0.0.6" />
 ```
 
-**Note:** [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) ve [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options) bağlılığına sahiptir.
+**Note:** [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) ve [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options) bağımlılığına sahiptir.
 
 ## Kullanım
 

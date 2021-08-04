@@ -4,7 +4,7 @@
 
 [![Multi Build And Test ( Net5.0, Core3.1, Core2.1 )](https://github.com/metalsimyaci/SapCo2/workflows/Multi%20Build%20And%20Test%20(%20Net5.0,%20Core3.1,%20Core2.1%20)/badge.svg?branch=master)](https://github.com/metalsimyaci/SapCo2/actions?query=workflow%3A%22Multi+Build+And+Test+%28+Net5.0%2C+Core3.1%2C+Core2.1+%29%22)
 
-[Türkçe Döküman için](https://github.com/metalsimyaci/SapCo2/blob/master/README_TR.md)
+[Türkçe Dökümantasyon](https://github.com/metalsimyaci/SapCo2/blob/master/README_TR.md)
 
 # SapCo2 (SAP Connector Core)
 
@@ -12,7 +12,8 @@ Referenced by [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) and [NwRfcNet
 
 SapCo2 is support .Net Core, Net 5 ve .Net Frameworks.
 
-For detailed documentation, you can browse the [Proje Wiki](https://github.com/metalsimyaci/SapCo2/wiki) pages.
+For detailed documentation, you can browse the [Proje Wiki](https://github.com/metalsimyaci/SapCo2/wiki) pages. 
+Cooming Soon.
 
 ## Requiretment
 
@@ -25,3 +26,23 @@ After obtaining the relevant SKD (requires an SAP licensed account from you);
 - or directly copy the contents of the **lib** folder to your output directory.
 
  To use the SDK package in the Windows operating system, you must install the 64-bit version of [Visual C ++ 2013 redistributable package](https://www.microsoft.com/en-us/download/details.aspx?id=40784).
+
+## Instalization
+
+PackageManager
+
+```shell
+Install-Package SapCo2
+```
+
+Or DotNet
+
+```shell
+dotnet add package SapCo2
+```
+or Package Referance
+```xml
+<PackageReference Include="SapCo2" Version="1.0.0.6" />
+```
+
+**Note:** Has dependencies [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) ve [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options).

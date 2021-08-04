@@ -3,24 +3,10 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <Title>SapCo2.Abstraction</Title>
-    <Authors>metalsimyaci</Authors>
-    <Description>SAPCo2 Abstraction Library</Description>
-    <Copyright>©2021 Kaon Game Studio</Copyright>
-    <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <Company>Kaon Game Studio</Company>
-    <Version>1.2.20.25</Version>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Symbol Package Added</PackageReleaseNotes>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
-    <PackageIcon>logo.png</PackageIcon>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <PackageVersion>1.0.0.1</PackageVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <Version>1.2.0.2</Version>
+    <AssemblyVersion>1.2.0.2</AssemblyVersion>
+    <FileVersion>1.2.0.2</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="logo.png" />

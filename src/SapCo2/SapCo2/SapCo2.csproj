@@ -2,34 +2,38 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Title>SapCo2</Title>
     <Authors>metalsimyaci</Authors>
-    <Description>SAP NetWeaver RFC Library imlementation for .Net Core</Description>
+    <Description>SAP NetWeaver RFC Library imlementation for .Net</Description>
     <Copyright>© 2020</Copyright>
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>2.2.20.25</AssemblyVersion>
-    <FileVersion>2.2.20.25</FileVersion>
+    <AssemblyVersion>1.2.0.1</AssemblyVersion>
+    <FileVersion>1.2.0.1</FileVersion>
     <Company>Kaon Game Studio</Company>
-    <Version>2.2.20.25</Version>
+    <Version>1.2.0.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Change Attribute Types</PackageReleaseNotes>
+    <PackageReleaseNotes>
+      
+      SAPCO2 usage changed.
+    </PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>logo.png</PackageIcon>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <PackageVersion>1.0.0.6</PackageVersion>
+    <PackageVersion>1.2.0.1</PackageVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\SapCo2.Abstraction\SapCo2.Abstraction.csproj">
       <IsPackable>false</IsPackable>

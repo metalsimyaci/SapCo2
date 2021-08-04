@@ -7,9 +7,9 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
-    <Version>1.2.20.25</Version>
-    <AssemblyVersion>1.2.20.25</AssemblyVersion>
-    <FileVersion>1.2.20.25</FileVersion>
+    <Version>1.2.0.2</Version>
+    <AssemblyVersion>1.2.0.2</AssemblyVersion>
+    <FileVersion>1.2.0.2</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
