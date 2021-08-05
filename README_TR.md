@@ -14,6 +14,8 @@ Geliştirme aşamasında daha önceden geliştirilmiş olan [SapNwRfc](https://g
 
 Kütüphanemizi .Net Core, Net 5 ve .Net Framework' lerini desteklemektedir.
 
+Yeni mimari yapıdaki bir çok noktadaki katkılarından dolayı Mahmut KOLTUK' a teşekkür ederim.
+
 ## Gereksinimler
 
 Kütüphanemiz SAP NetWeaver RFC Library 7.50 SDK içerisindeki C++ ile geliştirilmiş .dll dosyalarına ihtiyaç duyar.

@@ -12,7 +12,9 @@ We tried to design SAPCO2 as a library for data processing over SAP in the simpl
 
 Referenced by [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) and [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projects that were previously developed during the development phase. I recommend that you take a look at these two projects before examining the project. Especially the Wrapper parts have emerged by combining the common aspects of the two projects.
 
-SapCo2 is support .Net Core, Net 5 ve .Net Frameworks.
+supportted .Net Core, Net 5 ve .Net Frameworks.
+
+I would like to thank Mahmut KOLTUK for his contributions at many points in the new architectural structure.
 
 ## Requiretment
 
