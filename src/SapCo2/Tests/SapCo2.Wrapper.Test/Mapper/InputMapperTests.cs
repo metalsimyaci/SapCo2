@@ -24,7 +24,7 @@ namespace SapCo2.Wrapper.Test.Mapper
         }
 
         [TestInitialize]
-        public void Intitialize()
+        public void Initialize()
         {
             DataHandle = (IntPtr)123;
             _interopMock = new Mock<IRfcInterop>();
