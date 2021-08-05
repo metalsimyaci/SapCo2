@@ -457,23 +457,6 @@ namespace SapCo2.Core.Test
             _interopMock.Verify(x => x.CloseConnection(RfcConnectionHandle, out errorInfo), Times.Once);
         }
 
-        [TestMethod]
-        public void Dispose_ShouldNotRfcConnectionHandler()
-        {
-            var connection = new RfcConnection(_interopMock.Object, RfcConfigurationOption);
-            RfcErrorInfo errorInfo;
-            _interopMock
-                .Setup(x => x.OpenConnection(It.IsAny<RfcConnectionParameter[]>(), It.IsAny<uint>(), out errorInfo))
-                .Returns(IntPtr.Zero);
-
-            _interopMock.Setup(x => x.CloseConnection(It.IsAny<IntPtr>(), out errorInfo)).Returns(RfcResultCodes.RFC_OK);
-
-            connection.Dispose();
-
-            _interopMock.Verify(x => x.CloseConnection(FunctionHandle, out errorInfo), Times.Never);
-        }
-
-
         private uint GetRfcConnectionOptionPropertyCount(RfcConnectionOption connectionOptions)
         {
             PropertyInfo[] properties = connectionOptions.GetType().GetProperties();
