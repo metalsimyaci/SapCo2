@@ -534,7 +534,7 @@ List<Material> materials = await sapClient.GetTableDataAsync<Material>(whereClau
 return await SetOptionsAsync(materials, new MaterialQueryOptions { IncludeAll = true });
  ```
 <details>
- <summary>Kodun tamamı</summary>
+ <summary>The entire the code</summary>
 
  ```csharp
  public async Task<List<Material>> GetMaterialsByPrefixAsync(string materialCodePrefix,
