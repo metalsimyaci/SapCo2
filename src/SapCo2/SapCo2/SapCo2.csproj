@@ -6,7 +6,7 @@
     <Title>SapCo2</Title>
     <Authors>metalsimyaci</Authors>
     <Description>SAP NetWeaver RFC Library imlementation for .Net</Description>
-    <Copyright>© 2020</Copyright>
+    <Copyright>© 2021</Copyright>
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -15,10 +15,14 @@
     <Company>Kaon Game Studio</Company>
     <Version>1.2.0.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>
-      
-      SAPCO2 usage changed.
-    </PackageReleaseNotes>
+    <PackageReleaseNotes># 1.2.0.1 Changeset
+- Usage simplified
+- Improved Meta DATA information of RFC and BAPI definitions,
+- Added connection pool support
+- Added multi-connection support
+- Changed the connection configuration structure
+- Changed function calls
+- Example projects expanded</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>logo.png</PackageIcon>
@@ -27,6 +31,7 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <PackageVersion>1.2.0.1</PackageVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <PackageTags>1.2</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
