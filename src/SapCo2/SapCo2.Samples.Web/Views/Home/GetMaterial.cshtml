@@ -1,0 +1,45 @@
+﻿@model IEnumerable<SapCo2.Samples.Web.TableExamples.Models.Material>
+
+@{
+    ViewData["Title"] = "GetMaterial";
+}
+
+<h1>GetMaterial</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Material Code
+            </th>
+            <th>
+                Material Definition
+            </th>
+            <th>
+                Material Class Code
+            </th>
+            <th>
+                Material Class Definition
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Definition.Definition)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialCategoryCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaterialCategory.Definition)
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
