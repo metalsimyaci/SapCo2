@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SapCo2.Samples.Core.Models.JobStatus>
+
+@{
+    ViewData["Title"] = "GetJobs";
+}
+<div>
+    <a asp-action="Index"><i class="arrow"></i> Menüye Dön</a>
+</div>
+<h1>GetJobs</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.JobName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JobNo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TransactionCodeDefinition)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TransactionCodeDefinition)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

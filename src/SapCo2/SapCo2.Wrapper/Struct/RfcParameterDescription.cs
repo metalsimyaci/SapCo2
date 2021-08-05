@@ -13,20 +13,20 @@ namespace SapCo2.Wrapper.Struct
         [MarshalAs(UnmanagedType.I4)]
         public RfcType Type;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public RfcDirection Direction;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int NucLength;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int UcLength;
 
-        [MarshalAs(UnmanagedType.SysInt)]
+        [MarshalAs(UnmanagedType.I4)]
         public int Decimals;
 
-        [MarshalAs(UnmanagedType.FunctionPtr)]
-        public IntPtr TypeDescriptionHandle;
+        [MarshalAs(UnmanagedType.SysInt)]
+        public IntPtr TypeDescHandle;
 
         [MarshalAs(UnmanagedType.LPStr, SizeConst = 80)]
         public string ParameterText;

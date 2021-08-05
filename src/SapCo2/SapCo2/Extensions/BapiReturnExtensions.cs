@@ -1,37 +1,37 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using SapCo2.Parameters;
+using SapCo2.Abstraction.Model;
 using SapCo2.Wrapper.Exception;
+// ReSharper disable InconsistentNaming
 
 namespace SapCo2.Extensions
 {
     public static class BapiReturnExtensions
     {
-        public const string Success = "S";
-        public const string Error = "E";
-        public const string Warning = "W";
-        public const string Information = "I";
-        public const string Abort = "A";
+        public const string SUCCESS = "S";
+        public const string ERROR = "E";
+        public const string WARNING = "W";
+        public const string INFORMATION = "I";
+        public const string ABORT = "A";
 
-        public static void ThrowOnError(this RfcBapiOutputParameter resultCode)
+        public static void ThrowOnError(this BapiReturnParameter resultCode)
         {
-            if (resultCode.MessageType != Error && resultCode.MessageType != Abort)
+            if (resultCode.MessageType != ERROR && resultCode.MessageType != ABORT)
                 return;
-            throw new RfcException(resultCode.ToExceptionMessage());
 
+            throw new RfcException(resultCode.ToExceptionMessage());
         }
 
-        private static string ToExceptionMessage(this RfcBapiOutputParameter s)
+        private static string ToExceptionMessage(this BapiReturnParameter s)
         {
             string message = "";
-            var properties = s.GetType().GetProperties();
+            PropertyInfo[] properties = s.GetType().GetProperties();
+
             foreach (PropertyInfo propertyInfo in properties)
             {
                 message += $"{propertyInfo.Name}:{propertyInfo.GetValue(s)},";
             }
-            message += $"MessageTypeDefinition: {ToMessageTypeString(s.MessageType)}";
 
+            message += $"MessageTypeDefinition: {ToMessageTypeString(s.MessageType)}";
             return message;
         }
 
@@ -39,16 +39,21 @@ namespace SapCo2.Extensions
         {
             switch (s)
             {
-            case Error:
-                return nameof(Error);
-            case Success:
-                return nameof(Success);
-            case Warning:
-                return nameof(Warning);
-            case Information:
-                return nameof(Information);
-            case Abort:
-                return nameof(Abort);
+            case ERROR:
+                return nameof(ERROR);
+
+            case SUCCESS:
+                return nameof(SUCCESS);
+
+            case WARNING:
+                return nameof(WARNING);
+
+            case INFORMATION:
+                return nameof(INFORMATION);
+
+            case ABORT:
+                return nameof(ABORT);
+
             default:
                 return string.Empty;
             }

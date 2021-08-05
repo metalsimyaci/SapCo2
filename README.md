@@ -4,31 +4,29 @@
 
 [![Multi Build And Test ( Net5.0, Core3.1, Core2.1 )](https://github.com/metalsimyaci/SapCo2/workflows/Multi%20Build%20And%20Test%20(%20Net5.0,%20Core3.1,%20Core2.1%20)/badge.svg?branch=master)](https://github.com/metalsimyaci/SapCo2/actions?query=workflow%3A%22Multi+Build+And+Test+%28+Net5.0%2C+Core3.1%2C+Core2.1+%29%22)
 
-# SapCo2 (SAP Conector Core)
+[Türkçe Dökümantasyon](https://github.com/metalsimyaci/SapCo2/blob/master/README_TR.md)
 
-Geliştirme aşamasında daha önceden geliştirilmiş olan [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) ve [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projelerinden referans alınmıştır. Projeyi incelemeden önce bu iki projeye göz atmanızı tavsiye ederim. Özellikle Wrapper kısımları iki projenin ortak yanlarının birleştirilmesi ile ortaya çıkmıştır.
+# SapCo2 (SAP Connector Core)
 
-Kütüphanemiz SAPNco kütüphanesinin .NET Core Ortamında çalıştırılamaması üzerine **SAP NetWeaver RFC SDK 7.50** paketi üzerine geliştirilmiştir.
+We tried to design SAPCO2 as a library for data processing over SAP in the simplest and fastest way. We focused on quick use, simplifying it as much as possible.
 
-Kütüphanemizi .Net Core 3.1, Net Core 2.1 and .Net Frameworklerinde kullanılabilirsiniz.
+Referenced by [SapNwRfc](https://github.com/huysentruitw/SapNwRfc) and [NwRfcNet](https://github.com/nunomaia/NwRfcNet) projects that were previously developed during the development phase. I recommend that you take a look at these two projects before examining the project. Especially the Wrapper parts have emerged by combining the common aspects of the two projects.
 
-.Net Stadand 2.0 ve .Net Standard 2.1 ile hazırlanması sebebi ile Windows, Linux ve MacOs işletim sistemlerinde çalıştırılabilir.
+SapCo2 is support .Net Core, Net 5 ve .Net Frameworks.
 
-Özel kullanım ve örnek anlatım için aşağıya dökümantasyon içinse [Proje Wiki](https://github.com/metalsimyaci/SapCo2/wiki) sayfalarına bakabilirsiniz.
+## Requiretment
 
-## Gereksinimler
+Our library needs .dll files developed with C ++ in SAP NetWeaver RFC Library 7.50 SDK.
+For the installation of the relevant SDK package and more: You can refer to the official page of: sparkles: [SAP](https://support.sap.com/en/product/connectors/nwrfcsdk.html).
 
-Kütüphanemiz SAP NetWeaver RFC Library 7.50 SDK içerisindeki C++ ile geliştirilmiş .dll dosyalarına ihtiyaç duyar.
-İlgili SDK paketinin kurulumu ve daha fazlası için :sparkles: [SAP'nin](https://support.sap.com/en/product/connectors/nwrfcsdk.html) offical sayfasına bakabilirsiniz.
+After obtaining the relevant SKD (requires an SAP licensed account from you);
 
-İlgili SKD yı temin ettikten sonra (Sizden bir SAP lisanlı hesabı istiyor);
+- Extract your zip file to a directory of your own and show the **lib** directory in the files you extract to the environment variable ``PATH`` (Windows), ``LD_LIBRARY_PATH`` (Linux), ``DYLD_LIBRARY_PATH`` (MacOS) according to your operating system.
+- or directly copy the contents of the **lib** folder to your output directory.
 
-- zip doyasınızı kendinize göre bir dizine çıkarıp işletim sisteminize göre `PATH` (Windows), `LD_LIBRARY_PATH` (Linux), `DYLD_LIBRARY_PATH` (MacOS)  ortam değişkenine çıkardığınız dosyalar içerisindeki **lib** dizinini gösterin.
-- ve ya direkt **lib** klasörünün içeriğini output dizininize kopyalayın.
+ To use the SDK package in the Windows operating system, you must install the 64-bit version of [Visual C ++ 2013 redistributable package](https://www.microsoft.com/en-us/download/details.aspx?id=40784).
 
- Windows işletm sisteminde  SDK paketini kullanabilmeniz için [Visual C++ 2013 yeniden dağıtılabilir paket](https://www.microsoft.com/en-us/download/details.aspx?id=40784)inin 64 bit sürümünü yüklemeniz gerekir.
-
-## Kurulum
+## Instalization
 
 PackageManager
 
@@ -36,41 +34,89 @@ PackageManager
 Install-Package SapCo2
 ```
 
-veya DotNet
+Or DotNet
 
 ```shell
 dotnet add package SapCo2
 ```
-veya Paket Referansı
+or Package Referance
 ```xml
-<PackageReference Include="SapCo2" Version="1.0.0.5" />
+<PackageReference Include="SapCo2" Version="1.2.0.1" />
 ```
 
-**Note:** [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) ve [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options) bağlılığına sahiptir.
+**Note:** Has dependencies [Microsoft.Extensions.DependencyInjection](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/) and [Microsoft.Extensions.Options](https://www.nuget.org/packages/Microsoft.Extensions.Options).
 
-## Kullanım
+## Usage
 
-Kullanım işlemlerindeki tüm detaylar örnek proje içerisinde anlatılmıştır. Kod olarak incelemek isterseniz direkt olarak `src/samples/SapCo2.Samples.NetCore` isimli projeye bakabilirsiniz.
+You can access all the examples described in the document with the projects under the [Samples](https://github.com/metalsimyaci/SapCo2/tree/master/src/SapCo2/Samples) directory.
 
-Temel prensip olarak dependency injection üzerine `.AddSapCo2` ile aktif hale getiriyoruz. Ayağa kalmadan önce bağlantı bilgisine ihtiyaç duyuyor.
+To use it, we add it with `.AddSapCo2` on `Dependency injection`. It needs connection information in the add process.
 
-Bağlantı bilgisini direkt string olarak 
+
+### Connection 
+
+To assign the connection information as a string
 
 ```csharp
-var connectionString = "AppServerHost=HOST_NAME; SystemNumber=00; User=USER; Password=PASSWORD; Client=CLIENT_CODE; Language=EN; PoolSize=100; Trace=0;";
+var connectionString = "Name=ALIAS1;AppServerHost=HOST_NAME; SystemNumber=00; User=USER; Password=PASSWORD; Client=CLIENT_CODE; Language=EN; PoolSize=100; Trace=0;";
 ```
 
-veya appsettings.json dosyası
+or multiple in **Appsettings.json**
 
 ```json
 {
-  "SapServerConnections": {
-    "Sap": "AppServerHost=HOST_NAME; SystemNumber=00; User=USER; Password=PASSWORD; Client=CLIENT_CODE; Language=EN; PoolSize=100; Trace=0;"
+  "SapCo2": {
+    "DefaultServer": "ALIAS1",
+    "Connections": [
+      {
+        "Alias": "ALIAS1",
+        "ConnectionPooling": {
+          "Enabled": false,
+          "PoolSize": 8,
+          "IdleTimeout": "00:00:30",
+          "IdleDetectionInterval": "00:00:01"
+        },
+        "ConnectionString": "Name=ALIAS1;User=USER;Password=PASSWORD;Client=CLIENT_CODE;SystemId:xxx;Language=EN;AppServerHost=HOST_NAME;SystemNumber=00;MaxPoolSize:100;PoolSize=50;IdleTimeout:600;Trace=0;",
+        "ConnectionOptions": {}
+      },
+      {
+        "Alias": "ALIAS2",
+        "ConnectionPooling": {
+          "Enabled": false,
+          "PoolSize": 8,
+          "IdleTimeout": "00:00:30",
+          "IdleDetectionInterval": "00:00:01"
+        },
+        "ConnectionString": "",
+        "ConnectionOptions": {
+          "Name": "ALIAS2",
+          "User": "USER",
+          "Password": "PASSWORD",
+          "Client": "CLIENT_CODE",
+          "SystemId": "xxx",
+          "Language": "TR",
+          "AppServerHost": "HOST_NAME",
+          "SystemNumber": "00",
+          "MaxPoolSize": "100",
+          "PoolSize": "50",
+          "IdleTimeout": "600",
+          "Trace": "0"
+        }
+      }
+    ]
   }
 }
 ```
 
-içerisinden
+in **appsetting.json**;
+
+- You can assign connection information with `ConnectionString` or `ConnectionOptions`.
+- You can define multiple connections as ALIAS1 or ALIAS2.
+- Set a Default connection, it is sufficient to specify the `Alias` in the connection definitions in the `DefaultServer` part.
+
+### Dependency Injection
+
+Startup.cs veya Program.cs veya vb.
 
 ```csharp
 IConfiguration configuration = new ConfigurationBuilder()
@@ -78,44 +124,64 @@ IConfiguration configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true)
     .AddEnvironmentVariables()
     .Build();
-
-var connectionString = configuration.GetSection("SapServerConnections:Sap").Value;
 ```
 
-şeklinde alabilirsiniz.
+Dependencyinjection ile IServceProvider içerisinde `.AddSapCo2` fonksiyonuna IConfiguration  bilgisi atayarak kullanabiliriz.
 
-Dependencyinjection ile IServceProvider içerisinde `.AddSapCo2` fonksiyonuna bir adet bağlantı bilgisi atayarak kullanabilriz.
+#### IConfiguration with Appsettings
 
 ```csharp
-var serviceCollection = new ServiceCollection()
-    .AddSapCo2(connectionString);
+var serviceCollection = new ServiceCollection();
+serviceCollection.AddOptions<IConfiguration>();
+serviceCollection.Configure<IOptions<IConfiguration>>(configuration);
+serviceCollection.AddSapCo2(s=>s.ReadFromConfiguration(configuration));
 var serviceProvider = serviceCollection.BuildServiceProvider();
 ```
 
-Dependency injection ile `IServiceProvider` nesnemisi ayağa kaldırdıktan sonra bağlantı nesnemizi `IRfcConnection` türündne talep ediyoruz ve bağlanıyoruz.
+#### Custom Configuration
 
 ```csharp
-using var connection = serviceProvider.GetService<IRfcConnection>();
-connection.Connect();
+var serviceCollection = new ServiceCollection()
+    .AddSapCo2(s =>
+            {
+                s.DefaultServer = "LIVE";
+                s.RfcServers = new List<RfcServer>()
+                {
+                    new RfcServer()
+                    {
+                        Alias = "LIVE",
+                        ConnectionString =
+                            "Name=LIVE;User=USER;Password=PASSWORD;Client=CLIENT_CODE;SystemId:xxx;Language=EN;AppServerHost=HOST_NAME;SystemNumber=00;MaxPoolSize:100;PoolSize=50;IdleTimeout:600;Trace=0;",
+                        ConnectionPooling = new RfcConnectionPoolingOption() {Enabled = true, PoolSize = 10}
+                    }
+                };
+            });
+var serviceProvider = serviceCollection.BuildServiceProvider();
 ```
 
-***Note:*** burada `connection.Connect();` demezseniz çalışma zamanında `RFC CONNECTION ERROR` alırsınız.
+### IRFCClient Implementation 
 
-Temelde 3 şekilde SAP den veri işliyorum. **Table**, **Bapi** ve **RFC** olarak.
+SAPCO2 can be used in 3 ways. [**Table**](####Table), [**Bapi**](####Bapi) and [**RFC**](####RFC).
+In addition to these, a feature has been added where we will receive [Meta Data](####Meta-Data)  for RFC and BAPI.
 
-### **ReadRfc**
+#### RFC
 
-Bunların en temeli RFC (Remote Functon Call)'dır. Diğer aşamalarda aslında bunun özelleşmiştrilmiş ve kolaylaştırılmış şeklidir. Sadece RFC y kullanarak tüm işlemleri gerçekleştirebilirsiniz.
+The most basic of these is RFC (Remote Functon Call). In other stages, it is actually a customized and simplified form of it. You can perform all operations using only RFC.
 
-Fonksiyon çağrısı öncesi **input** ve **output** nesnelerinizi oluşturup parametre olarak geçtiğiniz taktirde yeterli olacaktır.
-Ben RFC için **`CS_BOM_EXPL_MAT_V2_RFC`** reçete fonksiyonunu kullandım. Bununla ilgili
-koşul olarak vermek istediğim parametreler için **BomInputParameter** sınıfını geri dönüşte almak istediğim değelerler içinde **BomOutputParameter** sınıfını oluşturuyorum.
-Bu sınıfları SAP `SE37` ile ilgili import ve export, Table nesnelerinden kullanmak istediklerim seçerek oluşturuyorum.
+It will be sufficient if you create your **input** and **output** objects before the function call and pass them as parameters.
+As an example, I used the recipe function **`CS_BOM_EXPL_MAT_V2_RFC`** for RFC. associated with it
+I create the **BomInputParameter** class for the parameters I want to give as a condition, and the **BomOutputParameter** class for the values ​​I want to get back.
+I create these classes by selecting the fields I want to use from import and export, Table objects related to SAP `SE37`.
 
-Oluşturduğum sınıflarımı `RfcEntityPropertAttribute` veya `RfcEntityIgnorePropertyAttribute` attribute ile işaretleyerek **SAP** tarafındaki karşılığını isim olarak belirtiyoruz. İstersek ne olduğu ile ilgili açıklama da belirtebiliyoruz.
+By marking my classes that I created with the `RfcEntityPropertAttribute` attribute, we specify the corresponding name on the **SAP** side. If we want, we can also provide an explanation of what happened.
+
+I exclude properties that are not on the SAP side but are in my class with the `RfcEntityIgnorePropertyAttribute` attribute.
+
+<details>
+<summary>BomInputParameter Class</summary>
 
 ```csharp
-public sealed class BomInputParameter
+public sealed class BomInputParameter: IRfcInput
 {
     [RfcEntityProperty("AUMGB")]
     public string Aumgb { get; set; }
@@ -158,7 +224,9 @@ public sealed class BomInputParameter
 }
 ```
 
-ve bu nesne ile atadığım koşullar. Burada `plantcode` ile üretim yeri kodunu, `materialCode` ile de reçetesini almak istediğim malzemeyi değişken olarak tanımlıyorum.
+</details>
+
+As a condition, I define the production site code with `plantcode` and the material for which I want to get a recipe as a variable with `materialCode`.
 
 ```csharp
 var inputParameter = new BomInputParameter {
@@ -178,10 +246,10 @@ var inputParameter = new BomInputParameter {
 };
 ```
 
-Şimdi geri dönüş değeleri için **BomOutputParameter** sınıfımızda 1 tane structor ve bir tane de tabloya referans veriyoruz. Tabloları `[]` array olarak gösteriyoruz.
+For the return values, we reference the structor and the table in our **BomOutputParameter** class. We show the tables as `[]` array.
 
 ``` csharp
-public sealed class BomOutputParameter
+public sealed class BomOutputParameter: IRfcOutput
 {
     [RfcEntityProperty("STB")]
     public Stb[] StbData { get; set; }
@@ -190,6 +258,9 @@ public sealed class BomOutputParameter
     public Topmat Topmat { get; set; }
 }
 ```
+
+<details>
+<summary>Table Stb Class</summary>
 
 ``` csharp
 public sealed class Stb
@@ -238,7 +309,10 @@ public sealed class Stb
 }
 ```
 
-ve Struct
+</details>
+
+<details>
+<summary>Struct Topmat Class</summary>
 
 ```csharp
 public sealed class Topmat
@@ -250,24 +324,31 @@ public sealed class Topmat
     public string Definition { get; set; }
 }
 ```
+</details>
 
-tanımlamalar sonrasında bir tane `IReadRfc` nesnesi üretim `GetRfc` fonksiyonunu çağırıyoruz.
+We take one `IClient` object from dependency injection and call the `ExecuteRfcAsync` function.
 
 ```csharp
- using IReadRfc rfcFunction = _serviceProvider.GetService<IReadRfc>();
-BomOutputParameter bomResult = rfcFunction.GetRfc<BomOutputParameter, BomInputParameter>(connection, "CS_BOM_EXPL_MAT_V2_RFC", inputParameter);
+using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+BomOutputParameter bomResult = await client.ExecuteRfcAsync<BomInputParameter, BomOutputParameter>("CS_BOM_EXPL_MAT_V2_RFC", inputParameter);
 ```
 
-`bomResult` içerisinde `BomOutputParameter` türünden istediğimiz çıktıyı görebiliriz.
+As a result, we can see the desired output from the `BomOutputParameter` type in the `bomResult`.
 
-Fonsiyonun tamamı aşağıdaki şekilde oluyor.
+Here, the connection is made via the DefaultAlias we created in ``AppSettings``. To do this via a different alias, we need to call the ``UseServer`` function before the ``Execute`` function.
+
+```csharp
+using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+client.UseServer("ALIAS_NAME");
+BomOutputParameter bomResult = await client.ExecuteRfcAsync<BomInputParameter, BomOutputParameter>("CS_BOM_EXPL_MAT_V2_RFC", inputParameter);
+```
+
+<details>
+<summary>The entire the code</summary>
 
 ```csharp
 public BomOutputParameter GetBillOfMaterial(string materialCode, string plantCode)
 {
-    using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
-    connection.Connect();
-
     var inputParameter = new BomInputParameter
     {
         Aumgb = "0",
@@ -284,19 +365,21 @@ public BomOutputParameter GetBillOfMaterial(string materialCode, string plantCod
         Stlan = "1",
         Mtnrv = materialCode
     };
-    using IReadRfc rfcFunction = _serviceProvider.GetService<IReadRfc>();
-    BomOutputParameter bomResult = rfcFunction.GetRfc<BomOutputParameter, BomInputParameter>(connection, "CS_BOM_EXPL_MAT_V2_RFC", inputParameter);
+    using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+    BomOutputParameter bomResult = await client.ExecuteRfcAsync<BomInputParameter, BomOutputParameter>("CS_BOM_EXPL_MAT_V2_RFC", inputParameter);
     return bomResult;
 }
 
 ```
 
-### **ReadBapi**
+</details>
 
-**BAPI** temel olarak sistem tarafında oluşturulmuş ve güncelleme, silme, oluşturma gibi işlemlerde kullanılan ve her işlem sonucu için `RETURN` isimli bir sonucu içeriğinde barındıran özel bir RFC türüdür.
+#### Bapi
 
-Bapi çağırılarınızda işinizi kolaylaştırmak için çıktı nesnelerinizi `IBapiOutput` ara yüzünden veya `BapiOutputBase` abstrak sınıfından türetmeniz gerekmektedir. Bu işlem size çıktılarınız içinde otomatik `RETURN` nesnesini ekler. İşlem sonrasında bu nesnenin dönen değerlerinden MessageType değerinin **Abort** veya **Error** olması 
-durumunda hata fırlatılır.Geri kalan işlemler RFC çağırısı ile aynıdır.
+**BAPI** is a special type of RFC that is created by the system and is used for operations such as updating, deleting, creating, and contains a return value named `RETURN` for each operation result.
+
+To make your bapi calls easier, you should derive your output objects from the `IBapiOutput` interface or from the `BapiOutputBase` abstrak class. This will automatically add the `RETURN` object in your output. After the operation, the MessageType value of this object is **Abort** or **Error**
+error is thrown. The rest of the operations are the same as for the RFC call.
 
 ```csharp
 public sealed class RfcBapiOutputParameter
@@ -330,134 +413,183 @@ public sealed class RfcBapiOutputParameter
 }
 ```
 
- Ben örnek için `BBP_VENDOR_GETLIST` Bapisini çağırıyorum. Bu bapi içerisine aldığı Şirket koduna göre sistemdeki satıcıların kodu ve adı bilgisini dönüyor.
+I am using `BBP_VENDOR_GETLIST` bapi for example. This bapi returns the code and name of the vendors in the system according to the Company code it contains.
 
- input ve output nesneleri oluşturalım.
+Input
 
 ```csharp
-public class VendorBapiInputParameter
+public class VendorBapiInputParameter: IBapiInput
 {
     [RfcEntityProperty("COMP_CODE")]
     public string CompanyCode { get; set; }
 }
 ```
 
-```csharp
-var inputParameter = new VendorBapiInputParameter
-{
-    CompanyCode = companyCode
-};
-```
-
-Burada `companyCode` değerini üst birimden `200` olarak atıyorum.
-
+Output
 
 ```csharp
-public class VendorBapiOutputParameter:IRfcBapiOutput
+public class VendorBapiOutputParameter:IBapiOutput
 {
     [RfcEntityProperty("RETURN")]
     public RfcBapiOutputParameter BapiReturn { get; set; }
 
     [RfcEntityProperty("VENDOR")]
-    public VendorModel[] Vendors { get; set; }
+    public Vendor[] Vendors { get; set; }
 }
 ```
 
-`IRfcBapiOutput` arayüzünden türediğine ve `[RfcEntityProperty("RETURN")]` attribute'üne sahip olduğuna dikkat edin. Bapiyi bapi yapan arkadaş budur.
+<details>
+<summary>Table Vendor Class</summary>
 
 ```csharp
-public class VendorModel
-{
-    [RfcEntityProperty("VENDOR_NO")]
-    public string VendorNo { get; set; }
+public class Vendor
+    {
+        [RfcEntityProperty("VENDOR_NO")]
+        public string VendorNo { get; set; }
 
-    [RfcEntityProperty("NAME")]
-    public string Name { get; set; }
-}
+        [RfcEntityProperty("NAME")]
+        public string Name { get; set; }
+    }
+```
+</details>
+
+Note that it derives from the `IRfcBapiOutput` interface and has the attribute `[RfcEntityProperty("RETURN")]`.
+
+It happens instantly with the post RFC process. The `IRfcClient` object is superimposed and executed by calling the `ExecuteBapiAsync` function.
+
+```csharp
+
+    using IRfcClient sapClient = _serviceProvider.GetRequiredService<IRfcClient>();
+    return await sapClient.ExecuteBapiAsync<VendorBapiInputParameter, VendorBapiOutputParameter>("BBP_VENDOR_GETLIST", inputParameter);
 ```
 
-Sonrası RFC işlemi ile anı şekilde gerçekleşir. Bir tane bağlantı nesnesi oluşturulur ve bağlantı açılır.`IReadBapi` nesnes üzerilir ve `GetBapi` fonksiyonu çağrılarak çalıştırılır.
+`companyCode` values set `200`
+
+<details>
+<summary>The entire the code</summary>
 
 ```csharp
 public VendorBapiOutputParameter GetVerdorsByCompanyCode(string companyCode)
 {
-    using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
-    connection.Connect();
-
     var inputParameter = new VendorBapiInputParameter
     {
         CompanyCode = companyCode
     };
-    using IReadBapi<VendorBapiOutputParameter> rfcFunction = _serviceProvider.GetService<IReadBapi<VendorBapiOutputParameter>>();
-    VendorBapiOutputParameter result = rfcFunction.GetBapi(connection, "BBP_VENDOR_GETLIST", inputParameter);
+
+    using IRfcClient sapClient = _serviceProvider.GetRequiredService<IRfcClient>();
+    return await sapClient.ExecuteBapiAsync<VendorBapiInputParameter, VendorBapiOutputParameter>("BBP_VENDOR_GETLIST", inputParameter);
     return result;
 }
 ```
+</details>
 
-### **ReadTable**
+#### Table
 
-Table nesnelerine direk erişmimiz olmadığı için sistem tarafından bizlere sunulan
- `RFC_READ_TABLE` fonksiyonunu kullanarak tablodan çekim işlemini gerçekleştiririz.
+Since we do not have direct access to the table objects, the system presented to us
+ Using the `RFC_READ_TABLE` function, we perform the pull from the table.
 
- `RFC_READ_TABLE` ın standart belli kuralları vardır. O alanlara ilgili verileri atayarak tablodan veri çekim işlemini gerçekleştiririz. Buradaki tüm bu kütfetten siz kurtarıp daha basit bir kullanım için `IReadTable` ara yüzünden table fonksiyonumuzu üretiyoruz.
+ `RFC_READ_TABLE` has certain standard rules. We perform data extraction from the table by assigning the relevant data to those fields. We save you from all this trouble and produce our table function from the `ISapTable` interface for a simpler use.
 
- Buradaki temel RFC işleminden sonra RFC_READ_TABLE tarafından çıktı olarak sunulan `DATA` tablosundaki `WA` struct'ı sizin belirlediğiniz parçalama karakterine göre parçalanarak ilgili sınıf propertylerine atanır.
+ After the basic RFC process here, the `WA` struct in the `DATA` table, which is output by RFC_READ_TABLE, is split according to the shredding character you specify and assigned to the relevant class properties.
 
- Bu işlem sırasındaki dönüşüm işlemleri RFC Map işleminden farklı olarak işlendiği için table olarak kullanacağınız nesneyi `RrfcTable` propertyleri ise `RfcTableProperty` attribüteleri ile işaretlemeniz gerekmektedir. `RrfcTable` name alanı ile tabloyu işaret eder. Yine bilgi olarak bulunması için `unsafe` özelliği taşır. Bu genelde RFCnin SAP ın standartlarında olmayıp özel olarak üzerildiğini belirtir. Bizim sistemler için '**Z**' li diye ifade edilen geliştirmeleri tanımlar. Aynı şekilde propertylerde dönüşüm için `TablePropertySapType` ve `Length` özelliklerini taşır. Bunun yanında tablo ile aynı şekilde bu özelliğin bir geliştirme olup olmadığını belirtmek için **unsafe** kullanılır.`SubTypePropertyName` ise ilk etapta çekilmeyecek ama bağlantılı tabloları gösterir. şuan için `SetOption` methodunu kendimiz yazarak bunları dolduruyoruz. Bu alanları virtual olarak tanımlıyoruz ki normal datamızda dikkate alınmasın.
+ Since the transformation operations during this process are handled differently from the RFC Map operation, you must mark the object you will use as a table with `RfcEntity` properties and `RfcEntityProperty` attributes. Points to the table with the `RrfcTable` name field. Again, it has the `unsafe` feature to be found as information. This generally indicates that the RFC is not up to SAP's standards and is specifically overridden. For our systems, it defines the enhancements referred to as '**Z**'. Likewise, it has `TablePropertySapType` and `Length` properties for transforming properties. In addition, **unsafe** is used to indicate whether this feature is an enhancement, in the same way as the table. `SubTypePropertyName` shows linked tables that will not be pulled in the first place. For now, we fill them by writing the `SetOption` method ourselves. We define these fields as virtual so that they are not taken into account in our normal data.
 
- input parameter yerine `RFC_READ_TABLE` ın `OPTIONS` tablosunun `TEXT` özelliğine metin olarak koşul ifadelerinin `ABAP` ile yazılır. Bunu ister düz metin şeklinde `MATNR EQ '12344555'` şeklinde metin listesi oluşturarak, istersenizde Linq ya benzeterek zincirleyebildiğimiz `Abap Query` ile oluşturabilirsiniz. `Abap Quey` ile ilgili detayları [Proje Wiki](https://github.com/metalsimyaci/SapCo2/wiki) kısmına ekleyeceğim. `FIELDS` alanları otomatik olarak oluşturdunuz çıktı sınıfındaki attrütelere göre atanmaktadır. `ROWCOUNT`,`ROWSKIPS`, `ROWDATA` gibi özellikler **opsiyonel** olup gerektiğinde ezilebilmektedir.
+ Instead of the input parameter, the `TEXT` property of the `OPTIONS` table of `RFC_READ_TABLE` is written as text with `ABAP` of the condition statements. You can create this either by creating a text list in the form of `MATNR EQ '12344555'` in plain text, or with `Abap Query`, which we can chain by analogy to Linq. I will add details about `Abap Quey` in [Project Wiki](https://github.com/metalsimyaci/SapCo2/wiki). `FIELDS` fields are automatically assigned according to the attributes in the output class you created. Features such as `ROWCOUNT`, `ROWSKIPS`, `ROWDATA` are **optional** and can be crushed when necessary.
 
- Fazla uzatmadan örneğe bakalım.
- Örnek için `MARA` tablosunu ve alt detaylarını (Malzeme tanımı `MAKT` ve Malzeme sınıfı `ZMM24030`) tablolarından çekeceğim. 
+ Without further ado, let's look at the example.
+ For the example, I will pull the `MARA` table and its sub-details (Material definition `MAKT` and Material class `ZMM24030`) from the tables.
  
- NOT: Alt deyatlar kısmındaki Malzeme sınıfları tablosu bir geliştirme tablosu olduğu için SAP sisteminizde yer almıyorsa lütfen ` new MaterialQueryOptions { IncludeAll = true }` ifadesini `new MaterialQueryOptions { IncludeDefinition = true }` ifadesi ile değiştirin. Bu sayede sadece `MAKT` tablosunu çekersiniz. 
+ NOTE: If the Material classes table in the sub-details is not included in your SAP system because it is a development table, please replace `new MaterialQueryOptions { IncludeAll = true }` with `new MaterialQueryOptions { IncludeDefinition = true }`. In this way, you only pull the `MAKT` table. 
 
  ```csharp
-  [RfcTable("MARA", Description = "Material General Table")]
-  public class Material
-  {
-      [RfcTableProperty("MATNR", Description = "Material Code", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 18)]
-      public string Code { get; set; }
-
-      [RfcTableProperty("MATNR", Description = "Material Definition", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 18, SubTypePropertyName = "Code")]
-      public virtual MaterialDefinition Definition { get; set; }
-
-      [RfcTableProperty("ZZEXTWG", Description = "Material Category Code", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 25, Unsafe = true)]
-      public string MaterialCategoryCode { get; set; }
-
-      [RfcTableProperty("ZZEXTWG", Description = "Ürün Sınıfı", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 25, SubTypePropertyName = "Code", Unsafe = true)]
-      public virtual MaterialCategoryDefinition MaterialCategory { get; set; }
-  }
- ```
-
- alt tablolar
-
- ```csharp
-[RfcTable("MAKT", Description = "Material Definition Table")]
-public class MaterialDefinition
+[RfcEntity("MARA", Description = "Material General Table")]
+public class Material : ISapTable
 {
-    [RfcTableProperty("MATNR", Description = "Material Code", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 18)]
+    [RfcEntityProperty("MATNR", Description = "Material Code", SapDataType = RfcDataTypes.CHAR, Length = 18)]
     public string Code { get; set; }
 
-    [RfcTableProperty("MAKTX", Description = "Material Short Definition", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 40)]
+    [RfcEntityProperty("MATNR", Description = "Material Definition", SapDataType = RfcDataTypes.CHAR, Length = 18, SubTypePropertyName = "Code")]
+    public virtual MaterialDefinition Definition { get; set; }
+
+    [RfcEntityProperty("ZZEXTWG", Description = "Material Category Code", SapDataType = RfcDataTypes.CHAR, Length = 25, Unsafe = true)]
+    public string MaterialCategoryCode { get; set; }
+
+    [RfcEntityProperty("ZZEXTWG", Description = "Ürün Sınıfı", SapDataType = RfcDataTypes.CHAR, Length = 25, SubTypePropertyName = "ZZEXTWG", Unsafe = true)]
+    public virtual MaterialCategoryDefinition MaterialCategory { get; set; }
+}
+ ```
+
+ Afterwards, we create the conditions for which we will draw our painting with `AbapQuey`. We set the condition as `MATNR` material definition starting with `materialCodePrefix` and not marked as deleted.
+
+ ```csharp
+ List<string> whereClause = new AbapQuery().Set(QueryOperator.Equal("MATNR", materialCode))
+                .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BOOLEAN_X)).GetQuery();
+ ```
+
+We create our `IRfcClient` object and with the `GetTableDataAsync` method we specify whether we want the condition we want to retrieve, the number of records and the unsafe (included with Development) fields.
+
+ ```csharp
+using IRfcClient sapClient = _serviceProvider.GetRequiredService<IRfcClient>();
+List<Material> materials = await sapClient.GetTableDataAsync<Material>(whereClause, rowCount: recordCount);
+return await SetOptionsAsync(materials, new MaterialQueryOptions { IncludeAll = true });
+ ```
+<details>
+ <summary>The entire the code</summary>
+
+ ```csharp
+ public async Task<List<Material>> GetMaterialsByPrefixAsync(string materialCodePrefix,
+            MaterialQueryOptions options = null, bool getUnsafeFields = true, int rowCount = 0)
+{
+    options ??= new MaterialQueryOptions();
+    List<string> whereClause = new AbapQuery().Set(QueryOperator.StartsWith("MATNR", materialCodePrefix))
+        .And(QueryOperator.NotEqual("LVORM", true, RfcDataTypes.BOOLEAN_X)).GetQuery();
+
+    using IRfcClient sapClient = _serviceProvider.GetRequiredService<IRfcClient>();
+    List<Material> result = await sapClient.GetTableDataAsync<Material>(whereClause, rowCount: recordCount);
+
+    return await SetOptionsAsync(result, options, getUnsafeFields).ConfigureAwait(false);
+}
+ ```
+ </details>
+
+<details>
+<summary>Sub Table Operations</summary>
+
+That's it based on the usage of your table reading event. to fetch child tables
+We create a function called `setoptions` and connect the sub-tables we get with it to our main `MARA` table. This process was created as an example of using fields such as `unsafe`, `SubProperty`.
+
+<details>
+<summary>Sub Table Class</summary>
+
+Material Definition (MAKT) Table Class
+
+ ```csharp
+[RfcEntity("MAKT", Description = "Material Definition Table")]
+public class MaterialDefinition : ISapTable
+{
+    [RfcEntityProperty("MATNR", Description = "Material Code", SapDataType = RfcDataTypes.CHAR, Length = 18)]
+    public string Code { get; set; }
+
+    [RfcEntityProperty("MAKTX", Description = "Material Short Definition", SapDataType = RfcDataTypes.CHAR, Length = 40)]
     public string Definition { get; set; }
 }
  ```
 
- ```csharp
- [RfcTable("ZMM24030", Description = "Material Category Definition Table", Unsafe = true)]
-public class MaterialCategoryDefinition
-{
+Material Category (ZMM24030) Table Class
 
+ ```csharp
+[RfcEntity("ZMM24030", Description = "Material Category Definition Table", Unsafe = true)]
+public class MaterialCategoryDefinition : ISapTable
+{
     #region Properties
 
-    [RfcTableProperty("ZZEXTWG", Description = "Material Category Code", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 25)]
+    [RfcEntityProperty("ZZEXTWG", Description = "Material Category Code", SapDataType = RfcDataTypes.CHAR, Length = 25)]
     public string Code { get; set; }
 
-    [RfcTableProperty("TANIM", Description = "Material Category Definition", TablePropertySapType = RfcTablePropertySapTypes.CHAR, Length = 50)]
+    [RfcEntityProperty("TANIM", Description = "Material Category Definition", SapDataType = RfcDataTypes.CHAR, Length = 50)]
     public string Definition { get; set; }
 
-    [RfcTableProperty("ZZPARCASAYI", Description = "Material Category Unit Part Count", TablePropertySapType = RfcTablePropertySapTypes.INTEGER, Length = 10)]
+    [RfcEntityProperty("ZZPARCASAYI", Description = "Material Category Unit Part Count", SapDataType = RfcDataTypes.INTEGER, Length = 10)]
     public int PartCount { get; set; }
 
     #endregion
@@ -470,55 +602,12 @@ public class MaterialCategoryDefinition
     }
 
     #endregion
-
 }
  ```
 
- Sornasında tablomuzu çekeceğimiz koşullarımızı `AbapQuey` ile oluşturuyoruz. Koşulu `MATNR` malzeme tanımının `materialCodePrefix` ile başlayan ve silinmiş olarak işaretlenmeyen kalemler olsun olarak belirliyoruz.
+</details>
 
- ```csharp
- var query = new AbapQuery().Set(QueryOperator.StartsWith("MATNR", materialCodePrefix))
-                .And(QueryOperator.NotEqual("LVORM", true, RfcTablePropertySapTypes.BOOLEAN_X)).GetQuery();
- ```
-RFC de olduğu gibi bağlantı nesnesini türetip bağlanıyoruz.
-
-```csharp
-using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
-          connection.Connect();
-```
-
- Sonra `IReadTable` ara yüzünden çıktı olarak kullanacağımız veri modeline göre üretilmiş bir generic sınıf alıyoruz.Aldığımız sınıfnın `GetTable` methodu ile çekmek istediğmiz koşul, kayıt sayısı ve güvenli olayan (Geliştirme ile gelen) alanları isteyip istemediğimizi belirtiyoruz.
-
- ```csharp
-using IReadTable<Material> tableFunction = _serviceProvider.GetService<IReadTable<Material>>();
-
-List<Material> result = tableFunction.GetTable(connection, query, rowCount: rowCount, getUnsafeFields: getUnsafeFields);
-
- ```
-
- Kodun tamamı şu şekilde olacaktır.
-
- ```csharp
- public async Task<List<Material>> GetMaterialsByPrefixAsync(string materialCodePrefix,
-            MaterialQueryOptions options = null, bool getUnsafeFields = true, int rowCount = 0)
-        {
-            options ??= new MaterialQueryOptions();
-            var query = new AbapQuery().Set(QueryOperator.StartsWith("MATNR", materialCodePrefix))
-                .And(QueryOperator.NotEqual("LVORM", true, RfcTablePropertySapTypes.BOOLEAN_X)).GetQuery();
-
-            using IRfcConnection connection = _serviceProvider.GetService<IRfcConnection>();
-            connection.Connect();
-
-            using IReadTable<Material> tableFunction = _serviceProvider.GetService<IReadTable<Material>>();
-            List<Material> result = tableFunction.GetTable(connection, query, rowCount: rowCount, getUnsafeFields: getUnsafeFields);
-
-            return await SetOptionsAsync(result, options, getUnsafeFields).ConfigureAwait(false);
-        }
- ```
-
-
-Tablo okuma olayımınız kullanımı temelinde bu kadar. alt tablolarıda getirebilmek için
-`setoptions` isimli bir fonksiyon oluşturup onunla aldığımız alt tabloları ana `MARA` tablomuza bapliyoruz. Bu işlem daha çok `unsafe`, `SubProperty` gibi alanların kullanımına örnek olması için oluşturuldu.
+Sub Table Operations
 
 ```csharp
 private async Task<List<Material>> SetOptionsAsync(List<Material> materialList,
@@ -563,74 +652,118 @@ private async Task<List<Material>> SetOptionsAsync(List<Material> materialList,
 }
 ```
 
+Material Defitinion Operations
+
 ```csharp
-private List<Task> SetMaterialDefinitionOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList,
-            ConcurrentQueue<MaterialDefinition> definitionList)
+private List<Task> SetMaterialDefinitionOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList, ConcurrentQueue<MaterialDefinition> definitionList)
 {
     var taskList = new List<Task>();
-    if (queryOptions.IncludeDefinition)
+    if (!queryOptions.IncludeDefinition)
+        return taskList;
+
+    var list = materialList.Where(x => x.Code != null).Select(x => (object)x.Code).ToList();
+    List<object>[] parts = list.Partition(PartitionCount);
+
+    foreach (List<object> part in parts)
     {
-        var list = materialList.Where(x => x.Code != null).Select(x => (object)x.Code).ToList();
-        List<object>[] parts = list.Partition(PartitionCount);
+        List<string> query = new AbapQuery()
+            .Set(QueryOperator.In("MATNR", part))
+            .GetQuery();
 
-        foreach (List<object> part in parts)
+        taskList.Add(Task.Run(async () =>
         {
-            List<string> query = new AbapQuery()
-                .Set(QueryOperator.In("MATNR", part))
-                .GetQuery();
-
-            taskList.Add(Task.Run(() =>
-            {
-                using var connection = _serviceProvider.GetService<IRfcConnection>();
-                connection.Connect();
-                using var tableFunction = _serviceProvider.GetService<IReadTable<MaterialDefinition>>();
-                var definitions = tableFunction.GetTable(connection, query);
-                foreach (MaterialDefinition definition in definitions)
-                    definitionList.Enqueue(definition);
-            }));
-        }
+            using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+            List<MaterialDefinition> definitions = await client.GetTableDataAsync<MaterialDefinition>(query);
+            foreach (MaterialDefinition definition in definitions)
+                definitionList.Enqueue(definition);
+        }));
     }
 
     return taskList;
 }
 ```
 
+Material Category Operations
+
 ```csharp
-private List<Task> SetMaterialCategoryOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList,
-            ConcurrentQueue<MaterialCategoryDefinition> materialCategoryDefinitionList)
+private List<Task> SetMaterialCategoryOptionAsync(MaterialQueryOptions queryOptions, List<Material> materialList, ConcurrentQueue<MaterialCategoryDefinition> materialCategoryDefinitionList)
 {
     var taskList = new List<Task>();
-    if (queryOptions.IncludeMaterialCategory)
+    if (!queryOptions.IncludeMaterialCategory)
+        return taskList;
+
+    var materialCategoryList =
+        materialList.Where(x => x.MaterialCategoryCode != null)
+            .Select(x => (object)x.MaterialCategoryCode)
+            .Distinct()
+            .ToList();
+
+    List<object>[] materialCategoryParts = materialCategoryList.Partition(PartitionCount);
+
+    foreach (List<object> part in materialCategoryParts)
     {
-        var materialCategoryList =
-            materialList.Where(x => x.MaterialCategoryCode != null)
-                .Select(x => (object)x.MaterialCategoryCode)
-                .Distinct()
-                .ToList();
+        List<string> queryList = new AbapQuery()
+            .Set(QueryOperator.In("ZZEXTWG", part))
+            .GetQuery();
 
-        List<object>[] materialCategoryParts = materialCategoryList.Partition(PartitionCount);
-
-        foreach (List<object> part in materialCategoryParts)
+        taskList.Add(Task.Run(async () =>
         {
-            List<string> queryList = new AbapQuery()
-                .Set(QueryOperator.In("ZZEXTWG", part))
-                .GetQuery();
-
-            taskList.Add(Task.Run(async () =>
-            {
-                using var connection = _serviceProvider.GetService<IRfcConnection>();
-                connection.Connect();
-                using var tableFunction = _serviceProvider.GetService<IReadTable<MaterialCategoryDefinition>>();
-                var definitions = tableFunction.GetTable(connection, queryList);
-                foreach (MaterialCategoryDefinition definition in definitions)
-                    materialCategoryDefinitionList.Enqueue(definition);
-            }));
-        }
+            using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+            List<MaterialCategoryDefinition> definitions = await client.GetTableDataAsync<MaterialCategoryDefinition>(queryList);
+            foreach (MaterialCategoryDefinition definition in definitions)
+                materialCategoryDefinitionList.Enqueue(definition);
+        }));
     }
 
     return taskList;
 }
 ```
 
+</details>
 
-Hepsi bu kadar. Paket henüz yeni ve bazı testleri eksik. En kısa sürede o testleri tamamlamaya çalışacağım. Genel kullanım için çok büyük bir sıkıntısi görünmüyor. Dökümantasyon olarakta proje Wik yi daha detaylı bir şekilde bölüm bölüm açıklamaya çalışacağım.
+#### Meta Data
+
+In order to get the metadata information of the function we are used to from SapNco, I prepared a method that will combine a Field and Parameter information in SapNetwareRFC. Method only works for BAPI and RFC. Unfortunately, we cannot access its metadata from here, as we get the tables via RFC_READ_TABLE.
+
+In the future, I will have a study to get this metadata from tables where table definitions such as DL003 are kept.
+
+Similar to other uses, we call the ``ReadFunctionMetaData`` function after generating the ``IRfcClient`` object. This method returns us a list of type ``ParameterMetaData``. This list holds objects in ``Import``,``Export``,``Tables`` that we list with <b>SE37</b>. We take the elements of these objects under the ``Field`` list.
+
+```csharp
+public class ParameterMetaData
+{
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public string Direction { get; set; }
+    public int NumericLength { get; set; }
+    public int UcLength { get; set; }
+    public int Decimals { get; set; }
+    public string Description { get; set; }
+    public string DefaultValue { get; set; }
+    public bool Optional { get; set; }
+
+    public List<FieldMetaData> Fields { get; set; }
+
+}
+```
+```csharp
+public class FieldMetaData
+{
+    public string Name { get; set; }
+    public string Type { get; set; }
+    public int NucLength { get; set; }
+    public int NucOffset { get; set; }
+    public int UcLength { get; set; }
+    public int UcOffset { get; set; }
+    public int Decimals { get; set; }
+}
+```
+
+Just give the name of the RFC or BAPI whose metadata you want to access.
+
+```csharp
+using IRfcClient client = _serviceProvider.GetRequiredService<IRfcClient>();
+List<ParameterMetaData> result = client.ReadFunctionMetaData(functionName);
+```
+
+That's all for now.

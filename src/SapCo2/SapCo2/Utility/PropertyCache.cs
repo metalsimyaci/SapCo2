@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using SapCo2.Abstract;
-using SapCo2.Wrapper.Attributes;
+using SapCo2.Abstraction.Attributes;
 
 namespace SapCo2.Utility
 {

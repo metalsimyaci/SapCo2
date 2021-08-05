@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace SapCo2.Wrapper.Enumeration
 {
     public enum RfcDirection

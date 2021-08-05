@@ -2,35 +2,49 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;</TargetFrameworks>
-    <LangVersion>9.0</LangVersion>
+    <LangVersion>latest</LangVersion>
     <Title>SapCo2</Title>
     <Authors>metalsimyaci</Authors>
-    <Description>SAP NetWeaver RFC Library imlementation for .Net Core</Description>
-    <Copyright>© 2020</Copyright>
+    <Description>SAP NetWeaver RFC Library imlementation for .Net</Description>
+    <Copyright>© 2021</Copyright>
     <PackageProjectUrl>https://github.com/metalsimyaci/SapCo2</PackageProjectUrl>
     <RepositoryUrl>https://github.com/metalsimyaci/SapCo2</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.11</AssemblyVersion>
-    <FileVersion>1.0.0.11</FileVersion>
+    <AssemblyVersion>1.2.0.1</AssemblyVersion>
+    <FileVersion>1.2.0.1</FileVersion>
     <Company>Kaon Game Studio</Company>
-    <Version>1.0.0.6</Version>
+    <Version>1.2.0.1</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Symbol Package Added</PackageReleaseNotes>
+    <PackageReleaseNotes># 1.2.0.1 Changeset
+- Usage simplified
+- Improved Meta DATA information of RFC and BAPI definitions,
+- Added connection pool support
+- Added multi-connection support
+- Changed the connection configuration structure
+- Changed function calls
+- Example projects expanded</PackageReleaseNotes>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <PackageIcon>logo.png</PackageIcon>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <PackageVersion>1.0.0.6</PackageVersion>
+    <PackageVersion>1.2.0.1</PackageVersion>
     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <PackageTags>1.2</PackageTags>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.DependencyValidation.Analyzers" Version="0.11.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
+    <ProjectReference Include="..\SapCo2.Abstraction\SapCo2.Abstraction.csproj">
+      <IsPackable>false</IsPackable>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>SapCo2.Abstraction.dll</IncludeAssets>
+    </ProjectReference>
     <ProjectReference Include="..\SapCo2.Core\SapCo2.Core.csproj">
       <IsPackable>false</IsPackable>
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>

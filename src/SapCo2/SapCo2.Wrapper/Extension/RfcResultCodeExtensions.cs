@@ -2,11 +2,12 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
-using SapCo2.Wrapper.Interop;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Wrapper.Extension
 {
     [SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
+    [ExcludeFromCodeCoverage]
     public static class RfcResultCodeExtensions
     {
         public static void ThrowOnError(this RfcResultCodes resultCode, RfcErrorInfo errorInfo, Action beforeThrow = null)

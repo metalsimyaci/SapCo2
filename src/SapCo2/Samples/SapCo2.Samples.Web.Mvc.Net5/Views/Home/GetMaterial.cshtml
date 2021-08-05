@@ -1,0 +1,30 @@
+﻿@model SapCo2.Samples.Core.Models.Material
+
+@{
+    ViewData["Title"] = "GetMaterial";
+}
+<div>
+    <a asp-action="Index"><i class="arrow"></i> Menüye Dön</a>
+</div>
+
+<h1>GetMaterial</h1>
+
+<div>
+    <h4>Material</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Code)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Code)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Definition.Definition)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Definition.Definition)
+        </dd>
+    </dl>
+</div>
+

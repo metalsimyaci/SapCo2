@@ -5,9 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using SapCo2.Wrapper.Attributes;
-using SapCo2.Wrapper.Exception;
-using SapCo2.Wrapper.Interop;
+using SapCo2.Core.Attributes;
+using SapCo2.Core.Models;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Core.Extensions
 {
@@ -16,17 +16,6 @@ namespace SapCo2.Core.Extensions
         private static readonly ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>
             TypePropertiesCache =
                 new ConcurrentDictionary<Type, (string name, Func<object, string> GetValue)[]>();
-
-        public static RfcConnectionParameter[] ToInterop<TParameter>(this TParameter parameters)
-        {
-            (string Name, Func<object, string> GetValue)[] properties =
-                TypePropertiesCache.GetOrAdd(typeof(TParameter), Build);
-            return properties.Select(property =>
-                    new RfcConnectionParameter {Name = property.Name, Value = property.GetValue(parameters),})
-                .Where(parameter => !string.IsNullOrEmpty(parameter.Value))
-                .ToArray();
-        }
-
         private static (string Name, Func<object, string> GetValue)[] Build(Type type)
             => type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Select(propertyInfo =>
@@ -46,7 +35,17 @@ namespace SapCo2.Core.Extensions
                 })
                 .ToArray();
 
-        internal static RfcConnectionOption Parse(this RfcConnectionOption connectionOption, string connectionString)
+        public static RfcConnectionParameter[] ToInterop<TParameter>(this TParameter parameters)
+        {
+            (string Name, Func<object, string> GetValue)[] properties =
+                TypePropertiesCache.GetOrAdd(typeof(TParameter), Build);
+            return properties.Select(property =>
+                    new RfcConnectionParameter {Name = property.Name, Value = property.GetValue(parameters),})
+                .Where(parameter => !string.IsNullOrEmpty(parameter.Value))
+                .ToArray();
+        }
+
+        public static RfcConnectionOption Parse(this RfcConnectionOption connectionOption, string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentException("Value cannot be null or empty", nameof(connectionString));

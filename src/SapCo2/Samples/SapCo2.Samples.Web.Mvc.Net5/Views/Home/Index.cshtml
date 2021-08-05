@@ -1,0 +1,75 @@
+﻿@{
+    ViewData["Title"] = "SapCo2 Web MVC Sample";
+}
+
+<div class="row">
+    <div class="col-md-12 mr-2">
+        <div class="text-center">
+            <h1 class="display-4">SapCo2 Samples</h1>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetJobs</h5>
+                <p class="card-text">SAP üzerinde çalıştırılan son Job tanımları getirilir</p>
+                <a class="card-link" href="@Url.Action("GetJobs", "Home")">GetJobs</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetMaterial</h5>
+                <p class="card-text">Sap üzerindeki "1DACTV76A201000002" kodlu malzeme bilgileri getirilir</p>
+                <a class="card-link" href="@Url.Action("GetMaterial", "Home")">GetMaterial</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetMaterialsByPrefixWithSubTables</h5>
+                <p class="card-text">SAP üzerinde "11AKPAK" ile başlayan ilk 10 malzeme getirilir</p>
+                <a class="card-link" href="@Url.Action("GetMaterialsByPrefixWithSubTables", "Home")">GetMaterialsByPrefixWithSubTables</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetVendorsUseBapi</h5>
+                <p class="card-text">Firma kodu 200 olan satıcı tanımlarını getirilir</p>
+                <a class="card-link" href="@Url.Action("GetVendorsUseBapi", "Home")">GetVendorsUseBapi</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetBillOfMaterial</h5>
+                <p class="card-text">"200DYNA0102000000" malzemesine ait "201" üretim yeri için malzeme reçetesini getirir</p>
+                <a class="card-link" href="@Url.Action("GetBillOfMaterial", "Home")">GetBillOfMaterial</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetBillOfMaterials</h5>
+                <p class="card-text">4 malzeme için ürün reçetesini getirir</p>
+                <a class="card-link" href="@Url.Action("GetBillOfMaterials", "Home")">GetBillOfMaterials</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card mr-1">
+            <div class="card-body">
+                <h5 class="card-title">GetFunctionMetaData</h5>
+                <p class="card-text">"ZBC_GET_JOBS" RFC sine ait metadata bilgileri getirilir</p>
+                <a class="card-link" href="@Url.Action("GetFunctionMetaData", "Home")">GetFunctionMetaData</a>
+            </div>
+        </div>
+    </div>
+</div>
+

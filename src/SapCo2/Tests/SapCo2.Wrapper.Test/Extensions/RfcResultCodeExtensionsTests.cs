@@ -5,7 +5,7 @@ using Moq;
 using SapCo2.Wrapper.Enumeration;
 using SapCo2.Wrapper.Exception;
 using SapCo2.Wrapper.Extension;
-using SapCo2.Wrapper.Interop;
+using SapCo2.Wrapper.Struct;
 
 namespace SapCo2.Wrapper.Test.Extensions
 {

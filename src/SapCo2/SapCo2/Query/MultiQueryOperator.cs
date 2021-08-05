@@ -12,7 +12,7 @@ namespace SapCo2.Query
             _abapQuery = abapQuery;
         }
 
-        public MultiQueryOperator AndInParanthesis(MultiQueryOperator opr)
+        public MultiQueryOperator AndInParenthesis(MultiQueryOperator opr)
         {
             _abapQuery.Query.Add(_abapQuery.Query.Any() ? " AND ( " : " ( ");
             _abapQuery.Query.AddRange(opr.GetQuery());
@@ -40,7 +40,7 @@ namespace SapCo2.Query
             return this;
         }
 
-        public MultiQueryOperator OrInParanthesis(MultiQueryOperator opr)
+        public MultiQueryOperator OrInParenthesis(MultiQueryOperator opr)
         {
             _abapQuery.Query.Add(_abapQuery.Query.Any() ? " OR ( " : " ( ");
             _abapQuery.Query.AddRange(opr.GetQuery());

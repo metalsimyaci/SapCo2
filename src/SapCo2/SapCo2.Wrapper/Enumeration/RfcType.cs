@@ -1,4 +1,5 @@
 // ReSharper disable IdentifierTypo
+// ReSharper disable InconsistentNaming
 namespace SapCo2.Wrapper.Enumeration
 {
     public enum RfcType

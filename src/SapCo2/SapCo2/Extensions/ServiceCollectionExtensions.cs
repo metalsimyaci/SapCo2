@@ -1,38 +1,41 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using SapCo2.Abstract;
 using SapCo2.Core;
+using SapCo2.Core.Abstract;
 using SapCo2.Core.Extensions;
+using SapCo2.Core.Models;
 using SapCo2.Utility;
 
 namespace SapCo2.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddSapCo2(this IServiceCollection serviceCollection, Action<RfcConnectionOption> connectionAction)
+        public static IServiceCollection AddSapCo2(this IServiceCollection services, Action<RfcConfiguration> configurationAction)
         {
-            serviceCollection.AddSapCo2Core(connectionAction: connectionAction);
-           
-            serviceCollection.TryAddTransient<IPropertyCache, PropertyCache>();
-            serviceCollection.TryAddTransient<IReadRfc, ReadRfc>();
-            serviceCollection.TryAddTransient(typeof(IReadTable<>),typeof(ReadTable<>));
-            serviceCollection.TryAddTransient(typeof(IReadBapi<>),typeof(ReadBapi<>));
+            services.AddOptions();
+            services.Configure(configurationAction);
+            services.AddSapCo2Core();
+            services.TryAddTransient<IRfcClient, RfcClient>();
+            services.TryAddTransient<IRfcConnectionPoolServiceFactory, RfcConnectionPoolServiceFactory>();
+            services.TryAddSingleton<IPropertyCache, PropertyCache>();
 
-            serviceCollection.BuildServiceProvider();
-            return serviceCollection;
+            RfcConfiguration sapConfiguration = services.BuildServiceProvider().GetRequiredService<IOptions<RfcConfiguration>>().Value;
+
+            GenerateConnectionPools(services, sapConfiguration);
+            return services;
         }
-        public static IServiceCollection AddSapCo2(this IServiceCollection serviceCollection, string connectionString)
+        private static void GenerateConnectionPools(IServiceCollection services, RfcConfiguration rfcConfiguration)
         {
-            serviceCollection.AddSapCo2Core(connectionString: connectionString);
-
-            serviceCollection.TryAddTransient<IPropertyCache, PropertyCache>();
-            serviceCollection.TryAddTransient<IReadRfc, ReadRfc>();
-            serviceCollection.TryAddTransient(typeof(IReadTable<>), typeof(ReadTable<>));
-            serviceCollection.TryAddTransient(typeof(IReadBapi<>), typeof(ReadBapi<>));
-
-            serviceCollection.BuildServiceProvider();
-            return serviceCollection;
+            foreach (RfcServer sapServerConnection in rfcConfiguration.RfcServers)
+            {
+                if (sapServerConnection.ConnectionPooling.Enabled)
+                {
+                    services.AddSingleton<IRfcConnectionPool>(s => new RfcConnectionPool(s, sapServerConnection.Alias, rfcConfiguration));
+                }
+            }
         }
     }
 }

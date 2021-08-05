@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
-using SapCo2.Enumeration;
-using SapCo2.Helper;
+using SapCo2.Abstraction.Enumerations;
 
 namespace SapCo2.Query
 {
@@ -19,12 +18,13 @@ namespace SapCo2.Query
         private static bool _isEmpty;
         private static bool _listFilled;
         private static readonly CultureInfo UsCultureInfo = new CultureInfo("en-US");
-        private static string Query { get; set; } = string.Empty;
-        private static List<string> QueryList { get; set; } = new List<string>();
 
         #endregion
 
         #region Properties
+
+        private static string Query { get; set; } = string.Empty;
+        private static List<string> QueryList { get; set; } = new List<string>();
 
         public bool ListFilled
         {
@@ -55,39 +55,39 @@ namespace SapCo2.Query
 
         #region Operator Methods
 
-        public static QueryOperator Equal(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator Equal(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} EQ '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} EQ '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator NotEqual(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator NotEqual(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} NE '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} NE '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator GreaterThan(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator GreaterThan(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} GT '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} GT '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator GreaterThanOrEqual(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator GreaterThanOrEqual(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} GE '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} GE '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator LessThan(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator LessThan(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} LT '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} LT '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator LessThanOrEqual(string field, object value, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator LessThanOrEqual(string field, object value, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
-            Query = $"{field} LE '{TypeConversionHelper.ConvertToRfcType(value, tablePropertySapType)}'";
+            Query = $"{field} LE '{TypeConverter.ConvertToRfcType(value, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
@@ -115,14 +115,14 @@ namespace SapCo2.Query
             return new QueryOperator();
         }
 
-        public static QueryOperator Between(string field, object firstValue, object lastValue, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator Between(string field, object firstValue, object lastValue, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
             Query =
-                $"{field} BETWEEN '{TypeConversionHelper.ConvertToRfcType(firstValue, tablePropertySapType)}' AND '{TypeConversionHelper.ConvertToRfcType(lastValue, tablePropertySapType)}'";
+                $"{field} BETWEEN '{TypeConverter.ConvertToRfcType(firstValue, tablePropertySapType)}' AND '{TypeConverter.ConvertToRfcType(lastValue, tablePropertySapType)}'";
             return new QueryOperator();
         }
 
-        public static QueryOperator In(string field, List<object> valueList, RfcTablePropertySapTypes tablePropertySapType = RfcTablePropertySapTypes.STRING)
+        public static QueryOperator In(string field, List<object> valueList, RfcDataTypes tablePropertySapType = RfcDataTypes.STRING)
         {
             if (!valueList.Any())
             {
@@ -134,8 +134,8 @@ namespace SapCo2.Query
             for (int no = 0; no <= valueList.Count - 1; no++)
             {
                 var query = no == 0
-                    ? $"{field.ToUpper(UsCultureInfo)} IN ('{TypeConversionHelper.ConvertToRfcType(valueList[no], tablePropertySapType)}'"
-                    : $",'{TypeConversionHelper.ConvertToRfcType(valueList[no], tablePropertySapType)}'";
+                    ? $"{field.ToUpper(UsCultureInfo)} IN ('{TypeConverter.ConvertToRfcType(valueList[no], tablePropertySapType)}'"
+                    : $",'{TypeConverter.ConvertToRfcType(valueList[no], tablePropertySapType)}'";
                 if (valueList.Count == 1)
                     query += ")";
                 else if (no == valueList.Count - 1)
